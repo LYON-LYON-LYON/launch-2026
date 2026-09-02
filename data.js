@@ -313,15 +313,21 @@ const ROCKETS = {
   "rs1":      {name:"RS1",            vendor:"ABL Space",                  type:"液体", fuel:"液氧煤油", leo:"LEO·1.3t", note:"商业小型"},
 };
 
-/* 卫星运营方表 —— 用于运营方专属页跳转与统计 */
+/* 卫星运营方表 —— 用于运营方专属页跳转与统计
+   在轨数口径（B5 派生计算）：带 inOrbitBase/inOrbitBaseDate 的可计数星座，
+   页面展示 inOrbitNow = inOrbitBase + Σ(opKey 匹配且 st=done 且 s>基准日 事件的 satCount)；
+   inOrbit 为旧静态快照，仅作无基准运营方的回退文案。
+   归口规则：星链任务（sx-*）opKey=starlink；Kuiper 任务（kp-*）opKey=kuiper；
+   Starship 试飞（ss-*）保留 opKey=spacex（厂家兜底），amazon 条目同为厂家兜底。
+   事件卡片显示名（op 字段）不受归口影响。 */
 const OPERATORS = {
   "satnet":   {name:"中国星网",          short:"星网",      type:"低轨宽带星座",  plan:"国网星座·1.3万颗",  inOrbit:"组网中", note:"卫星互联网国家工程"},
-  "yuanxin":  {name:"垣信卫星",          short:"垣信",      type:"低轨宽带星座",  plan:"千帆星座·1.4万颗",  inOrbit:"238颗(截至7/5)", note:"B轮估值500亿"},
-  "cmcc":     {name:"中国移动",          short:"移动",      type:"手机直连卫星",  plan:"试验组网",          inOrbit:"2颗", note:"星上基站试验"},
-  "tianqi":   {name:"国电高科·天启星座",short:"天启",      type:"物联网星座",    plan:"38颗",              inOrbit:"41颗", note:"首张卫星物联网牌照"},
+  "yuanxin":  {name:"垣信卫星",          short:"垣信",      type:"低轨宽带星座",  plan:"千帆星座·1.4万颗",  inOrbit:"238颗(截至7/5)", inOrbitBase:238, inOrbitBaseDate:"2026-07-05", note:"B轮估值500亿"},
+  "cmcc":     {name:"中国移动",          short:"移动",      type:"手机直连卫星",  plan:"试验组网",          inOrbit:"2颗", inOrbitBase:2, inOrbitBaseDate:"2026-06-09", note:"星上基站试验"},
+  "tianqi":   {name:"国电高科·天启星座",short:"天启",      type:"物联网星座",    plan:"38颗",              inOrbit:"41颗", inOrbitBase:41, inOrbitBaseDate:"2026-05-07", note:"首张卫星物联网牌照"},
   "starcdo":  {name:"时空道宇",          short:"道宇",      type:"遥感+通信",     plan:"吉利星座",          inOrbit:"组网中", note:"第二张物联网牌照"},
   "weili":    {name:"微厘空间",          short:"微厘",      type:"导航增强星座",  plan:"低轨导航增强",      inOrbit:"组网中", note:""},
-  "dfhy":     {name:"东方慧眼",          short:"慧眼",      type:"高光谱遥感",    plan:"星座",              inOrbit:"2颗", note:""},
+  "dfhy":     {name:"东方慧眼",          short:"慧眼",      type:"高光谱遥感",    plan:"星座",              inOrbit:"2颗", inOrbitBase:2, inOrbitBaseDate:"2026-08-05", note:""},
   "human":    {name:"中国载人航天工程",  short:"载人航天",  type:"空间站",        plan:"空间站运营",        inOrbit:"天宫·3舱+神舟", note:""},
   "moon":     {name:"月球探测工程",      short:"探月",      type:"深空探测",      plan:"嫦娥七号→2027",     inOrbit:"—", note:"四期工程"},
   "weather":  {name:"国家气象卫星",      short:"气象",      type:"气象卫星",      plan:"风云系列",          inOrbit:"多颗", note:""},
@@ -330,9 +336,9 @@ const OPERATORS = {
   "tianlian": {name:"天链中继卫星",      short:"天链",      type:"数据中继",      plan:"第三代组网",        inOrbit:"多颗", note:""},
   "cn_satcom":{name:"中国卫通",          short:"卫通",      type:"高轨通信",      plan:"中星系列",          inOrbit:"多颗", note:""},
   /* === 国际运营方 === */
-  "starlink": {name:"SpaceX·星链",      short:"星链",      type:"低轨宽带星座",  plan:"4.2万颗",            inOrbit:"7700+(截至8月)", note:"全球最大星座"},
-  "kuiper":   {name:"亚马逊·Kuiper",    short:"Kuiper",    type:"低轨宽带星座",  plan:"3236颗",             inOrbit:"首批81颗", note:"卫星互联网"},
-  "oneweb":   {name:"OneWeb",           short:"OneWeb",    type:"低轨宽带星座",  plan:"648颗",              inOrbit:"648颗(2022完成一阶段)", note:"已与Eutelsat合并"},
+  "starlink": {name:"SpaceX·星链",      short:"星链",      type:"低轨宽带星座",  plan:"4.2万颗",            inOrbit:"7700+(截至8月)", inOrbitBase:7700, inOrbitBaseDate:"2026-08-25", note:"全球最大星座"},
+  "kuiper":   {name:"亚马逊·Kuiper",    short:"Kuiper",    type:"低轨宽带星座",  plan:"3236颗",             inOrbit:"首批81颗", inOrbitBase:81, inOrbitBaseDate:"2026-08-12", note:"卫星互联网"},
+  "oneweb":   {name:"OneWeb",           short:"OneWeb",    type:"低轨宽带星座",  plan:"648颗",              inOrbit:"648颗(2022完成一阶段)", inOrbitBase:648, inOrbitBaseDate:"2022-12-31", note:"已与Eutelsat合并"},
   "intl":     {name:"国际商业任务",      short:"国际",      type:"国际发射",      plan:"—",                 inOrbit:"—", note:""},
   "multi":    {name:"多任务拼车",        short:"拼车",      type:"拼车发射",      plan:"—",                 inOrbit:"—", note:""},
   /* === 国际厂家 === */
@@ -366,8 +372,8 @@ function findOperatorKey(opName) {
     "通信技术试验": "comm", "天链": "tianlian", "中星": "cn_satcom",
     "中国卫通": "cn_satcom", "国际": "intl", "商业": "intl",
     "拼车": "multi", "多任务": "multi",
-    "SpaceX": "spacex", "星链": "spacex", "Falcon": "spacex",
-    "Kuiper": "amazon", "亚马逊": "amazon",
+    "星链": "starlink", "SpaceX": "spacex", "Falcon": "spacex",
+    "Kuiper": "kuiper", "亚马逊": "kuiper",
     "OneWeb": "oneweb"
   };
   for (const [kw, key] of Object.entries(map)) {
@@ -486,7 +492,7 @@ const EVENTS = [
   {id:"dfhy", name:"东方慧眼高光谱01/02星", s:"2026-08-05", e:"2026-08-05", t:"10:38", rk:"捷龙三号 · 遥十二", rkKey:"jl3", pl:"东方慧眼高光谱01、02星（一箭双星）", satCount:2, site:"山东海阳海域（海上发射）", op:"东方慧眼星座", opKey:"dfhy", cat:"other", ty:"商发", st:"done", hl:0, src:"xinhua", note:"「海阳船发海阳箭载海阳星」。"},
   {id:"jamx", name:"长征六号丙 · 一箭7星（含静安梦想星）", s:"2026-08-25", e:"2026-08-25", t:"11:21", rk:"长征六号丙 · 遥一", rkKey:"cz6c", pl:"中科卫星14/15星、木铎1A/1B、静安梦想星、八一04星、灵知09泰国立方星", satCount:7, site:"太原卫星发射中心", op:"多任务拼车（含静安梦想星）", opKey:"multi", cat:"other", ty:"国发", st:"done", hl:1, src:"xinhua", note:"一箭7星，长征系列第665次飞行；历时8年研制的静安梦想星（青少年科学实验卫星）成功入轨。"},
   {id:"zx4b", name:"中星4B卫星（长七改遥十六）", s:"2026-08-10", e:"2026-08-10", t:"20:02", rk:"长征七号甲 · 遥十六", rkKey:"cz7a", pl:"中星4B卫星（高轨通信卫星）", satCount:0, site:"文昌航天发射场二号工位", op:"中国卫通（中星系列）", opKey:"cn_satcom", cat:"other", ty:"国发", st:"fail", hl:1, src:"xinhua", note:"升空约85秒后一级飞行阶段异常解体，任务失利，原因排查中。"},
-  {id:"qf30", name:"千帆极轨30组（垣信）", s:"2026-08-15", e:"2026-08-25", t:"窗口（已过）", rk:"引力一号", rkKey:"yyl1", pl:"千帆极轨30组卫星（一箭多星）", satCount:0, site:"海上发射（预计）", op:"垣信卫星 · 千帆星座", opKey:"yuanxin", cat:"yuanxin", ty:"商发", st:"plan", hl:0, src:"est", note:"原8月中下旬窗口内未发射，官方未公布新日期，预计顺延。千帆在轨238颗，年内324颗目标进度受影响。"},
+  {id:"qf30", name:"千帆极轨30组（垣信）", s:"2026-08-15", e:"2026-08-25", t:"窗口（已过）", rk:"引力一号", rkKey:"yyl1", pl:"千帆极轨30组卫星（一箭多星）", satCount:0, site:"海上发射（预计）", op:"垣信卫星 · 千帆星座", opKey:"yuanxin", cat:"yuanxin", ty:"商发", st:"delay", hl:0, src:"xinhua", note:"原8月中下旬窗口内未发射，官方未公布新日期，预计顺延。千帆在轨238颗，年内324颗目标进度受影响。"},
   {id:"xw24", name:"星网低轨24组", s:"2026-08-16", e:"2026-08-16", t:"12:10", rk:"长征十二号", rkKey:"cz12", pl:"星网低轨24A-I 组网卫星", satCount:0, site:"海南商业航天发射场", op:"中国星网", opKey:"satnet", cat:"xingwang", ty:"国发", st:"done", hl:1, src:"xinhua", note:"长七改失利未影响排期，任务圆满成功。"},
   {id:"seo", name:"SEO（地球观测）卫星（阿联酋）", s:"2026-08-17", e:"2026-08-17", t:"11:02", rk:"长征二号丙", rkKey:"cz2c", pl:"SEO地球观测卫星（阿联酋）", satCount:1, site:"太原卫星发射中心", op:"阿联酋（商业遥感任务）", opKey:"intl", cat:"other", ty:"国发", st:"done", hl:0, src:"xinhua", note:"长征系列第664次飞行。"},
   {id:"zq3", name:"朱雀三号遥二 · 回收验证", s:"2026-08-19", e:"2026-08-19", t:"7:35", rk:"朱雀三号 · 遥二（液氧甲烷可复用火箭）", rkKey:"zq3", pl:"鸿鹄03星（鸿鹄-3星座首颗试验卫星）", satCount:1, site:"酒泉 · 东风商业航天创新试验区", op:"蓝箭航天", opKey:"", cat:"verify", ty:"商发", st:"done", hl:1, src:"landspace", note:"实现我国首次入轨级火箭一子级陆地垂直回收，计划半年内复飞。"},
@@ -513,53 +519,53 @@ const EVENTS = [
      基于公开计划与历史节奏整理，按月聚合，数字为估算典型批次
      ================================================================= */
   /* --- SpaceX · 星链组网（Falcon 9 一箭22星·高频次） --- */
-  {id:"sx-m1-1", name:"Starlink 12-12（一箭22星）", s:"2026-01-05", e:"2026-01-05", t:"—", rk:"Falcon 9 · B1078", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:"2026年首发批次·海上回收"},
-  {id:"sx-m1-2", name:"Starlink 12-9（一箭22星）", s:"2026-01-10", e:"2026-01-10", t:"—", rk:"Falcon 9 · B1080", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
-  {id:"sx-m1-3", name:"Starlink 6-71（一箭23星）", s:"2026-01-15", e:"2026-01-15", t:"—", rk:"Falcon 9 · B1077", rkKey:"falcon9", pl:"Starlink v2 mini ×23", satCount:23, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
-  {id:"sx-m1-4", name:"Starlink 12-8（一箭22星·西海岸）", s:"2026-01-20", e:"2026-01-20", t:"—", rk:"Falcon 9 · B1063", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"加州范登堡·4E工位", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
-  {id:"sx-m1-5", name:"Starlink 12-5（一箭22星）", s:"2026-01-27", e:"2026-01-27", t:"—", rk:"Falcon 9 · B1076", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:"1月累计110+颗星链入轨"},
+  {id:"sx-m1-1", name:"Starlink 12-12（一箭22星）", s:"2026-01-05", e:"2026-01-05", t:"—", rk:"Falcon 9 · B1078", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:"2026年首发批次·海上回收"},
+  {id:"sx-m1-2", name:"Starlink 12-9（一箭22星）", s:"2026-01-10", e:"2026-01-10", t:"—", rk:"Falcon 9 · B1080", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
+  {id:"sx-m1-3", name:"Starlink 6-71（一箭23星）", s:"2026-01-15", e:"2026-01-15", t:"—", rk:"Falcon 9 · B1077", rkKey:"falcon9", pl:"Starlink v2 mini ×23", satCount:23, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
+  {id:"sx-m1-4", name:"Starlink 12-8（一箭22星·西海岸）", s:"2026-01-20", e:"2026-01-20", t:"—", rk:"Falcon 9 · B1063", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"加州范登堡·4E工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
+  {id:"sx-m1-5", name:"Starlink 12-5（一箭22星）", s:"2026-01-27", e:"2026-01-27", t:"—", rk:"Falcon 9 · B1076", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:"1月累计110+颗星链入轨"},
 
-  {id:"sx-m2-1", name:"Starlink 12-3（一箭22星）", s:"2026-02-03", e:"2026-02-03", t:"—", rk:"Falcon 9 · B1081", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
-  {id:"sx-m2-2", name:"Starlink 12-4（一箭23星）", s:"2026-02-09", e:"2026-02-09", t:"—", rk:"Falcon 9 · B1085", rkKey:"falcon9", pl:"Starlink v2 mini ×23", satCount:23, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
-  {id:"sx-m2-3", name:"Starlink 6-73（一箭22星·西海岸）", s:"2026-02-14", e:"2026-02-14", t:"—", rk:"Falcon 9 · B1062", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"加州范登堡·4E工位", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
-  {id:"sx-m2-4", name:"Starlink 12-7（一箭22星）", s:"2026-02-21", e:"2026-02-21", t:"—", rk:"Falcon 9 · B1071", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:"2月4次发射·累计89颗"},
+  {id:"sx-m2-1", name:"Starlink 12-3（一箭22星）", s:"2026-02-03", e:"2026-02-03", t:"—", rk:"Falcon 9 · B1081", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
+  {id:"sx-m2-2", name:"Starlink 12-4（一箭23星）", s:"2026-02-09", e:"2026-02-09", t:"—", rk:"Falcon 9 · B1085", rkKey:"falcon9", pl:"Starlink v2 mini ×23", satCount:23, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
+  {id:"sx-m2-3", name:"Starlink 6-73（一箭22星·西海岸）", s:"2026-02-14", e:"2026-02-14", t:"—", rk:"Falcon 9 · B1062", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"加州范登堡·4E工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
+  {id:"sx-m2-4", name:"Starlink 12-7（一箭22星）", s:"2026-02-21", e:"2026-02-21", t:"—", rk:"Falcon 9 · B1071", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:"2月4次发射·累计89颗"},
 
-  {id:"sx-m3-1", name:"Starlink 12-1（一箭23星）", s:"2026-03-04", e:"2026-03-04", t:"—", rk:"Falcon 9 · B1078", rkKey:"falcon9", pl:"Starlink v2 mini ×23", satCount:23, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
-  {id:"sx-m3-2", name:"Starlink 12-2（一箭22星）", s:"2026-03-11", e:"2026-03-11", t:"—", rk:"Falcon 9 · B1073", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
-  {id:"sx-m3-3", name:"Starlink 6-76（一箭22星·西海岸）", s:"2026-03-17", e:"2026-03-17", t:"—", rk:"Falcon 9 · B1063", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"加州范登堡·4E工位", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
-  {id:"sx-m3-4", name:"Starlink 12-10（一箭22星）", s:"2026-03-24", e:"2026-03-24", t:"—", rk:"Falcon 9 · B1080", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:"3月4批·累计89颗"},
+  {id:"sx-m3-1", name:"Starlink 12-1（一箭23星）", s:"2026-03-04", e:"2026-03-04", t:"—", rk:"Falcon 9 · B1078", rkKey:"falcon9", pl:"Starlink v2 mini ×23", satCount:23, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
+  {id:"sx-m3-2", name:"Starlink 12-2（一箭22星）", s:"2026-03-11", e:"2026-03-11", t:"—", rk:"Falcon 9 · B1073", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
+  {id:"sx-m3-3", name:"Starlink 6-76（一箭22星·西海岸）", s:"2026-03-17", e:"2026-03-17", t:"—", rk:"Falcon 9 · B1063", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"加州范登堡·4E工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
+  {id:"sx-m3-4", name:"Starlink 12-10（一箭22星）", s:"2026-03-24", e:"2026-03-24", t:"—", rk:"Falcon 9 · B1080", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:"3月4批·累计89颗"},
 
-  {id:"sx-m4-1", name:"Starlink 6-78（一箭22星）", s:"2026-04-03", e:"2026-04-03", t:"—", rk:"Falcon 9 · B1082", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
-  {id:"sx-m4-2", name:"Starlink 12-11（一箭22星·西海岸）", s:"2026-04-09", e:"2026-04-09", t:"—", rk:"Falcon 9 · B1071", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"加州范登堡·4E工位", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
-  {id:"sx-m4-3", name:"Starlink 12-13（一箭23星）", s:"2026-04-15", e:"2026-04-15", t:"—", rk:"Falcon 9 · B1076", rkKey:"falcon9", pl:"Starlink v2 mini ×23", satCount:23, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
-  {id:"sx-m4-4", name:"Starlink 12-14（一箭22星）", s:"2026-04-22", e:"2026-04-22", t:"—", rk:"Falcon 9 · B1085", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:"4月4批·累计89颗"},
+  {id:"sx-m4-1", name:"Starlink 6-78（一箭22星）", s:"2026-04-03", e:"2026-04-03", t:"—", rk:"Falcon 9 · B1082", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
+  {id:"sx-m4-2", name:"Starlink 12-11（一箭22星·西海岸）", s:"2026-04-09", e:"2026-04-09", t:"—", rk:"Falcon 9 · B1071", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"加州范登堡·4E工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
+  {id:"sx-m4-3", name:"Starlink 12-13（一箭23星）", s:"2026-04-15", e:"2026-04-15", t:"—", rk:"Falcon 9 · B1076", rkKey:"falcon9", pl:"Starlink v2 mini ×23", satCount:23, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
+  {id:"sx-m4-4", name:"Starlink 12-14（一箭22星）", s:"2026-04-22", e:"2026-04-22", t:"—", rk:"Falcon 9 · B1085", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:"4月4批·累计89颗"},
 
-  {id:"sx-m5-1", name:"Starlink 12-15（一箭22星）", s:"2026-05-05", e:"2026-05-05", t:"—", rk:"Falcon 9 · B1078", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
-  {id:"sx-m5-2", name:"Starlink 12-16（一箭22星·西海岸）", s:"2026-05-12", e:"2026-05-12", t:"—", rk:"Falcon 9 · B1062", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"加州范登堡·4E工位", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
-  {id:"sx-m5-3", name:"Starlink 12-17（一箭23星）", s:"2026-05-19", e:"2026-05-19", t:"—", rk:"Falcon 9 · B1080", rkKey:"falcon9", pl:"Starlink v2 mini ×23", satCount:23, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
-  {id:"sx-m5-4", name:"Starlink 12-18（一箭22星）", s:"2026-05-27", e:"2026-05-27", t:"—", rk:"Falcon 9 · B1073", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:"5月4批·累计89颗"},
+  {id:"sx-m5-1", name:"Starlink 12-15（一箭22星）", s:"2026-05-05", e:"2026-05-05", t:"—", rk:"Falcon 9 · B1078", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
+  {id:"sx-m5-2", name:"Starlink 12-16（一箭22星·西海岸）", s:"2026-05-12", e:"2026-05-12", t:"—", rk:"Falcon 9 · B1062", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"加州范登堡·4E工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
+  {id:"sx-m5-3", name:"Starlink 12-17（一箭23星）", s:"2026-05-19", e:"2026-05-19", t:"—", rk:"Falcon 9 · B1080", rkKey:"falcon9", pl:"Starlink v2 mini ×23", satCount:23, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
+  {id:"sx-m5-4", name:"Starlink 12-18（一箭22星）", s:"2026-05-27", e:"2026-05-27", t:"—", rk:"Falcon 9 · B1073", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:"5月4批·累计89颗"},
 
-  {id:"sx-m6-1", name:"Starlink 12-19（一箭22星）", s:"2026-06-03", e:"2026-06-03", t:"—", rk:"Falcon 9 · B1082", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
-  {id:"sx-m6-2", name:"Starlink 12-20（一箭22星·西海岸）", s:"2026-06-10", e:"2026-06-10", t:"—", rk:"Falcon 9 · B1063", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"加州范登堡·4E工位", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
-  {id:"sx-m6-3", name:"Starlink 12-21（一箭23星）", s:"2026-06-17", e:"2026-06-17", t:"—", rk:"Falcon 9 · B1076", rkKey:"falcon9", pl:"Starlink v2 mini ×23", satCount:23, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
-  {id:"sx-m6-4", name:"Starlink 12-22（一箭22星）", s:"2026-06-24", e:"2026-06-24", t:"—", rk:"Falcon 9 · B1078", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:"6月4批·累计89颗·上半年星链累计~550颗"},
+  {id:"sx-m6-1", name:"Starlink 12-19（一箭22星）", s:"2026-06-03", e:"2026-06-03", t:"—", rk:"Falcon 9 · B1082", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
+  {id:"sx-m6-2", name:"Starlink 12-20（一箭22星·西海岸）", s:"2026-06-10", e:"2026-06-10", t:"—", rk:"Falcon 9 · B1063", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"加州范登堡·4E工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
+  {id:"sx-m6-3", name:"Starlink 12-21（一箭23星）", s:"2026-06-17", e:"2026-06-17", t:"—", rk:"Falcon 9 · B1076", rkKey:"falcon9", pl:"Starlink v2 mini ×23", satCount:23, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
+  {id:"sx-m6-4", name:"Starlink 12-22（一箭22星）", s:"2026-06-24", e:"2026-06-24", t:"—", rk:"Falcon 9 · B1078", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:"6月4批·累计89颗·上半年星链累计~550颗"},
 
-  {id:"sx-m7-1", name:"Starlink 12-23（一箭22星）", s:"2026-07-07", e:"2026-07-07", t:"—", rk:"Falcon 9 · B1085", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
-  {id:"sx-m7-2", name:"Starlink 12-24（一箭22星·西海岸）", s:"2026-07-14", e:"2026-07-14", t:"—", rk:"Falcon 9 · B1071", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"加州范登堡·4E工位", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
-  {id:"sx-m7-3", name:"Starlink 12-25（一箭23星）", s:"2026-07-21", e:"2026-07-21", t:"—", rk:"Falcon 9 · B1080", rkKey:"falcon9", pl:"Starlink v2 mini ×23", satCount:23, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
-  {id:"sx-m7-4", name:"Starlink 12-26（一箭22星）", s:"2026-07-28", e:"2026-07-28", t:"—", rk:"Falcon 9 · B1073", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:"7月4批·累计89颗"},
+  {id:"sx-m7-1", name:"Starlink 12-23（一箭22星）", s:"2026-07-07", e:"2026-07-07", t:"—", rk:"Falcon 9 · B1085", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
+  {id:"sx-m7-2", name:"Starlink 12-24（一箭22星·西海岸）", s:"2026-07-14", e:"2026-07-14", t:"—", rk:"Falcon 9 · B1071", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"加州范登堡·4E工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
+  {id:"sx-m7-3", name:"Starlink 12-25（一箭23星）", s:"2026-07-21", e:"2026-07-21", t:"—", rk:"Falcon 9 · B1080", rkKey:"falcon9", pl:"Starlink v2 mini ×23", satCount:23, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
+  {id:"sx-m7-4", name:"Starlink 12-26（一箭22星）", s:"2026-07-28", e:"2026-07-28", t:"—", rk:"Falcon 9 · B1073", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:"7月4批·累计89颗"},
 
-  {id:"sx-m8-1", name:"Starlink 12-27（一箭22星）", s:"2026-08-04", e:"2026-08-04", t:"—", rk:"Falcon 9 · B1078", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
-  {id:"sx-m8-2", name:"Starlink 12-28（一箭22星·西海岸）", s:"2026-08-11", e:"2026-08-11", t:"—", rk:"Falcon 9 · B1062", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"加州范登堡·4E工位", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
-  {id:"sx-m8-3", name:"Starlink 12-29（一箭23星）", s:"2026-08-18", e:"2026-08-18", t:"—", rk:"Falcon 9 · B1082", rkKey:"falcon9", pl:"Starlink v2 mini ×23", satCount:23, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
-  {id:"sx-m8-4", name:"Starlink 12-30（一箭22星）", s:"2026-08-25", e:"2026-08-25", t:"—", rk:"Falcon 9 · B1076", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:"8月4批·累计89颗·星链在轨突破7700颗"},
+  {id:"sx-m8-1", name:"Starlink 12-27（一箭22星）", s:"2026-08-04", e:"2026-08-04", t:"—", rk:"Falcon 9 · B1078", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
+  {id:"sx-m8-2", name:"Starlink 12-28（一箭22星·西海岸）", s:"2026-08-11", e:"2026-08-11", t:"—", rk:"Falcon 9 · B1062", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"加州范登堡·4E工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
+  {id:"sx-m8-3", name:"Starlink 12-29（一箭23星）", s:"2026-08-18", e:"2026-08-18", t:"—", rk:"Falcon 9 · B1082", rkKey:"falcon9", pl:"Starlink v2 mini ×23", satCount:23, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:""},
+  {id:"sx-m8-4", name:"Starlink 12-30（一箭22星）", s:"2026-08-25", e:"2026-08-25", t:"—", rk:"Falcon 9 · B1076", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:"8月4批·累计89颗·星链在轨突破7700颗"},
 
   /* SpaceX 9-12月计划 */
-  {id:"sx-m9-1", name:"Starlink 12-31（9月·计划）", s:"2026-09-08", e:"2026-09-08", t:"预计", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:0, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"plan", hl:0, src:"est", note:"9月首批"},
-  {id:"sx-m9-2", name:"Starlink 12-32（9月·计划）", s:"2026-09-22", e:"2026-09-22", t:"预计", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:0, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"plan", hl:0, src:"est", note:""},
-  {id:"sx-m10-1", name:"Starlink 10月组网（计划×4）", s:"2026-10-06", e:"2026-10-27", t:"窗口", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×约90颗", satCount:0, site:"佛州/加州交替", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"plan", hl:0, src:"est", note:"10月预计4次·累计约90颗"},
-  {id:"sx-m11-1", name:"Starlink 11月组网（计划×4）", s:"2026-11-03", e:"2026-11-24", t:"窗口", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×约90颗", satCount:0, site:"佛州/加州交替", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"plan", hl:0, src:"est", note:"11月预计4次"},
-  {id:"sx-m12-1", name:"Starlink 12月组网（计划×4）", s:"2026-12-01", e:"2026-12-29", t:"窗口", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×约90颗", satCount:0, site:"佛州/加州交替", op:"SpaceX·星链", opKey:"spacex", cat:"spacex", ty:"国外", st:"plan", hl:0, src:"est", note:"12月预计4次·全年星链~70次·~1500颗入轨"},
+  {id:"sx-m9-1", name:"Starlink 12-31（9月·计划）", s:"2026-09-08", e:"2026-09-08", t:"预计", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:0, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"plan", hl:0, src:"est", note:"9月首批"},
+  {id:"sx-m9-2", name:"Starlink 12-32（9月·计划）", s:"2026-09-22", e:"2026-09-22", t:"预计", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:0, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"plan", hl:0, src:"est", note:""},
+  {id:"sx-m10-1", name:"Starlink 10月组网（计划×4）", s:"2026-10-06", e:"2026-10-27", t:"窗口", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×约90颗", satCount:0, site:"佛州/加州交替", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"plan", hl:0, src:"est", note:"10月预计4次·累计约90颗"},
+  {id:"sx-m11-1", name:"Starlink 11月组网（计划×4）", s:"2026-11-03", e:"2026-11-24", t:"窗口", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×约90颗", satCount:0, site:"佛州/加州交替", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"plan", hl:0, src:"est", note:"11月预计4次"},
+  {id:"sx-m12-1", name:"Starlink 12月组网（计划×4）", s:"2026-12-01", e:"2026-12-29", t:"窗口", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×约90颗", satCount:0, site:"佛州/加州交替", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"plan", hl:0, src:"est", note:"12月预计4次·全年星链~70次·~1500颗入轨"},
 
   /* --- Starship 验证（2026年继续高频测试） --- */
   {id:"ss-m1", name:"Starship IFT-9（亚轨道）", s:"2026-01-15", e:"2026-01-15", t:"—", rk:"Starship · Ship+Booster", rkKey:"starship", pl:"无载荷·亚轨道试飞", satCount:0, site:"德州博卡奇卡·Starbase", op:"SpaceX", opKey:"spacex", cat:"verify", ty:"商发", st:"done", hl:1, src:"xinhua", note:"2026年首飞·助推器回收验证"},
@@ -568,13 +574,13 @@ const EVENTS = [
   {id:"ss-m7", name:"Starship IFT-12（在轨重新点火）", s:"2026-07-18", e:"2026-07-18", t:"—", rk:"Starship · Ship+Booster", rkKey:"starship", pl:"无载荷·在轨点火验证", satCount:0, site:"德州博卡奇卡·Starbase", op:"SpaceX", opKey:"spacex", cat:"verify", ty:"商发", st:"done", hl:0, src:"xinhua", note:"飞船在轨重新点火验证"},
 
   /* --- 亚马逊 Kuiper（2026年加速部署·Atlas V/Vulcan） --- */
-  {id:"kp-m4-1", name:"Kuiper Sat 1-27（Atlas V·一箭27星）", s:"2026-04-08", e:"2026-04-08", t:"—", rk:"Atlas V · 401", rkKey:"atlasV", pl:"Project Kuiper ×27", satCount:27, site:"佛州卡角·41号工位", op:"亚马逊·Kuiper", opKey:"amazon", cat:"amazon", ty:"国外", st:"done", hl:1, src:"est", note:"Kuiper 2026年首批·大规模部署启动"},
-  {id:"kp-m6-1", name:"Kuiper Sat 28-54（Vulcan·一箭27星）", s:"2026-06-12", e:"2026-06-12", t:"—", rk:"Vulcan Centaur · VC2L", rkKey:"vulcan", pl:"Project Kuiper ×27", satCount:27, site:"佛州卡角·41号工位", op:"亚马逊·Kuiper", opKey:"amazon", cat:"amazon", ty:"国外", st:"done", hl:1, src:"est", note:"Vulcan 首次执行Kuiper任务"},
-  {id:"kp-m8-1", name:"Kuiper Sat 55-81（Atlas V·一箭27星）", s:"2026-08-12", e:"2026-08-12", t:"—", rk:"Atlas V · 401", rkKey:"atlasV", pl:"Project Kuiper ×27", satCount:27, site:"佛州卡角·41号工位", op:"亚马逊·Kuiper", opKey:"amazon", cat:"amazon", ty:"国外", st:"done", hl:0, src:"est", note:"8月批次·累计81颗入轨"},
-  {id:"kp-m9-1", name:"Kuiper Sat 82-108（计划·一箭27星）", s:"2026-09-15", e:"2026-09-15", t:"预计", rk:"Vulcan Centaur", rkKey:"vulcan", pl:"Project Kuiper ×27", satCount:0, site:"佛州卡角·41号工位", op:"亚马逊·Kuiper", opKey:"amazon", cat:"amazon", ty:"国外", st:"plan", hl:0, src:"est", note:"9月计划批次"},
-  {id:"kp-m10-1", name:"Kuiper 10月批次（计划）", s:"2026-10-20", e:"2026-10-20", t:"预计", rk:"Atlas V", rkKey:"atlasV", pl:"Project Kuiper ×27", satCount:0, site:"佛州卡角·41号工位", op:"亚马逊·Kuiper", opKey:"amazon", cat:"amazon", ty:"国外", st:"plan", hl:0, src:"est", note:"10月计划批次·累计~135颗"},
-  {id:"kp-m11-1", name:"Kuiper 11月批次（计划）", s:"2026-11-18", e:"2026-11-18", t:"预计", rk:"Vulcan Centaur", rkKey:"vulcan", pl:"Project Kuiper ×27", satCount:0, site:"佛州卡角·41号工位", op:"亚马逊·Kuiper", opKey:"amazon", cat:"amazon", ty:"国外", st:"plan", hl:0, src:"est", note:"11月计划批次"},
-  {id:"kp-m12-1", name:"Kuiper 12月批次（计划）", s:"2026-12-10", e:"2026-12-10", t:"预计", rk:"Atlas V", rkKey:"atlasV", pl:"Project Kuiper ×27", satCount:0, site:"佛州卡角·41号工位", op:"亚马逊·Kuiper", opKey:"amazon", cat:"amazon", ty:"国外", st:"plan", hl:0, src:"est", note:"12月计划批次·全年Kuiper累计约162颗"},
+  {id:"kp-m4-1", name:"Kuiper Sat 1-27（Atlas V·一箭27星）", s:"2026-04-08", e:"2026-04-08", t:"—", rk:"Atlas V · 401", rkKey:"atlasV", pl:"Project Kuiper ×27", satCount:27, site:"佛州卡角·41号工位", op:"亚马逊·Kuiper", opKey:"kuiper", cat:"amazon", ty:"国外", st:"done", hl:1, src:"est", note:"Kuiper 2026年首批·大规模部署启动"},
+  {id:"kp-m6-1", name:"Kuiper Sat 28-54（Vulcan·一箭27星）", s:"2026-06-12", e:"2026-06-12", t:"—", rk:"Vulcan Centaur · VC2L", rkKey:"vulcan", pl:"Project Kuiper ×27", satCount:27, site:"佛州卡角·41号工位", op:"亚马逊·Kuiper", opKey:"kuiper", cat:"amazon", ty:"国外", st:"done", hl:1, src:"est", note:"Vulcan 首次执行Kuiper任务"},
+  {id:"kp-m8-1", name:"Kuiper Sat 55-81（Atlas V·一箭27星）", s:"2026-08-12", e:"2026-08-12", t:"—", rk:"Atlas V · 401", rkKey:"atlasV", pl:"Project Kuiper ×27", satCount:27, site:"佛州卡角·41号工位", op:"亚马逊·Kuiper", opKey:"kuiper", cat:"amazon", ty:"国外", st:"done", hl:0, src:"est", note:"8月批次·累计81颗入轨"},
+  {id:"kp-m9-1", name:"Kuiper Sat 82-108（计划·一箭27星）", s:"2026-09-15", e:"2026-09-15", t:"预计", rk:"Vulcan Centaur", rkKey:"vulcan", pl:"Project Kuiper ×27", satCount:0, site:"佛州卡角·41号工位", op:"亚马逊·Kuiper", opKey:"kuiper", cat:"amazon", ty:"国外", st:"plan", hl:0, src:"est", note:"9月计划批次"},
+  {id:"kp-m10-1", name:"Kuiper 10月批次（计划）", s:"2026-10-20", e:"2026-10-20", t:"预计", rk:"Atlas V", rkKey:"atlasV", pl:"Project Kuiper ×27", satCount:0, site:"佛州卡角·41号工位", op:"亚马逊·Kuiper", opKey:"kuiper", cat:"amazon", ty:"国外", st:"plan", hl:0, src:"est", note:"10月计划批次·累计~135颗"},
+  {id:"kp-m11-1", name:"Kuiper 11月批次（计划）", s:"2026-11-18", e:"2026-11-18", t:"预计", rk:"Vulcan Centaur", rkKey:"vulcan", pl:"Project Kuiper ×27", satCount:0, site:"佛州卡角·41号工位", op:"亚马逊·Kuiper", opKey:"kuiper", cat:"amazon", ty:"国外", st:"plan", hl:0, src:"est", note:"11月计划批次"},
+  {id:"kp-m12-1", name:"Kuiper 12月批次（计划）", s:"2026-12-10", e:"2026-12-10", t:"预计", rk:"Atlas V", rkKey:"atlasV", pl:"Project Kuiper ×27", satCount:0, site:"佛州卡角·41号工位", op:"亚马逊·Kuiper", opKey:"kuiper", cat:"amazon", ty:"国外", st:"plan", hl:0, src:"est", note:"12月计划批次·全年Kuiper累计约162颗"},
 
   /* --- OneWeb（已完成第一阶段·2026年补网+二代验证） --- */
   {id:"ow-m2-1", name:"OneWeb 补网批次（Soyuz·一箭36星）", s:"2026-02-28", e:"2026-02-28", t:"—", rk:"Soyuz-2.1b", rkKey:"soyuz", pl:"OneWeb Gen1.5 ×36", satCount:36, site:"哈萨克斯坦·拜科努尔", op:"OneWeb·Eutelsat", opKey:"oneweb", cat:"oneweb", ty:"国外", st:"done", hl:1, src:"est", note:"2026年首次补网·填补轨道间隙"},

@@ -426,8 +426,22 @@ const INTL_CATS = new Set(["spacex","amazon","oneweb"]);
 const isIntl = e => INTL_CATS.has(e.cat);
 const regionMatch = e => regionFilter==="all" || (regionFilter==="cn" && !isIntl(e)) || (regionFilter==="intl" && isIntl(e));
 
-/* 判断厂家是否为国际（用于颜色） */
-const isIntlVendor = vk => ["spacex","ula","arianespace","roscosmos","jaxa","isro","rocketlab","abl"].includes(vk);
+/* 判断厂家是否为国际（用于颜色与分组）——火箭厂家 vk + 国际运营方 vk（spacex-starlink/amazon-kuiper/oneweb） */
+const isIntlVendor = vk => ["spacex","ula","arianespace","roscosmos","jaxa","isro","rocketlab","abl","spacex-starlink","amazon-kuiper","oneweb"].includes(vk);
+
+/* B5 派生计算：运营方当前在轨数 = inOrbitBase + Σ(opKey 匹配且 st=done 且 s>基准日 事件的 satCount)
+   返回展示文案；无基准数据的运营方回退旧 inOrbit 静态串或 "—" */
+function inOrbitNow(opKey){
+  const info = OPERATORS[opKey];
+  if (!info) return "—";
+  if (typeof info.inOrbitBase === "number" && info.inOrbitBaseDate) {
+    const delta = EVENTS
+      .filter(e => e.opKey === opKey && e.st === "done" && e.s && e.s > info.inOrbitBaseDate)
+      .reduce((sum, e) => sum + (e.satCount || 0), 0);
+    return `约 ${info.inOrbitBase + delta} 颗（截至 ${DATA_ASOF}）`;
+  }
+  return info.inOrbit || "—";
+}
 
 /* 型号key / 运营方key → 厂家vk 反查表（事件卡片链接跳公司主页用） */
 const RK2VENDOR = {};
@@ -791,7 +805,7 @@ function showDetail(type, key){
   } else {
     heroMeta = `
       <div class="item"><div class="k">类型</div><div class="v">${esc(info.type)||"—"}</div></div>
-      <div class="item"><div class="k">在轨状态</div><div class="v">${esc(info.inOrbit)||"—"}</div></div>
+      <div class="item"><div class="k">在轨状态</div><div class="v">${esc(inOrbitNow(key))}</div></div>
       <div class="item"><div class="k">规划规模</div><div class="v" style="font-size:12px">${esc(info.plan)||"—"}</div></div>
       <div class="item"><div class="k">备注</div><div class="v" style="font-size:12px">${esc(info.note)||"—"}</div></div>
     `;
@@ -864,7 +878,7 @@ function showVendorDetail(type, vk){
   if (type === "operator" && v.key) {
     const oi = OPERATORS[v.key];
     if (oi?.plan && oi.plan !== "—") metaRows.push(["规划", oi.plan]);
-    if (oi?.inOrbit && oi.inOrbit !== "—") metaRows.push(["在轨", oi.inOrbit]);
+    metaRows.push(["在轨", inOrbitNow(v.key)]);
   }
 
   const heroHtml = `

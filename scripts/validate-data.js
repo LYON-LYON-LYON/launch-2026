@@ -15,6 +15,8 @@
  *   R9  s/e 日期格式 YYYY-MM-DD 或空串
  *   R10 tbd:1 的事件必须有 month 字段
  *   R11 MILESTONES 的 d 日期格式合法
+ *   R12 OPERATORS.inOrbitBase 非负数、inOrbitBaseDate 合法日期、二者成对出现（B5 派生计算）
+ *   R13 过期计划检查（warning 级，计 FAIL 但报告标注 [WARN]）：st=plan 且 e < DATA_ASOF
  */
 "use strict";
 const fs = require("fs");
@@ -151,6 +153,38 @@ record("R0-asof", /^\d{4}-\d{2}-\d{2}$/.test(DATA_ASOF || ""), `DATA_ASOF="${DAT
   record("R11", bad.length === 0, bad.length === 0 ? `${MILESTONES.length} 条大事记日期合法` : `日期非法: ${bad.join(", ")}`);
 }
 
+// R12 OPERATORS 在轨基准字段（B5 派生计算）：inOrbitBase 非负数、inOrbitBaseDate 合法日期、二者成对出现
+{
+  const dateRe = /^\d{4}-\d{2}-\d{2}$/;
+  const errs = [];
+  let baseCount = 0;
+  for (const [k, op] of Object.entries(OPERATORS)) {
+    const hasBase = op.inOrbitBase !== undefined;
+    const hasDate = op.inOrbitBaseDate !== undefined;
+    if (!hasBase && !hasDate) continue; // 不可计数运营方：两字段都不写，合法
+    baseCount++;
+    if (hasBase && (typeof op.inOrbitBase !== "number" || !Number.isFinite(op.inOrbitBase) || op.inOrbitBase < 0))
+      errs.push(`${k}: inOrbitBase=${JSON.stringify(op.inOrbitBase)} 非非负数`);
+    if (hasDate && (typeof op.inOrbitBaseDate !== "string" || !dateRe.test(op.inOrbitBaseDate) || isNaN(Date.parse(op.inOrbitBaseDate))))
+      errs.push(`${k}: inOrbitBaseDate=${JSON.stringify(op.inOrbitBaseDate)} 非合法日期`);
+    if (hasBase !== hasDate)
+      errs.push(`${k}: inOrbitBase 与 inOrbitBaseDate 必须成对出现`);
+  }
+  record("R12", errs.length === 0, errs.length === 0 ? `${baseCount} 家可计数运营方基准字段合法（成对/非负数/日期合法）` : errs.join("；"));
+}
+
+// R13 过期计划检查（warning 级）：st=plan 且 e < DATA_ASOF 的事件（窗口已过应回填状态，参照 qf30→delay 先例）
+{
+  const stale = EVENTS.filter(ev => ev.st === "plan" && ev.e && ev.e < DATA_ASOF).map(ev => `${ev.id}(窗口末日 ${ev.e} < DATA_ASOF)`);
+  if (stale.length === 0) {
+    record("R13", true, "无过期计划事件");
+  } else {
+    // 计 FAIL（拦截提交）但报告标注 [WARN] 前缀，区别于数据硬错误
+    results.push({ id: "R13", pass: false, warn: true, detail: `过期计划事件 ${stale.length} 条: ${stale.join("；")} —— 窗口已过，应回填为 done/fail/delay` });
+    failCount++;
+  }
+}
+
 // src 分布统计（信息项，不计 PASS/FAIL）
 function makeReport() {
   const dist = {};
@@ -159,7 +193,8 @@ function makeReport() {
   const lines = [];
   lines.push("========== data.js 校验报告 ==========");
   for (const r of results) {
-    lines.push(`${r.pass ? "[PASS]" : "[FAIL]"} ${r.id}  ${r.detail}`);
+    const tag = r.pass ? "[PASS]" : (r.warn ? "[WARN]" : "[FAIL]");
+    lines.push(`${tag} ${r.id}  ${r.detail}`);
   }
   lines.push("--------------------------------------");
   lines.push(`事件总数: ${EVENTS.length}  |  src 分布: ${distStr}`);
