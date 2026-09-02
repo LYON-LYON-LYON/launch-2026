@@ -1,0 +1,6 @@
+# 本地运行时产生的临时文件
+.sync/
+_tmp-*
+*.log
+node_modules/
+validate-report.txt

@@ -1,0 +1,173 @@
+#!/usr/bin/env node
+/**
+ * validate-data.js — data.js 数据校验器（零依赖，node 18+）
+ * 用法：node scripts/validate-data.js
+ * 规则：任何一项 FAIL → 整体 FAIL、exit 1（硬门禁）
+ * 校验项：
+ *   R1  ROCKETS / OPERATORS 重复 key（原始文本正则提取——防 JS 静默覆盖，最关键）
+ *   R2  EVENTS.id 唯一
+ *   R3  rkKey ∈ ROCKETS 或 ""
+ *   R4  opKey ∈ OPERATORS 或 ""
+ *   R5  cat ∈ CATS
+ *   R6  ty ∈ {国发, 商发, 国外}
+ *   R7  st ∈ {done, fail, delay, plan}
+ *   R8  st 为 done/fail 的事件必须有 src 且 ∈ SOURCES（追溯性硬门禁）
+ *   R9  s/e 日期格式 YYYY-MM-DD 或空串
+ *   R10 tbd:1 的事件必须有 month 字段
+ *   R11 MILESTONES 的 d 日期格式合法
+ */
+"use strict";
+const fs = require("fs");
+const path = require("path");
+const vm = require("vm");
+
+const DATA_FILE = path.join(__dirname, "..", "data.js");
+const results = [];
+let failCount = 0;
+
+function record(id, pass, detail) {
+  results.push({ id, pass, detail });
+  if (!pass) failCount++;
+}
+
+/* ---------- R1: 重复 key 检测（原始文本层面） ---------- */
+function extractDuplicateKeys(raw, tableName) {
+  // 定位表定义：const NAME = { ... };  （到行首 "};" 结束）
+  const startRe = new RegExp(`const\\s+${tableName}\\s*=\\s*\\{`);
+  const m = raw.match(startRe);
+  if (!m) return { missing: true, dups: [] };
+  const body = raw.slice(m.index + m[0].length, raw.indexOf("\n};", m.index));
+  // 提取顶层条目 key：逐字符扫描。body 不含表外层括号 → 顶层条目 key 位于深度 0，
+  // 条目对象内部字段位于深度 ≥1（跳过）；注释与字符串内容天然跳过
+  const keys = [];
+  let depth = 0, i = 0;
+  while (i < body.length) {
+    const ch = body[i];
+    if (ch === '"' || ch === "'") {                       // 字符串：整体跳过
+      let end = i + 1;
+      while (end < body.length && body[end] !== ch) {
+        if (body[end] === "\\") end++;                     // 转义
+        end++;
+      }
+      // 该字符串是否为顶层 key：后（跳过空白）紧跟 ":" 且当前深度为 0
+      if (depth === 0) {
+        let j = end + 1;
+        while (j < body.length && /\s/.test(body[j])) j++;
+        if (body[j] === ":") keys.push(body.slice(i + 1, end));
+      }
+      i = end + 1;
+      continue;
+    }
+    if (ch === "/" && body[i + 1] === "*") { i = body.indexOf("*/", i) + 2; continue; } // 块注释
+    if (ch === "/" && body[i + 1] === "/") { i = body.indexOf("\n", i); continue; }      // 行注释
+    if (ch === "{") depth++;
+    else if (ch === "}") depth--;
+    i++;
+  }
+  const seen = new Map(), dups = [];
+  for (const k of keys) {
+    if (seen.has(k)) { if (!dups.includes(k)) dups.push(k); }
+    else seen.set(k, true);
+  }
+  return { missing: false, dups, total: keys.length };
+}
+
+/* ---------- 主流程 ---------- */
+const raw = fs.readFileSync(DATA_FILE, "utf8");
+
+// R1
+for (const t of ["ROCKETS", "OPERATORS"]) {
+  const r = extractDuplicateKeys(raw, t);
+  if (r.missing) record(`R1-${t}`, false, `未找到 const ${t} 表定义`);
+  else record(`R1-${t}`, r.dups.length === 0,
+    r.dups.length === 0 ? `${r.total} 个 key 无重复` : `重复 key: ${r.dups.join(", ")}（JS 静默覆盖，后定义会覆盖前者）`);
+}
+
+// 沙箱加载 data.js 取运行时对象（加载或导出报错均记 FAIL 后优雅退出）
+let sandbox, __export;
+try {
+  sandbox = {};
+  vm.createContext(sandbox);
+  vm.runInContext(raw + "\n;__export={EVENTS,ROCKETS,OPERATORS,VENDORS,CATS,SITES,MILESTONES,SOURCES,DATA_ASOF,ST_ICON,ST_TXT};", sandbox, { filename: "data.js" });
+  __export = sandbox.__export;
+  if (!__export || !Array.isArray(__export.EVENTS)) throw new Error("__export 缺失或 EVENTS 非数组（表定义可能被破坏）");
+} catch (e) {
+  record("R0-load", false, `data.js 加载失败: ${e.message}`);
+  console.log([
+    "========== data.js 校验报告 ==========",
+    ...results.map(r => `${r.pass ? "[PASS]" : "[FAIL]"} ${r.id}  ${r.detail}`),
+    "--------------------------------------",
+    `结论: FAIL（${failCount} 项不通过，禁止提交）✘`,
+  ].join("\n"));
+  process.exit(1);
+}
+const { EVENTS, ROCKETS, OPERATORS, CATS, MILESTONES, SOURCES, DATA_ASOF } = __export;
+
+// DATA_ASOF 格式
+record("R0-asof", /^\d{4}-\d{2}-\d{2}$/.test(DATA_ASOF || ""), `DATA_ASOF="${DATA_ASOF}"`);
+
+// R2 id 唯一
+{
+  const seen = new Map(), dups = [];
+  for (const ev of EVENTS) {
+    if (seen.has(ev.id)) { if (!dups.includes(ev.id)) dups.push(ev.id); }
+    else seen.set(ev.id, true);
+  }
+  record("R2", dups.length === 0, dups.length === 0 ? `${EVENTS.length} 条事件 id 全部唯一` : `重复 id: ${dups.join(", ")}`);
+}
+
+// R3/R4/R5/R6/R7/R8/R9/R10 逐事件
+{
+  const errs = { r3: [], r4: [], r5: [], r6: [], r7: [], r8: [], r9: [], r10: [] };
+  const rocketKeys = new Set(Object.keys(ROCKETS));
+  const opKeys = new Set(Object.keys(OPERATORS));
+  const catKeys = new Set(Object.keys(CATS));
+  const srcKeys = new Set(Object.keys(SOURCES));
+  const dateRe = /^\d{4}-\d{2}-\d{2}$/;
+
+  for (const ev of EVENTS) {
+    if (ev.rkKey !== "" && !rocketKeys.has(ev.rkKey)) errs.r3.push(`${ev.id}: rkKey="${ev.rkKey}"`);
+    if (ev.opKey !== "" && !opKeys.has(ev.opKey)) errs.r4.push(`${ev.id}: opKey="${ev.opKey}"`);
+    if (!catKeys.has(ev.cat)) errs.r5.push(`${ev.id}: cat="${ev.cat}"`);
+    if (!["国发", "商发", "国外"].includes(ev.ty)) errs.r6.push(`${ev.id}: ty="${ev.ty}"`);
+    if (!["done", "fail", "delay", "plan"].includes(ev.st)) errs.r7.push(`${ev.id}: st="${ev.st}"`);
+    if ((ev.st === "done" || ev.st === "fail") && (!ev.src || !srcKeys.has(ev.src)))
+      errs.r8.push(`${ev.id}: st=${ev.st} 但 src=${JSON.stringify(ev.src)}`);
+    for (const f of ["s", "e"]) {
+      if (ev[f] !== "" && !dateRe.test(ev[f])) errs.r9.push(`${ev.id}: ${f}="${ev[f]}"`);
+    }
+    if (ev.tbd === 1 && typeof ev.month !== "number") errs.r10.push(`${ev.id}: tbd:1 但缺 month`);
+  }
+  const labels = { r3: "R3 rkKey∈ROCKETS", r4: "R4 opKey∈OPERATORS", r5: "R5 cat∈CATS", r6: "R6 ty 三轨", r7: "R7 st 四态", r8: "R8 done/fail 必须有 src∈SOURCES", r9: "R9 日期格式", r10: "R10 tbd 必须有 month" };
+  for (const k of Object.keys(errs)) {
+    record(labels[k], errs[k].length === 0, errs[k].length === 0 ? "通过" : errs[k].slice(0, 8).join("；") + (errs[k].length > 8 ? ` 等 ${errs[k].length} 处` : ""));
+  }
+}
+
+// R11 MILESTONES 日期
+{
+  const dateRe = /^\d{4}-\d{2}-\d{2}$/;
+  const bad = MILESTONES.filter(mi => !dateRe.test(mi.d)).map(mi => `${mi.t}(${mi.d})`);
+  record("R11", bad.length === 0, bad.length === 0 ? `${MILESTONES.length} 条大事记日期合法` : `日期非法: ${bad.join(", ")}`);
+}
+
+// src 分布统计（信息项，不计 PASS/FAIL）
+function makeReport() {
+  const dist = {};
+  for (const ev of EVENTS) dist[ev.src || "(空)"] = (dist[ev.src || "(空)"] || 0) + 1;
+  const distStr = Object.entries(dist).sort((a, b) => b[1] - a[1]).map(([k, n]) => `${k}=${n}`).join("  ");
+  const lines = [];
+  lines.push("========== data.js 校验报告 ==========");
+  for (const r of results) {
+    lines.push(`${r.pass ? "[PASS]" : "[FAIL]"} ${r.id}  ${r.detail}`);
+  }
+  lines.push("--------------------------------------");
+  lines.push(`事件总数: ${EVENTS.length}  |  src 分布: ${distStr}`);
+  lines.push(failCount === 0 ? "结论: ALL PASS ✔" : `结论: FAIL（${failCount} 项不通过，禁止提交）✘`);
+  return lines.join("\n");
+}
+
+const report = makeReport();
+console.log(report);
+fs.writeFileSync(path.join(__dirname, "..", "validate-report.txt"), report + "\n", "utf8");
+process.exit(failCount === 0 ? 0 : 1);
