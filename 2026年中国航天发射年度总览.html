@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026年中国航天发射年度总览</title>
+<style>
+  :root{
+    --bg:#f2f5fa; --panel:#ffffff; --panel2:#f8fafd;
+    --line:#e3e9f2; --text:#1f2a3d; --muted:#67788f;
+    --blue:#2f7de1; --green:#18a957; --yellow:#eab308; --purple:#a855f7; --orange:#f97316;
+  }
+  *{box-sizing:border-box; margin:0; padding:0}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Segoe UI",sans-serif;
+    background:var(--bg); color:var(--text); min-height:100vh;
+    background-image:
+      radial-gradient(900px 420px at 85% -8%, rgba(47,125,225,.10), transparent 60%),
+      radial-gradient(700px 380px at 0% 108%, rgba(24,169,87,.08), transparent 60%);
+    background-attachment:fixed;
+    -webkit-user-select:text; user-select:text;
+  }
+  .wrap{max-width:1280px; margin:0 auto; padding:28px 20px 60px}
+  *{ -webkit-user-select:text; user-select:text; }
+
+  header{margin-bottom:16px}
+  header h1{font-size:25px; font-weight:700; letter-spacing:.5px}
+  header h1 .year{color:var(--blue)}
+  header p{color:var(--muted); font-size:13px; margin-top:6px}
+  .stats{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px}
+  .stat{
+    background:var(--panel); border:1px solid var(--line); border-radius:10px;
+    padding:8px 14px; font-size:12px; color:var(--muted);
+    box-shadow:0 1px 2px rgba(16,42,84,.04);
+  }
+  .stat b{color:var(--text); font-size:16px; margin-right:4px}
+  .stat.ok b{color:#0f8a4c}
+  .stat.fail b{color:#b91c1c}
+  .stat.delay b{color:#c2410c}
+  .stat.sat b{color:#7c3aed}
+
+  .tabs{display:flex; gap:8px; flex-wrap:wrap; margin:16px 0 18px}
+  .tab{
+    border:1px solid var(--line); background:#fff; color:var(--muted);
+    border-radius:999px; padding:7px 16px; font-size:13px; cursor:pointer; transition:.16s;
+  }
+  .tab:hover{border-color:var(--blue); color:var(--blue)}
+  .tab.on{background:var(--blue); border-color:var(--blue); color:#fff; font-weight:600}
+  .tab.home{background:var(--panel2); color:var(--text); font-weight:600}
+
+  /* ---------- 首页 ---------- */
+  .mcards{display:grid; grid-template-columns:repeat(4,1fr); gap:12px}
+  .mcard{
+    background:var(--panel); border:1px solid var(--line); border-radius:14px;
+    padding:14px 16px; cursor:pointer; transition:.18s; box-shadow:0 1px 3px rgba(16,42,84,.05);
+    position:relative; overflow:hidden;
+  }
+  .mcard:hover{transform:translateY(-2px); box-shadow:0 8px 22px rgba(16,42,84,.10); border-color:color-mix(in srgb, var(--mc, var(--blue)) 45%, var(--line))}
+  .mcard::before{content:""; position:absolute; top:0; left:0; right:0; height:4px; background:var(--mc, var(--blue))}
+  .mcard .mt{display:flex; align-items:baseline; gap:8px; margin-bottom:6px}
+  .mcard .mt b{font-size:18px}
+  .mcard .mt span{font-size:11px; color:var(--muted)}
+  .mcard .ms{font-size:12px; color:var(--muted); margin-bottom:8px}
+  .mcard .ms b{color:var(--text)}
+  .mcard .ms .ok{color:#0f8a4c}
+  .mcard .ms .bad{color:#b91c1c}
+  .mcard .ms .sat{color:#7c3aed}
+  .mcard ul{list-style:none; font-size:11.5px; color:var(--text); margin-bottom:8px}
+  .mcard ul li{padding:2px 0 2px 14px; position:relative; line-height:1.5}
+  .mcard ul li::before{content:"◆"; position:absolute; left:0; font-size:8px; color:var(--mc, var(--blue)); top:5px}
+  .mcard .ml{font-size:12px; color:var(--blue); font-weight:600}
+  .mcard .mcnt{position:absolute; top:12px; right:14px; font-size:24px; font-weight:800; color:rgba(31,42,61,.08)}
+  .mcard.plan{opacity:.7}
+
+  .home-extra{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:14px 18px; margin-top:16px; font-size:12.5px; color:var(--muted); line-height:1.8}
+
+  .milestones{
+    background:var(--panel); border:1px solid var(--line); border-radius:14px;
+    padding:18px 20px; margin-top:16px; box-shadow:0 1px 3px rgba(16,42,84,.05);
+  }
+  .milestones h2{font-size:15px; margin-bottom:16px}
+  .mline{position:relative; padding:0 0 16px 22px; border-left:2px solid var(--line); margin-left:7px}
+  .mline:last-child{border-left-color:transparent; padding-bottom:2px}
+  .mline::before{
+    content:""; position:absolute; left:-7px; top:2px; width:12px; height:12px;
+    border-radius:50%; background:var(--mc,#3b82f6); border:2.5px solid #fff;
+    box-shadow:0 0 0 1.5px var(--mc,#3b82f6);
+  }
+  .mline .md{font-size:11px; color:var(--muted); font-weight:600}
+  .mline .mt{font-size:13.5px; font-weight:600; margin:1px 0}
+  .mline .mt .tag{
+    font-size:10px; font-weight:400; padding:1px 8px; border-radius:999px;
+    margin-left:6px; vertical-align:1px; color:var(--muted); border:1px solid var(--line); background:var(--panel2);
+  }
+  .mline .ms{font-size:12px; color:var(--muted); line-height:1.6}
+
+  /* ---------- 月份视图 ---------- */
+  .navrow{display:flex; align-items:center; gap:10px; margin-bottom:14px; flex-wrap:wrap}
+  .navrow .nt{font-size:18px; font-weight:700}
+  .navrow .nsub{font-size:12px; color:var(--muted)}
+  .navbtn{
+    border:1px solid var(--line); background:#fff; color:var(--text);
+    border-radius:999px; padding:6px 14px; font-size:12.5px; cursor:pointer; transition:.16s;
+  }
+  .navbtn:hover{border-color:var(--blue); color:var(--blue)}
+  .navbtn.primary{background:var(--blue); color:#fff; border-color:var(--blue)}
+  .navbtn:disabled{opacity:.4; cursor:not-allowed}
+
+  .toolbar{
+    display:flex; flex-wrap:wrap; gap:10px; align-items:center;
+    background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    padding:12px 14px; margin-bottom:18px; box-shadow:0 1px 3px rgba(16,42,84,.05);
+  }
+  .toolbar .label{font-size:12px; color:var(--muted); margin-right:2px}
+  .chip-filter{
+    display:inline-flex; align-items:center; gap:7px; cursor:pointer;
+    border:1px solid var(--line); border-radius:999px; padding:6px 12px;
+    font-size:12.5px; -webkit-user-select:none; user-select:none; transition:.18s; background:#fff; color:var(--text);
+  }
+  .chip-filter .dot{width:9px; height:9px; border-radius:50%; background:var(--c)}
+  .chip-filter.on{border-color:var(--c); background:color-mix(in srgb, var(--c) 9%, #fff); box-shadow:inset 0 0 0 1px color-mix(in srgb, var(--c) 25%, transparent)}
+  .chip-filter:not(.on){opacity:.45}
+  .chip-filter .cnt{color:var(--muted); font-size:11px}
+  .seg-ctl{display:inline-flex; border:1px solid var(--line); border-radius:999px; overflow:hidden; margin-left:auto; background:#fff}
+  .seg-ctl button{
+    background:transparent; border:none; color:var(--muted); font-size:12.5px;
+    padding:6px 14px; cursor:pointer; transition:.18s;
+  }
+  .seg-ctl button.on{background:color-mix(in srgb, var(--blue) 12%, #fff); color:var(--blue); font-weight:600}
+
+  .layout{display:grid; grid-template-columns:minmax(0,1fr) 340px; gap:18px; align-items:start}
+
+  .cal-scroll{overflow-x:auto}
+  .cal-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:14px;
+    overflow:hidden; min-width:680px; box-shadow:0 1px 4px rgba(16,42,84,.06);
+  }
+  .cal-head{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:12px 18px; border-bottom:1px solid var(--line);
+  }
+  .cal-head .month{font-size:17px; font-weight:700}
+  .cal-head .month small{color:var(--muted); font-weight:400; margin-left:8px; font-size:12px}
+  .btn-today{
+    background:#fff; border:1px solid var(--line); color:var(--text);
+    font-size:12px; padding:6px 12px; border-radius:8px; cursor:pointer; transition:.18s;
+  }
+  .btn-today:hover{border-color:var(--blue); color:var(--blue)}
+
+  .cols7{position:relative}
+  .cols7::before{
+    content:""; position:absolute; inset:0; pointer-events:none; z-index:2;
+    background-image:
+      linear-gradient(var(--line), var(--line)),
+      linear-gradient(var(--line), var(--line)),
+      linear-gradient(var(--line), var(--line)),
+      linear-gradient(var(--line), var(--line)),
+      linear-gradient(var(--line), var(--line)),
+      linear-gradient(var(--line), var(--line));
+    background-repeat:no-repeat;
+    background-size:1px 100%;
+    background-position:
+      calc(100%/7*1) 0, calc(100%/7*2) 0, calc(100%/7*3) 0,
+      calc(100%/7*4) 0, calc(100%/7*5) 0, calc(100%/7*6) 0;
+  }
+
+  .weekdays{
+    display:grid; grid-template-columns:repeat(7,1fr);
+    border-bottom:1px solid var(--line); background:var(--panel2);
+  }
+  .weekdays div{
+    position:relative; z-index:1; text-align:center; font-size:12px;
+    color:var(--muted); padding:8px 0;
+  }
+  .weekdays div.wk{color:#b06a2a}
+
+  .week{
+    display:grid; grid-template-columns:repeat(7,1fr);
+    grid-template-rows:60px;
+    border-bottom:1px solid var(--line);
+  }
+  .week:last-child{border-bottom:none}
+
+  .day{position:relative; z-index:1; padding:6px 8px; cursor:pointer; transition:background .15s}
+  .day:hover{background:rgba(47,125,225,.05)}
+  .day.dim{cursor:default}
+  .day.dim:hover{background:transparent}
+  .day.dim .dnum{opacity:.3}
+  .day.sel{background:color-mix(in srgb, var(--blue) 8%, #fff); box-shadow:inset 0 0 0 1.5px color-mix(in srgb, var(--blue) 45%, transparent)}
+  .dnum{
+    font-size:12px; color:var(--muted); width:22px; height:22px;
+    display:inline-flex; align-items:center; justify-content:center; border-radius:50%;
+  }
+  .day.today .dnum{background:var(--blue); color:#fff; font-weight:700}
+  .day.today::after{content:"今天"; position:absolute; top:8px; right:8px; font-size:10px; color:var(--blue)}
+
+  .evseg{
+    position:relative; z-index:1;
+    display:flex; align-items:center; gap:4px;
+    font-size:11px; line-height:1.3;
+    margin:1px 2px 3px; padding:3px 7px;
+    border-radius:6px; border-left:3px solid var(--c);
+    background:color-mix(in srgb, var(--c) 14%, #fff);
+    color:var(--cd);
+    white-space:nowrap; overflow:hidden;
+    cursor:pointer; transition:background .15s;
+  }
+  .evseg:hover{background:color-mix(in srgb, var(--c) 26%, #fff)}
+  .evseg .nm{overflow:hidden; text-overflow:ellipsis}
+  .evseg .st{font-size:10px; flex:none}
+  .evseg .arr{flex:none; margin-left:auto; opacity:.7}
+  .evseg.contL{border-top-left-radius:0; border-bottom-left-radius:0; border-left-width:0; margin-left:0; padding-left:5px}
+  .evseg.contR{border-top-right-radius:0; border-bottom-right-radius:0; margin-right:0; padding-right:5px}
+  .evseg.fail{background:color-mix(in srgb, #dc2626 12%, #fff); border-left-color:#dc2626; color:#b91c1c}
+  .evseg.delay{border-left-style:dashed; background:color-mix(in srgb, var(--c) 8%, #fff); opacity:.88}
+
+  aside.panel{
+    background:var(--panel); border:1px solid var(--line); border-radius:14px;
+    padding:16px; position:sticky; top:16px; max-height:calc(100vh - 32px); overflow:auto;
+    box-shadow:0 1px 4px rgba(16,42,84,.06);
+  }
+  .panel h3{font-size:15px; margin-bottom:4px}
+  .panel .sub{font-size:12px; color:var(--muted); margin-bottom:12px}
+  .ecard{
+    border:1px solid var(--line); border-top:3px solid var(--c);
+    border-radius:10px; padding:11px; margin-bottom:10px; background:var(--panel2);
+    cursor:pointer; transition:.18s;
+  }
+  .ecard:hover{transform:translateY(-1px); border-color:color-mix(in srgb, var(--c) 45%, var(--line)); box-shadow:0 3px 10px rgba(16,42,84,.08)}
+  .ecard .t{font-size:13.5px; font-weight:600; display:flex; gap:7px; align-items:center; flex-wrap:wrap}
+  .badge{font-size:10.5px; padding:2px 8px; border-radius:999px; border:1px solid var(--line); color:var(--muted); white-space:nowrap; background:#fff}
+  .badge.cat{border-color:color-mix(in srgb, var(--c) 55%, transparent); color:var(--cd); background:color-mix(in srgb, var(--c) 12%, #fff)}
+  .badge.done{color:#0f8a4c; border-color:rgba(24,169,87,.4); background:rgba(24,169,87,.08)}
+  .badge.fail{color:#b91c1c; border-color:rgba(220,38,38,.45); background:rgba(220,38,38,.08)}
+  .badge.delay{color:#c2410c; border-color:rgba(249,115,22,.5); background:rgba(249,115,22,.1)}
+  .badge.plan{color:#a16207; border-color:rgba(234,179,8,.5); background:rgba(234,179,8,.1)}
+  .badge.sat{color:#7c3aed; border-color:rgba(124,58,237,.4); background:rgba(124,58,237,.08)}
+  .kv{display:grid; grid-template-columns:52px 1fr; gap:3px 10px; font-size:12px; margin-top:8px}
+  .kv dt{color:var(--muted)}
+  .kv dd{color:var(--text)}
+  .kv dd a{color:var(--blue); text-decoration:none; cursor:pointer}
+  .kv dd a:hover{text-decoration:underline}
+  .note{font-size:11.5px; color:var(--muted); margin-top:8px; line-height:1.6; border-top:1px dashed var(--line); padding-top:7px}
+  .empty{color:var(--muted); font-size:12.5px; text-align:center; padding:26px 0}
+
+  /* ---------- 专属页（火箭/运营方） ---------- */
+  .detail-view{display:none}
+  .detail-hero{
+    background:var(--panel); border:1px solid var(--line); border-radius:14px;
+    padding:20px 24px; margin-bottom:18px; position:relative; overflow:hidden;
+    box-shadow:0 1px 4px rgba(16,42,84,.06);
+  }
+  .detail-hero::before{content:""; position:absolute; top:0; left:0; right:0; height:4px; background:var(--mc, var(--blue))}
+  .detail-hero .hname{font-size:22px; font-weight:700; color:var(--text)}
+  .detail-hero .hname .htag{
+    font-size:11px; font-weight:400; padding:2px 10px; border-radius:999px;
+    margin-left:10px; vertical-align:3px; color:var(--muted);
+    border:1px solid var(--line); background:var(--panel2);
+  }
+  .detail-hero .hsub{font-size:13px; color:var(--muted); margin-top:6px; line-height:1.6}
+  .detail-hero .hmeta{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:16px}
+  .detail-hero .hmeta .item{font-size:12px}
+  .detail-hero .hmeta .item .k{color:var(--muted); font-size:11px}
+  .detail-hero .hmeta .item .v{color:var(--text); font-weight:600; font-size:15px; margin-top:2px}
+  .detail-hero .hmeta .item .v.ok{color:#0f8a4c}
+  .detail-hero .hmeta .item .v.bad{color:#b91c1c}
+  .detail-hero .hmeta .item .v.sat{color:#7c3aed}
+
+  .detail-stats{display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-bottom:18px}
+  .detail-stats .stat{padding:12px 16px}
+  .detail-stats .stat b{font-size:22px}
+
+  .detail-list h3{font-size:15px; margin-bottom:12px}
+  .detail-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:12px}
+  .detail-grid .ecard{margin-bottom:0}
+
+  @media (max-width:960px){
+    .layout{grid-template-columns:1fr}
+    aside.panel{position:static; max-height:none}
+    .seg-ctl{margin-left:0}
+    .mcards{grid-template-columns:repeat(2,1fr)}
+    .detail-hero .hmeta{grid-template-columns:repeat(2,1fr)}
+    .detail-stats{grid-template-columns:repeat(2,1fr)}
+    .detail-grid{grid-template-columns:1fr}
+  }
+  @media (max-width:640px){ .mcards{grid-template-columns:1fr} }
+
+  .legend{display:flex; flex-wrap:wrap; gap:14px; margin-top:18px; font-size:12px; color:var(--muted)}
+  .legend span{display:inline-flex; align-items:center; gap:6px}
+  .legend i{width:10px; height:10px; border-radius:3px; display:inline-block}
+  footer{margin-top:20px; font-size:11.5px; color:var(--muted); line-height:1.7}
+
+  /* ---------- 厂家入口 ---------- */
+  .vendor-row{margin:14px 0 4px; padding:14px 16px; background:var(--panel); border:1px solid var(--line); border-radius:12px; box-shadow:0 1px 3px rgba(16,42,84,.05)}
+  .vendor-row .vrow-label{font-size:12px; color:var(--muted); margin-bottom:6px; display:flex; align-items:center; gap:10px}
+  .vendor-row .vrow-label b{color:var(--text); font-size:13px}
+  .vgroup{margin-bottom:6px}
+  .vgroup-label{font-size:10.5px; color:var(--muted); margin:2px 0 4px; padding-left:2px}
+  .vgrid{display:flex; flex-wrap:wrap; gap:6px}
+  .vbtn{
+    display:inline-flex; align-items:center; gap:6px;
+    border:1px solid var(--line); border-left:3px solid var(--vc,#3b82f6); border-radius:8px; padding:5px 10px;
+    background:var(--panel2); cursor:pointer; transition:.15s;
+    font-size:12px; color:var(--text);
+  }
+  .vbtn:hover{border-color:var(--vc,#3b82f6); background:#fff; box-shadow:0 2px 8px rgba(16,42,84,.08)}
+  .vbtn .vn{font-weight:600; font-size:12px}
+  .vbtn .vc{color:var(--muted); font-size:10.5px}
+
+  /* ---------- 视图切换 ---------- */
+  .view-switch{
+    display:inline-flex; border:1px solid var(--line); border-radius:999px; overflow:hidden;
+    background:#fff; margin-left:auto;
+  }
+  .view-switch button{
+    background:transparent; border:none; color:var(--muted); font-size:12.5px;
+    padding:6px 16px; cursor:pointer; transition:.18s;
+  }
+  .view-switch button.on{background:color-mix(in srgb, var(--blue) 12%, #fff); color:var(--blue); font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1><span class="year">2026年</span>全球航天发射年度总览</h1>
+    <p>中国 · 国发与商发｜国际 · SpaceX 星链 / 亚马逊 Kuiper / OneWeb · 卫星入轨统计 · 火箭/运营方专属页 · 数据截至 2026-08-31</p>
+    <div class="stats" id="stats"></div>
+    <div class="vendor-row" id="vendorRow"></div>
+  </header>
+
+  <div class="tabs" id="tabs"></div>
+  <div class="view-switch" id="viewSwitch" style="margin-bottom:14px">
+    <button data-region="all" class="on">🌍 全球</button>
+    <button data-region="cn">🇨🇳 仅中国</button>
+    <button data-region="intl">🌐 仅国际</button>
+  </div>
+
+  <!-- 首页 -->
+  <div id="homeView">
+    <div class="mcards" id="mcards"></div>
+    <div class="home-extra" id="homeExtra"></div>
+    <div class="milestones" id="milestones">
+      <h2>🏆 航空航天大事记 <small style="color:var(--muted);font-weight:400;font-size:12px">政策 · 资本 · 技术突破 · 行业事件</small></h2>
+      <div id="mlineList"></div>
+    </div>
+  </div>
+
+  <!-- 月份视图 -->
+  <div id="monthView" style="display:none">
+    <div class="navrow">
+      <button class="navbtn" onclick="showHome()">← 返回首页</button>
+      <button class="navbtn" id="prevM" onclick="shiftMonth(-1)">◀ 上一月</button>
+      <span class="nt" id="mTitle"></span>
+      <button class="navbtn" id="nextM" onclick="shiftMonth(1)">下一月 ▶</button>
+      <button class="navbtn primary" id="btnToday">回到今天</button>
+    </div>
+    <div class="toolbar">
+      <span class="label">图例筛选</span>
+      <span id="catFilters"></span>
+      <span class="seg-ctl" id="typeSeg">
+        <button data-type="all" class="on">全部</button>
+        <button data-type="国发">国发</button>
+        <button data-type="商发">商发</button>
+        <button data-type="国外">国外</button>
+      </span>
+      <button class="navbtn" id="segAllBtn" style="font-size:11px; padding:4px 10px" title="全部选中/取消">全选</button>
+    </div>
+    <div class="layout">
+      <div class="cal-scroll">
+        <div class="cal-card">
+          <div class="cal-head">
+            <div class="month" id="calMonth"></div>
+            <button class="btn-today" onclick="showToday()">今天</button>
+          </div>
+          <div class="weekdays cols7">
+            <div>周一</div><div>周二</div><div>周三</div><div>周四</div><div>周五</div><div class="wk">周六</div><div class="wk">周日</div>
+          </div>
+          <div id="weeks"></div>
+        </div>
+      </div>
+      <aside class="panel" id="panel"></aside>
+    </div>
+  </div>
+
+  <!-- 专属页（火箭/运营方） -->
+  <div id="detailView" class="detail-view">
+    <div class="navrow">
+      <button class="navbtn" id="detailBack">← 返回</button>
+    </div>
+    <div id="detailBody"></div>
+  </div>
+
+  <div class="legend">
+    <span><i style="background:var(--blue)"></i>中国星网（国网星座）</span>
+    <span><i style="background:var(--green)"></i>垣信卫星（千帆星座）</span>
+    <span><i style="background:var(--yellow)"></i>其他卫星</span>
+    <span><i style="background:var(--purple)"></i>火箭回收 / 首飞验证</span>
+    <span><i style="background:var(--orange)"></i>国家重大工程</span>
+    <span><i style="background:#0c4a8c"></i>SpaceX·星链</span>
+    <span><i style="background:#b45309"></i>亚马逊·Kuiper</span>
+    <span><i style="background:#475569"></i>OneWeb</span>
+    <span>✓ 成功　✗ 失利　⏸ 推迟　◌ 计划中　‹ › 跨周延续</span>
+    <span><b style="color:#7c3aed">紫</b> 卫星入轨数</span>
+  </div>
+
+  <footer>
+    注：国发 = 国家发射任务（长征系列国家任务等）；商发 = 商业发射任务。带窗口的任务合并显示为横跨窗口区间的日程条；「待定」任务不入日历格，仅在详情列表展示。<br>
+    卫星入轨统计口径：仅计入<b>实际成功入轨</b>的卫星数量（失败/推迟任务计0）。10-12月中国任务为计划预告占位；9-12月国际任务为基于公开计划整理的预估批次，具体以各发射方官方公告为准。<br>
+    点击事件卡片中的「火箭」或「运营方」字段可跳转至对应专属统计页；点击顶部厂家入口可直接进入对应主页。
+  </footer>
+</div>
+
+<script src="data.js"></script>
+<script>
+const MONTHS = [1,2,3,4,5,6,7,8,9,10,11,12];
+const activeCats = new Set(Object.keys(CATS));
+let typeFilter = "all";
+let regionFilter = "all"; // all | cn | intl
+let curView = "home", curMonth = 8, selected = null;
+let detailReturnView = "home";
+
+/* 国际分类集合（扩展支持"国外"） */
+const INTL_CATS = new Set(["spacex","amazon","oneweb"]);
+const isIntl = e => INTL_CATS.has(e.cat);
+const regionMatch = e => regionFilter==="all" || (regionFilter==="cn" && !isIntl(e)) || (regionFilter==="intl" && isIntl(e));
+
+/* 判断厂家是否为国际（用于颜色） */
+const isIntlVendor = vk => ["spacex","ula","arianespace","roscosmos","jaxa","isro","rocketlab","abl"].includes(vk);
+
+/* 型号key / 运营方key → 厂家vk 反查表（事件卡片链接跳公司主页用） */
+const RK2VENDOR = {};
+Object.entries(VENDORS.rocket).forEach(([vk, v]) => v.models.forEach(mk => { RK2VENDOR[mk] = vk; }));
+const OP2VENDOR = {};
+Object.entries(VENDORS.operator).forEach(([vk, v]) => { OP2VENDOR[v.key] = vk; });
+
+const $ = s => document.querySelector(s);
+const parse = s => { const [y,m,d]=s.split("-").map(Number); return new Date(y,m-1,d); };
+const addDays = (d,n)=>{ const x=new Date(d); x.setDate(x.getDate()+n); return x; };
+const fmt = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+const esc = s => String(s==null?"":s).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const evMonth = e => e.s ? parse(e.s).getMonth()+1 : (e.month||0);
+/* 全局图例筛选也作用于顶部统计：结合 activeCats + typeFilter */
+const statFiltered = () => EVENTS.filter(e => regionMatch(e) && activeCats.has(e.cat) && (typeFilter==="all" || e.ty===typeFilter));
+const visibleEvents = () => statFiltered();
+const monthEvents = m => EVENTS.filter(e=>evMonth(e)===m && regionMatch(e));
+const visibleIn = m => monthEvents(m).filter(e=>activeCats.has(e.cat)&&(typeFilter==="all"||e.ty===typeFilter));
+function todayStr(){ const n=new Date(); return n.getFullYear()===YEAR&&MONTHS.includes(n.getMonth()+1)?fmt(n):null; }
+
+/* ---------- 顶部统计 ---------- */
+function renderStats(){
+  const evs = statFiltered();
+  const done=evs.filter(e=>e.st==="done").length, fail=evs.filter(e=>e.st==="fail").length,
+        delay=evs.filter(e=>e.st==="delay").length, plan=evs.filter(e=>e.st==="plan").length;
+  const totalSat = evs.filter(e=>e.st==="done").reduce((s,e)=>s+(e.satCount||0),0);
+  const cnCount = evs.filter(e=>!isIntl(e)).length, intlCount = evs.filter(e=>isIntl(e)).length;
+  const typeLabel = typeFilter==="all" ? (regionFilter==="all"?"全球":regionFilter==="cn"?"中国":"国际") : typeFilter;
+  const catOff = activeCats.size < Object.keys(CATS).length ? `· ${Object.keys(CATS).length - activeCats.size}类关` : "";
+  $("#stats").innerHTML =
+    `<div class="stat"><b>${evs.length}</b>项任务（全年·${typeLabel}${catOff}）</div>`+
+    `<div class="stat ok"><b>${done}</b>成功</div>`+
+    `<div class="stat fail"><b>${fail}</b>失利</div>`+
+    `<div class="stat delay"><b>${delay}</b>推迟</div>`+
+    `<div class="stat"><b>${plan}</b>计划中</div>`+
+    `<div class="stat sat"><b>${totalSat}</b>卫星入轨</div>`+
+    (regionFilter==="all"?`<div class="stat"><b>${cnCount}</b>中国</div><div class="stat"><b>${intlCount}</b>国际</div>`:"");
+}
+
+/* ---------- 厂家入口（两级：一级大类 国家队/民营/国际，二级厂家） ---------- */
+function renderVendorRow(){
+  const box = $("#vendorRow");
+
+  const vendorBtn = (label, n, sat, color, onclick) => `
+    <div class="vbtn" style="--vc:${color}" onclick="${onclick}">
+      <span class="vn">${label}</span>
+      <span class="vc">${n}次${sat>0?" · "+sat+"颗":""}</span>
+    </div>`;
+
+  const groupHtml = (title, btns) => btns.length ? `
+    <div class="vgroup">
+      <div class="vgroup-label">${title}</div>
+      <div class="vgrid">${btns.join("")}</div>
+    </div>` : "";
+
+  // 火箭行：按 大类(国家队/民营/国际) → 厂家 分组
+  let stateR = [], privR = [], intlR = [];
+  Object.entries(VENDORS.rocket).forEach(([vk, v]) => {
+    const rkEvents = v.models.flatMap(mk => EVENTS.filter(e => e.rkKey === mk && regionMatch(e)));
+    const n = rkEvents.length;
+    if (n === 0) return; // 零发射不显示，保持精简
+    const sat = rkEvents.filter(e => e.st === "done").reduce((s, e) => s + (e.satCount || 0), 0);
+    const color = isIntlVendor(vk) ? "#f97316" : (v.type === "国家队" ? "#3b82f6" : "#059669");
+    const btn = vendorBtn(v.short, n, sat, color, `showVendorDetail('rocket','${vk}')`);
+    if (isIntlVendor(vk)) intlR.push(btn);
+    else if (v.type === "国家队") stateR.push(btn);
+    else privR.push(btn);
+  });
+  // 卫星行：中国/国际两组
+  let cnO = [], intlO = [];
+  Object.entries(VENDORS.operator).forEach(([vk, v]) => {
+    const opEvents = EVENTS.filter(e => e.opKey === v.key && regionMatch(e));
+    const n = opEvents.length;
+    if (n === 0) return;
+    const sat = opEvents.filter(e => e.st === "done").reduce((s, e) => s + (e.satCount || 0), 0);
+    const color = isIntlVendor(vk) ? "#f97316" : "#22c55e";
+    const btn = vendorBtn(v.short, n, sat, color, `showVendorDetail('operator','${vk}')`);
+    if (isIntlVendor(vk)) intlO.push(btn); else cnO.push(btn);
+  });
+
+  box.innerHTML = `
+    <div class="vrow-label"><b>🚀 火箭厂商</b> <span>· 点击进入厂家统计页</span></div>
+    ${groupHtml("国家队（CASC / CASIC）", stateR)}
+    ${groupHtml("民营火箭", privR)}
+    ${groupHtml("国际", intlR)}
+    <div class="vrow-label" style="margin-top:14px"><b>🛰 卫星运营方</b> <span>· 点击进入运营方统计页</span></div>
+    ${groupHtml("中国", cnO)}
+    ${groupHtml("国际", intlO)}`;
+}
+
+/* ---------- 月份页签 ---------- */
+function renderTabs(){
+  const t=$("#tabs"); t.innerHTML="";
+  const mk=(label,fn,cls,on)=>{const b=document.createElement("button");b.className="tab "+cls+(on?" on":"");b.innerHTML=label;b.onclick=fn;t.appendChild(b);};
+  mk("🏠 首页",()=>showHome(),"home",curView==="home");
+  MONTHS.forEach(m=>{
+    const n=monthEvents(m).length;
+    mk(`${MNAME[m]} <small style="opacity:.7">${n}</small>`,()=>showMonth(m),"",curView==="month"&&curMonth===m);
+  });
+}
+
+/* ---------- 视图切换 ---------- */
+$("#viewSwitch").addEventListener("click",e=>{
+  const b=e.target.closest("button"); if(!b) return;
+  regionFilter=b.dataset.region;
+  [...$("#viewSwitch").children].forEach(x=>x.classList.toggle("on",x===b));
+  renderStats(); renderVendorRow(); renderTabs();
+  if(curView==="home") renderHome();
+  else if(curView==="month"){ renderFilters(); renderCalendar(); renderPanel(); }
+});
+
+/* ---------- 首页 ---------- */
+function renderHome(){
+  const cards=$("#mcards"); cards.innerHTML="";
+  const colors={1:"#3b82f6",2:"#64748b",3:"#22c55e",4:"#eab308",5:"#f97316",6:"#a855f7",7:"#0ea5e9",8:"#dc2626",9:"#16a34a",10:"#0891b2",11:"#7c3aed",12:"#9333ea"};
+  MONTHS.forEach(m=>{
+    const evs=monthEvents(m);
+    const done=evs.filter(e=>e.st==="done").length, fail=evs.filter(e=>e.st==="fail").length,
+          delay=evs.filter(e=>e.st==="delay").length, plan=evs.filter(e=>e.st==="plan").length;
+    const sats=evs.filter(e=>e.st==="done").reduce((s,e)=>s+(e.satCount||0),0);
+    const hl=evs.filter(e=>e.hl||e.st==="fail"||e.st==="delay").slice(0,3);
+    const card=document.createElement("div");
+    card.className="mcard"+(m>9?" plan":"");
+    card.style.setProperty("--mc",colors[m]);
+    card.innerHTML=
+      `<div class="mcnt">${m}</div>`+
+      `<div class="mt"><b>${MNAME[m]}</b><span>2026</span></div>`+
+      `<div class="ms"><b>${evs.length}</b>次 · <span class="ok">成功 ${done}</span>`+
+        (fail?` · <span class="bad">失利 ${fail}</span>`:"")+
+        (delay?` · <span class="bad">推迟 ${delay}</span>`:"")+
+        (plan?` · 计划 ${plan}`:"")+
+        (sats?` · <span class="sat">入轨 ${sats}</span>`:"")+`</div>`+
+      `<ul>`+(hl.length?hl.map(e=>`<li>${esc(e.name)}</li>`).join(""):`<li>${esc(evs[0]?evs[0].name:"暂无任务")}</li>`)+`</ul>`+
+      `<div class="ml">查看${MNAME[m]}详情 →</div>`;
+    card.onclick=()=>showMonth(m);
+    cards.appendChild(card);
+  });
+  $("#homeExtra").innerHTML =
+    `补充说明：10-12月中国任务为计划预告占位，实际以官方公告为准；8月顺延任务（千帆极轨30组·引力一号、力箭一号首次海上发射）官方未公布新日期；嫦娥七号已确认推迟至2027年。<br>`+
+    `国际数据说明：SpaceX 星链数据按公开批次整理（每批22-23颗·每月4次），9-12月为基于节奏的预估；亚马逊 Kuiper 按 Atlas V/Vulcan 27星/次整理；OneWeb 2026年补网+Gen2验证。具体以各发射方官方公告为准。<br>`+
+    `当前口径（${regionFilter==="all"?"全球":regionFilter==="cn"?"仅中国":"仅国际"}）：累计 ${visibleEvents().length} 项任务，成功入轨卫星 ${visibleEvents().filter(e=>e.st==="done").reduce((s,e)=>s+(e.satCount||0),0)} 颗。`;
+  renderMilestones();
+}
+
+/* ---------- 大事记 ---------- */
+function renderMilestones(){
+  const list=$("#mlineList"); list.innerHTML="";
+  MILESTONES.slice().sort((a,b)=>a.d.localeCompare(b.d)).forEach(mi=>{
+    const [y,m,d]=mi.d.split("-");
+    const el=document.createElement("div");
+    el.className="mline";
+    el.style.setProperty("--mc",mi.c);
+    el.innerHTML=`<div class="md">${+m}月${+d}日</div><div class="mt">${esc(mi.t)}<span class="tag">${esc(mi.k)}</span></div><div class="ms">${esc(mi.s)}</div>`;
+    list.appendChild(el);
+  });
+}
+
+/* ---------- 月份视图 ---------- */
+function showHome(){
+  curView="home"; $("#homeView").style.display=""; $("#monthView").style.display="none"; $("#detailView").style.display="none"; selected=null; renderStats(); renderVendorRow(); renderTabs();
+}
+function showMonth(m){
+  curView="month"; curMonth=m; selected=null;
+  $("#homeView").style.display="none"; $("#monthView").style.display=""; $("#detailView").style.display="none";
+  $("#mTitle").textContent=`${MNAME[m]} · 2026`;
+  $("#calMonth").innerHTML=`${MNAME[m]} <small>2026 · 跨天任务以横条显示 · 点击日程条查看详情</small>`;
+  $("#prevM").disabled=(m===1); $("#nextM").disabled=(m===12);
+  renderTabs(); renderFilters(); renderCalendar(); renderPanel();
+}
+function shiftMonth(d){ const m=curMonth+d; if(m>=1&&m<=12) showMonth(m); }
+function showToday(){ const t=todayStr(); if(t){ curMonth=+t.slice(5,7); showMonth(curMonth); selected=t; renderCalendar(); renderPanel(); } }
+
+function renderFilters(){
+  const box=$("#catFilters"); box.innerHTML="";
+  for(const [key,c] of Object.entries(CATS)){
+    const n=monthEvents(curMonth).filter(e=>e.cat===key).length;
+    const el=document.createElement("span");
+    el.className="chip-filter"+(activeCats.has(key)?" on":"");
+    el.style.setProperty("--c",c.hex);
+    el.innerHTML=`<span class="dot"></span>${c.label}<span class="cnt">${n}</span>`;
+    el.onclick=()=>{ activeCats.has(key)?activeCats.delete(key):activeCats.add(key); renderFilters(); renderCalendar(); renderPanel(); renderStats(); updateSegAllBtn(); };
+    box.appendChild(el);
+  }
+}
+$("#typeSeg").addEventListener("click",e=>{
+  const b=e.target.closest("button"); if(!b) return;
+  typeFilter=b.dataset.type;
+  [...$("#typeSeg").children].forEach(x=>x.classList.toggle("on",x===b));
+  renderCalendar(); renderPanel(); renderStats();
+});
+/* 一键全选/取消图例 */
+function updateSegAllBtn(){
+  const all=activeCats.size===Object.keys(CATS).length;
+  const btn=$("#segAllBtn"); if(!btn) return;
+  btn.textContent=all?"全不选":"全选";
+}
+$("#segAllBtn") && $("#segAllBtn").addEventListener("click",()=>{
+  const all=activeCats.size===Object.keys(CATS).length;
+  if(all){ activeCats.clear(); } else { Object.keys(CATS).forEach(k=>activeCats.add(k)); }
+  renderFilters(); renderCalendar(); renderPanel(); renderStats(); updateSegAllBtn();
+});
+
+function renderCalendar(){
+  const root=$("#weeks"); root.innerHTML="";
+  const m=curMonth;
+  const first=new Date(YEAR,m-1,1);
+  const daysInMonth=new Date(YEAR,m,0).getDate();
+  const startOffset=(first.getDay()+6)%7;
+  const calStart=addDays(first,-startOffset);
+  const nWeeks=Math.ceil((startOffset+daysInMonth)/7);
+  const today=todayStr();
+  const evsAll=visibleIn(m);
+
+  for(let w=0;w<nWeeks;w++){
+    const weekStart=addDays(calStart,w*7);
+    const ws=fmt(weekStart), we=fmt(addDays(weekStart,6));
+    const week=document.createElement("div");
+    week.className="week cols7";
+    for(let i=0;i<7;i++){
+      const d=addDays(weekStart,i), ds=fmt(d);
+      const inMonth=d.getMonth()===m-1;
+      const cell=document.createElement("div");
+      cell.className="day"+(inMonth?"":" dim")+(ds===today?" today":"")+(ds===selected?" sel":"");
+      cell.style.gridColumn=i+1; cell.style.gridRow=1;
+      cell.innerHTML=`<span class="dnum">${d.getDate()}</span>`;
+      if(inMonth) cell.onclick=()=>{ selected=ds; renderCalendar(); renderPanel(); };
+      week.appendChild(cell);
+    }
+    const evs=evsAll.filter(e=>e.s&&e.e&&e.e>=ws&&e.s<=we)
+      .sort((a,b)=>a.s.localeCompare(b.s)||b.e.localeCompare(a.e));
+    const lanes=[];
+    for(const ev of evs){
+      const s=ev.s>ws?ev.s:ws, e2=ev.e<we?ev.e:we;
+      const cs=Math.round((parse(s)-parse(ws))/86400000);
+      const ce=Math.round((parse(e2)-parse(ws))/86400000);
+      let li=lanes.findIndex(ln=>ln.every(([a,b])=>b<cs||a>ce));
+      if(li===-1){li=lanes.length;lanes.push([]);}
+      lanes[li].push([cs,ce]);
+      const c=CATS[ev.cat]||CATS.other;
+      const seg=document.createElement("div");
+      seg.className="evseg";
+      seg.style.setProperty("--c",c.hex); seg.style.setProperty("--cd",c.dark);
+      seg.style.gridColumn=`${cs+1} / ${ce+2}`; seg.style.gridRow=li+2;
+      const contL=ev.s<ws, contR=ev.e>we;
+      if(contL)seg.classList.add("contL");
+      if(contR)seg.classList.add("contR");
+      const multi=ev.s!==ev.e;
+      seg.innerHTML=
+        (contL?'<span class="arr">‹</span>':"")+
+        `<span class="st">${ST_ICON[ev.st]||"◌"}</span>`+
+        `<span class="nm">${esc(ev.name)}</span>`+
+        (multi&&!contR?`<span class="arr">${(parse(ev.e)-parse(ev.s))/86400000+1}天</span>`:"")+
+        (contR?'<span class="arr">›</span>':"");
+      seg.title=`${ev.name}｜${ev.rk}｜${ev.s.slice(5).replace("-","/")} ~ ${ev.e.slice(5).replace("-","/")}（${ST_TXT[ev.st]||"计划中"}）`;
+      if(ev.st==="fail")seg.classList.add("fail");
+      if(ev.st==="delay")seg.classList.add("delay");
+      seg.onclick=()=>{ selected=(ev.s>=ws&&ev.s<=we)?ev.s:ws; renderCalendar(); renderPanel(); };
+      week.appendChild(seg);
+    }
+    if(lanes.length===0)week.style.gridTemplateRows="60px";
+    root.appendChild(week);
+  }
+}
+
+/* 事件卡片渲染——火箭/运营方字段跳转公司主页（一级），型号页从公司页进入 */
+function cardHTML(ev){
+  const c=CATS[ev.cat]||CATS.other;
+  const d1=`${+ev.s.slice(5,7)}月${+ev.s.slice(8)}日`;
+  const range=ev.s===ev.e?d1:(ev.s&&ev.e?`${d1} – ${+ev.e.slice(5,7)}月${+ev.e.slice(8)}日`:"待定");
+  const rkLink = ev.rkKey && RK2VENDOR[ev.rkKey]
+    ? `<a onclick="showVendorDetail('rocket','${RK2VENDOR[ev.rkKey]}');event.stopPropagation();">${esc(ev.rk)}</a>`
+    : esc(ev.rk)||"—";
+  const opLink = ev.opKey && OP2VENDOR[ev.opKey]
+    ? `<a onclick="showVendorDetail('operator','${OP2VENDOR[ev.opKey]}');event.stopPropagation();">${esc(ev.op)}</a>`
+    : esc(ev.op)||"—";
+  const satBadge = (ev.satCount>0 && ev.st==="done")
+    ? `<span class="badge sat">${ev.satCount} 颗入轨</span>` : "";
+  return `<div class="ecard" style="--c:${c.hex};--cd:${c.dark}" data-id="${ev.id}">
+    <div class="t">${esc(ev.name)}
+      <span class="badge cat">${c.label}</span>
+      <span class="badge">${esc(ev.ty)}</span>
+      <span class="badge ${ev.st==="fail"?"fail":ev.st==="delay"?"delay":ev.st==="done"?"done":"plan"}">${ST_ICON[ev.st]||"◌"} ${ST_TXT[ev.st]||"计划中"}</span>
+      ${satBadge}
+    </div>
+    <dl class="kv">
+      <dt>日期</dt><dd>${range}${ev.t&&ev.t!=="—"?" · "+esc(ev.t):""}</dd>
+      <dt>火箭</dt><dd>${rkLink}</dd>
+      <dt>载荷</dt><dd>${esc(ev.pl)||"—"}${ev.satCount>0?`（${ev.satCount}颗）`:""}</dd>
+      <dt>发射场</dt><dd>${esc(ev.site)||"—"}</dd>
+      <dt>运营方</dt><dd>${opLink}</dd>
+    </dl>
+    ${ev.note?`<div class="note">${esc(ev.note)}</div>`:""}
+  </div>`;
+}
+
+function renderPanel(){
+  const p=$("#panel");
+  const list=visibleIn(curMonth).slice().sort((a,b)=>(a.s||"9999").localeCompare(b.s||"9999"));
+  const dated=list.filter(e=>e.s), tbd=list.filter(e=>!e.s);
+  let body="";
+  if(selected){
+    const onDay=dated.filter(e=>selected>=e.s&&selected<=e.e);
+    const [y,m,d]=selected.split("-");
+    const wd="日一二三四五六"[parse(selected).getDay()];
+    body=`<h3>${+m}月${+d}日 · 星期${wd}</h3>
+      <div class="sub">${onDay.length?"当日任务（含窗口期）":"当日无发射任务"}</div>`+
+      (onDay.length?onDay.map(cardHTML).join(""):`<div class="empty">当日暂无任务</div>`)+
+      `<div style="margin-top:14px"><div class="sub" style="margin-bottom:8px">本月全部任务</div>`;
+  }else{
+    body=`<h3>${MNAME[curMonth]}发射总览</h3>
+      <div class="sub">共 ${list.length} 项任务 · 成功入轨 ${list.filter(e=>e.st==="done").reduce((s,e)=>s+(e.satCount||0),0)} 颗 · 点击任务卡片或日历格查看详情</div>`;
+  }
+  body+=(dated.length?dated.map(cardHTML).join(""):`<div class="empty">当前筛选条件下无任务</div>`);
+  if(tbd.length){ body+=`<div class="sub" style="margin-top:12px;margin-bottom:8px">待定任务（未定日期）</div>`+tbd.map(cardHTML).join(""); }
+  if(selected) body+="</div>";
+  p.innerHTML=body;
+  p.querySelectorAll(".ecard").forEach(card=>{
+    card.onclick=()=>{
+      const ev=EVENTS.find(x=>x.id===card.dataset.id);
+      if(!ev||!ev.s)return;
+      selected=ev.s; renderCalendar(); renderPanel(); p.scrollTop=0;
+    };
+  });
+}
+
+/* ---------- 专属页（火箭/运营方） ---------- */
+function showDetail(type, key){
+  detailReturnView = (curView==="month") ? "month" : "home";
+  $("#homeView").style.display="none"; $("#monthView").style.display="none"; $("#detailView").style.display="";
+  curView="detail";
+
+  const evs = (type==="rocket")
+    ? EVENTS.filter(e=>e.rkKey===key && regionMatch(e))
+    : EVENTS.filter(e=>e.opKey===key && regionMatch(e));
+
+  const info = (type==="rocket") ? ROCKETS[key] : OPERATORS[key];
+  if(!info){ $("#detailBody").innerHTML=`<div class="empty">未找到 ${key} 的信息</div>`; return; }
+
+  const done = evs.filter(e=>e.st==="done").length;
+  const fail = evs.filter(e=>e.st==="fail").length;
+  const delay = evs.filter(e=>e.st==="delay").length;
+  const plan = evs.filter(e=>e.st==="plan").length;
+  const totalSat = evs.filter(e=>e.st==="done").reduce((s,e)=>s+(e.satCount||0),0);
+  const successRate = evs.length>0 ? Math.round(done/(done+fail)*100) : 0;
+
+  const c = (type==="rocket") ? "#a855f7" : (key==="yuanxin"?"#22c55e":key==="satnet"?"#3b82f6":"#0ea5e9");
+
+  let heroMeta = "";
+  if(type==="rocket"){
+    heroMeta = `
+      <div class="item"><div class="k">研制方</div><div class="v">${esc(info.vendor)||"—"}</div></div>
+      <div class="item"><div class="k">类型</div><div class="v">${esc(info.type)||"—"}</div></div>
+      <div class="item"><div class="k">推进剂</div><div class="v">${esc(info.fuel)||"—"}</div></div>
+      <div class="item"><div class="k">运力参考</div><div class="v" style="font-size:12px">${esc((info.leo||info.geo)||"—")}</div></div>
+    `;
+  } else {
+    heroMeta = `
+      <div class="item"><div class="k">类型</div><div class="v">${esc(info.type)||"—"}</div></div>
+      <div class="item"><div class="k">在轨状态</div><div class="v">${esc(info.inOrbit)||"—"}</div></div>
+      <div class="item"><div class="k">规划规模</div><div class="v" style="font-size:12px">${esc(info.plan)||"—"}</div></div>
+      <div class="item"><div class="k">备注</div><div class="v" style="font-size:12px">${esc(info.note)||"—"}</div></div>
+    `;
+  }
+
+  // 所属公司入口（公司↔型号双向跳转）
+  const parentVk = (type==="rocket") ? RK2VENDOR[key] : OP2VENDOR[key];
+  const parentBtn = parentVk ? `
+    <div style="margin-top:12px">
+      <span class="chip-filter" style="padding:6px 14px; cursor:pointer; font-size:12.5px" onclick="showVendorDetail('${type==='rocket'?'rocket':'operator'}','${parentVk}')">
+        🏢 所属公司：${esc((type==='rocket'?VENDORS.rocket:VENDORS.operator)[parentVk]?.name || parentVk)} → 进入公司主页
+      </span>
+    </div>` : "";
+
+  $("#detailBody").innerHTML = `
+    <div class="detail-hero" style="--mc:${c}">
+      <div class="hname">${esc(info.name)}<span class="htag">${type==="rocket"?"火箭型号":"卫星运营方"}</span></div>
+      <div class="hsub">${type==="rocket"?(esc(info.note)||""):(esc(info.short)+" · "+(esc(info.type)||""))}</div>
+      <div class="hmeta">${heroMeta}</div>
+      ${parentBtn}
+    </div>
+    <div class="detail-stats">
+      <div class="stat"><b>${evs.length}</b>总发射</div>
+      <div class="stat ok"><b>${done}</b>成功</div>
+      <div class="stat fail"><b>${fail}</b>失利</div>
+      <div class="stat sat"><b>${totalSat}</b>卫星入轨</div>
+      <div class="stat"><b>${successRate}%</b>成功率</div>
+    </div>
+    <div class="detail-list">
+      <h3>发射记录（${evs.length}条）</h3>
+      <div class="detail-grid">
+        ${evs.length ? evs.slice().sort((a,b)=>(a.s||"9999").localeCompare(b.s||"9999")).map(cardHTML).join("") : '<div class="empty">暂无记录</div>'}
+      </div>
+    </div>
+  `;
+}
+
+/* ---------- 厂家专属页（一级厂家，下列出所有型号） ---------- */
+function showVendorDetail(type, vk){
+  detailReturnView = (curView==="month") ? "month" : "home";
+  $("#homeView").style.display = "none"; $("#monthView").style.display = "none"; $("#detailView").style.display = "";
+  curView = "detail";
+
+  const v = (type === "rocket") ? VENDORS.rocket[vk] : VENDORS.operator[vk];
+  if (!v) { $("#detailBody").innerHTML = `<div class="empty">未找到厂家 ${vk}</div>`; return; }
+
+  // 统计该厂家所有型号的发射事件
+  let evs = [];
+  if (type === "rocket") {
+    evs = v.models.flatMap(mk => EVENTS.filter(e => e.rkKey === mk && regionMatch(e)));
+  } else {
+    evs = EVENTS.filter(e => e.opKey === v.key && regionMatch(e));
+  }
+  evs = evs.slice().sort((a,b)=>(a.s||"9999").localeCompare(b.s||"9999"));
+
+  const n = evs.length;
+  const done = evs.filter(e => e.st === "done").length;
+  const fail = evs.filter(e => e.st === "fail").length;
+  const delay = evs.filter(e => e.st === "delay").length;
+  const plan = evs.filter(e => e.st === "plan").length;
+  const totalSat = evs.filter(e => e.st === "done").reduce((s, e) => s + (e.satCount || 0), 0);
+  const successRate = (done + fail) > 0 ? Math.round(done / (done + fail) * 100) : "—";
+  const accent = isIntlVendor(vk) ? "#f97316" : (type === "operator" ? "#22c55e" : (v.type === "国家队" ? "#3b82f6" : "#059669"));
+
+  // ===== 公司档案（hero） =====
+  const metaRows = [];
+  if (v.founded && v.founded !== "—") metaRows.push(["成立", v.founded]);
+  if (v.hq && v.hq !== "—") metaRows.push(["总部", v.hq]);
+  if (v.site) metaRows.push(["发射场", v.site]);
+  if (type === "operator" && v.key) {
+    const oi = OPERATORS[v.key];
+    if (oi?.plan && oi.plan !== "—") metaRows.push(["规划", oi.plan]);
+    if (oi?.inOrbit && oi.inOrbit !== "—") metaRows.push(["在轨", oi.inOrbit]);
+  }
+
+  const heroHtml = `
+    <div class="detail-hero" style="border-top:4px solid ${accent}">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:16px">
+        <div style="flex:1; min-width:0">
+          <div style="font-size:26px; font-weight:700; line-height:1.3">${v.name}
+            <span style="font-size:13px; font-weight:500; color:#fff; background:${accent}; border-radius:6px; padding:2px 10px; vertical-align:middle; margin-left:8px">${v.type}${isIntlVendor(vk) ? " · 国际" : ""}</span>
+          </div>
+          <div style="display:flex; flex-wrap:wrap; gap:6px 22px; margin-top:10px; font-size:12.5px; color:var(--muted)">
+            ${metaRows.map(([k, val]) => `<span><b style="color:var(--text); font-weight:600">${k}</b>：${esc(val)}</span>`).join("")}
+          </div>
+          ${v.intro ? `<div style="margin-top:12px; font-size:13px; color:var(--text); line-height:1.7; background:var(--panel2); border-radius:10px; padding:12px 14px">${esc(v.intro)}</div>` : ""}
+        </div>
+        <button class="btn-return" onclick="vendorBack()">← 返回</button>
+      </div>
+    </div>`;
+
+  // ===== 统计条 =====
+  const statsHtml = `
+    <div class="detail-stats" style="margin-top:14px">
+      <div class="stat"><b>${n}</b><small>全年发射</small></div>
+      <div class="stat ok"><b>${done}</b><small>成功</small></div>
+      <div class="stat fail"><b>${fail}</b><small>失利</small></div>
+      <div class="stat delay"><b>${delay}</b><small>推迟</small></div>
+      <div class="stat"><b>${plan}</b><small>计划中</small></div>
+      <div class="stat ok"><b>${successRate}${successRate!=="—"?"%":""}</b><small>成功率</small></div>
+      <div class="stat sat"><b>${totalSat}</b><small>入轨卫星</small></div>
+    </div>`;
+
+  // ===== 月度节奏（迷你条形图） =====
+  const monthly = {};
+  evs.forEach(e => { const m = e.s ? +e.s.slice(5,7) : (e.month || 0); if (m) monthly[m] = (monthly[m]||0) + 1; });
+  const maxM = Math.max(1, ...Object.values(monthly));
+  const barColors = {done:"#22c55e", fail:"#ef4444", delay:"#f59e0b", plan:"#94a3b8"};
+  const monthlyHtml = `
+    <div style="margin:18px 0; background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px 16px">
+      <h3 style="font-size:14px; margin-bottom:12px">月度发射节奏</h3>
+      <div style="display:flex; align-items:flex-end; gap:4px; height:90px">
+        ${Array.from({length:12}, (_, i) => i + 1).map(m => {
+          const cnt = monthly[m] || 0;
+          const h = cnt === 0 ? 3 : Math.max(10, cnt / maxM * 70);
+          const mevs = evs.filter(e => (e.s ? +e.s.slice(5,7) : (e.month || 0)) === m);
+          const failN = mevs.filter(e => e.st === "fail").length;
+          const planN = mevs.filter(e => e.st === "plan" || e.st === "delay").length;
+          const color = cnt === 0 ? "#e2e8f0" : (failN > 0 ? "#ef4444" : (planN === cnt ? "#94a3b8" : "#22c55e"));
+          return `<div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px" title="${m}月：${cnt}次">
+            <span style="font-size:10px; color:var(--muted)">${cnt>0?cnt:""}</span>
+            <div style="width:100%; max-width:34px; height:${h}px; background:${color}; border-radius:4px 4px 0 0"></div>
+            <span style="font-size:10px; color:var(--muted)">${m}</span>
+          </div>`;
+        }).join("")}
+      </div>
+    </div>`;
+
+  // ===== 旗下型号卡片（火箭类型） =====
+  let modelsHtml = "";
+  if (type === "rocket") {
+    const rows = v.models.map(mk => {
+      const r = ROCKETS[mk];
+      if (!r) return null;
+      const mevs = EVENTS.filter(e => e.rkKey === mk && regionMatch(e));
+      const mDone = mevs.filter(e => e.st === "done").length;
+      const mFail = mevs.filter(e => e.st === "fail").length;
+      const mSat = mevs.filter(e => e.st === "done").reduce((s, e) => s + (e.satCount || 0), 0);
+      return {mk, r, n: mevs.length, mDone, mFail, mSat};
+    }).filter(Boolean);
+    const active = rows.filter(x => x.n > 0).sort((a, b) => b.n - a.n);
+    const idle = rows.filter(x => x.n === 0);
+    modelsHtml = `
+    <div style="margin:18px 0">
+      <h3 style="font-size:15px; margin-bottom:10px">旗下型号 <small style="color:var(--muted); font-weight:400">（${active.length}型有发射 / 共${rows.length}型）</small></h3>
+      <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:10px">
+        ${active.map(x => `
+        <div class="mcard" style="--mc:${accent}; cursor:pointer; padding:12px 14px; border:1px solid var(--line); border-radius:10px; background:var(--panel)" onclick="showDetail('rocket','${x.mk}')">
+          <div style="font-weight:700; font-size:14px">${esc(x.r.name)}</div>
+          <div style="font-size:11px; color:var(--muted); margin-top:3px">${esc(x.r.type)} · ${esc(x.r.fuel)} · ${esc(x.r.leo || x.r.geo || "")}</div>
+          <div style="display:flex; gap:12px; margin-top:8px; font-size:12px">
+            <span><b style="color:var(--text)">${x.n}</b> 次发射</span>
+            <span style="color:#0f8a4c">✓${x.mDone}</span>
+            ${x.mFail > 0 ? `<span style="color:#b91c1c">✗${x.mFail}</span>` : ""}
+            ${x.mSat > 0 ? `<span style="color:#7c3aed">🛰${x.mSat}颗</span>` : ""}
+          </div>
+          ${x.r.note ? `<div style="font-size:10.5px; color:var(--muted); margin-top:6px">${esc(x.r.note)}</div>` : ""}
+        </div>`).join("")}
+        ${idle.length ? `<div style="grid-column:1/-1; font-size:11.5px; color:var(--muted)">未发射型号：${idle.map(x => esc(x.r.name)).join(" · ")}</div>` : ""}
+      </div>
+    </div>`;
+  }
+
+  // ===== 运营方载荷构成（运营方类型） =====
+  let payloadHtml = "";
+  if (type === "operator" && n > 0) {
+    const byRocket = {};
+    evs.forEach(e => { const rk = e.rk || "—"; byRocket[rk] = (byRocket[rk] || 0) + (e.satCount || 0); });
+    const rkEntries = Object.entries(byRocket).filter(([, c]) => c > 0).sort((a, b) => b[1] - a[1]);
+    const total = rkEntries.reduce((s, [, c]) => s + c, 0);
+    if (rkEntries.length > 0) {
+      payloadHtml = `
+      <div style="margin:18px 0; background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px 16px">
+        <h3 style="font-size:14px; margin-bottom:10px">入轨卫星构成 <small style="color:var(--muted); font-weight:400">（按运载火箭，共${total}颗）</small></h3>
+        ${rkEntries.map(([rk, c]) => `
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px; font-size:12px">
+          <span style="width:130px; text-align:right; color:var(--muted); flex:none">${esc(rk)}</span>
+          <div style="flex:1; background:var(--panel2); border-radius:4px; height:14px; overflow:hidden">
+            <div style="width:${(c/total*100).toFixed(1)}%; height:100%; background:${accent}; border-radius:4px"></div>
+          </div>
+          <span style="width:60px; flex:none"><b>${c}</b>颗 ${(c/total*100).toFixed(0)}%</span>
+        </div>`).join("")}
+      </div>`;
+    }
+  }
+
+  // ===== 发射记录 =====
+  const listHtml = `
+    <div class="detail-list" style="margin-top:18px">
+      <h3 style="font-size:15px; margin-bottom:10px">全年发射记录 <small style="color:var(--muted); font-weight:400">（${n}项）</small></h3>
+      <div class="detail-grid">${evs.map(ev => cardHTML(ev)).join("")}</div>
+    </div>`;
+
+  $("#detailBody").innerHTML = heroHtml + statsHtml + monthlyHtml + modelsHtml + payloadHtml + listHtml;
+  window.scrollTo(0, 0);
+  renderTabs();
+}
+
+function vendorBack(){
+  if(detailReturnView==="month"){ curView="month"; $("#detailView").style.display="none"; $("#monthView").style.display=""; renderTabs(); }
+  else showHome();
+}
+
+$("#detailBack").onclick = ()=>{
+  if(detailReturnView==="month"){ curView="month"; $("#detailView").style.display="none"; $("#monthView").style.display=""; renderTabs(); }
+  else showHome();
+};
+
+/* ---------- 启动 ---------- */
+renderStats(); renderVendorRow(); renderTabs(); renderHome(); showMonth(8);
+</script>
+</body>
+</html>
