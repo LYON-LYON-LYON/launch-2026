@@ -32,7 +32,10 @@
     background:var(--panel); border:1px solid var(--line); border-radius:10px;
     padding:8px 14px; font-size:12px; color:var(--muted);
     box-shadow:0 1px 2px rgba(16,42,84,.04);
+    cursor:pointer; transition:all .15s; user-select:none;
   }
+  .stat:hover{border-color:var(--blue); color:var(--text); box-shadow:0 2px 8px rgba(16,42,84,.12)}
+  .stat.active{border-color:var(--blue); background:color-mix(in srgb,var(--blue) 10%,var(--panel)); color:var(--text); font-weight:600}
   .stat b{color:var(--text); font-size:16px; margin-right:4px}
   .stat.ok b{color:#0f8a4c}
   .stat.fail b{color:#b91c1c}
@@ -479,6 +482,36 @@ function renderStats(){
     `<div class="stat"><b>${plan}</b>计划中</div>`+
     `<div class="stat sat"><b>${totalSat}</b>卫星入轨</div>`+
     (regionFilter==="all"?`<div class="stat"><b>${cnCount}</b>中国</div><div class="stat"><b>${intlCount}</b>国际</div>`:"");
+}
+
+/* ---------- 统计栏点击联动（v8 增补：数字可点击 → 筛选/日历） ---------- */
+function resetAllFilters(){
+  statusFilter="all"; regionFilter="all"; typeFilter="all";
+  Object.keys(CATS).forEach(k=>activeCats.add(k));
+  [...$("#viewSwitch").children].forEach(x=>x.classList.toggle("on", x.dataset.region==="all"));
+  [...$("#typeSeg").children].forEach(x=>x.classList.toggle("on", x.dataset.type==="all"));
+  updateSegAllBtn();
+}
+function setRegion(r){
+  regionFilter=r; statusFilter="all";
+  [...$("#viewSwitch").children].forEach(x=>x.classList.toggle("on", x.dataset.region===r));
+  renderStats(); renderVendorRow(); renderTabs();
+  if(curView==="home") renderHome();
+  else if(curView==="month"){ renderFilters(); renderCalendar(); renderPanel(); }
+}
+function onStatClick(kind){
+  if(kind==="reset"){ resetAllFilters(); showHome(); return; }
+  if(kind==="cn"){ setRegion("cn"); return; }
+  if(kind==="intl"){ setRegion("intl"); return; }
+  if(kind==="sat") kind="done";
+  const on = (statusFilter===kind);
+  statusFilter = on ? "all" : kind;
+  renderStats();
+  if(statusFilter!=="all"){
+    const target=[...MONTHS].find(m=>visibleIn(m).length>0) || curMonth;
+    showMonth(target);
+  } else if(curView==="month"){ renderFilters(); renderCalendar(); renderPanel(); }
+  else { renderHome(); }
 }
 
 /* ---------- 厂家入口（两级：一级大类 国家队/民营/国际，二级厂家） ---------- */
