@@ -16,16 +16,22 @@
  *   R10 tbd:1 的事件必须有 month 字段
  *   R11 MILESTONES 的 d 日期格式合法
  *   R12 OPERATORS.inOrbitBase 非负数、inOrbitBaseDate 合法日期、二者成对出现（B5 派生计算）
- *   R13 过期计划检查（warning 级，计 FAIL 但报告标注 [WARN]）：st=plan 且 e < DATA_ASOF
+ *   R13 过期计划检查（warning 级，**不阻塞**：[WARN] 标注 + 报告末尾单列待清理清单，不计入 failCount）
+ *   R14 llId 全表唯一（B1 流水线匹配主键，重复会导致错配）
+ *   R15 lock 数组元素 ⊆ {s,e,t,st,satCount,src}（锁全局保护字段无意义，须报错提示）
  */
 "use strict";
 const fs = require("fs");
 const path = require("path");
 const vm = require("vm");
+// lock 合法值取自流水线词典，避免两处各写一份常量而漂移
+const GLOSSARY = require("./glossary.js");
 
 const DATA_FILE = path.join(__dirname, "..", "data.js");
 const results = [];
 let failCount = 0;
+/** R13 待清理清单（warning 级，报告末尾单独列出） */
+let stalePlanList = [];
 
 function record(id, pass, detail) {
   results.push({ id, pass, detail });
@@ -173,16 +179,59 @@ record("R0-asof", /^\d{4}-\d{2}-\d{2}$/.test(DATA_ASOF || ""), `DATA_ASOF="${DAT
   record("R12", errs.length === 0, errs.length === 0 ? `${baseCount} 家可计数运营方基准字段合法（成对/非负数/日期合法）` : errs.join("；"));
 }
 
-// R13 过期计划检查（warning 级）：st=plan 且 e < DATA_ASOF 的事件（窗口已过应回填状态，参照 qf30→delay 先例）
+// R13 过期计划检查（warning 级，不阻塞）：st=plan 且 e < DATA_ASOF 的事件（窗口已过应回填状态，参照 qf30→delay 先例）
+// 定级说明：按设计文档 §3.6 第 4 条，本规则为 warning。它**不计入 failCount、不阻塞提交** ——
+// 一条过期占位事件不该让整条数据同步流水线停摆（流水线无权自动回填中国事件，会永久卡死）。
+// 清单在报告末尾单独列出，供人工排期清理。
 {
-  const stale = EVENTS.filter(ev => ev.st === "plan" && ev.e && ev.e < DATA_ASOF).map(ev => `${ev.id}(窗口末日 ${ev.e} < DATA_ASOF)`);
-  if (stale.length === 0) {
+  stalePlanList = EVENTS
+    .filter(ev => ev.st === "plan" && ev.e && ev.e < DATA_ASOF)
+    .map(ev => ({ id: ev.id, name: ev.name, e: ev.e }));
+  if (stalePlanList.length === 0) {
     record("R13", true, "无过期计划事件");
   } else {
-    // 计 FAIL（拦截提交）但报告标注 [WARN] 前缀，区别于数据硬错误
-    results.push({ id: "R13", pass: false, warn: true, detail: `过期计划事件 ${stale.length} 条: ${stale.join("；")} —— 窗口已过，应回填为 done/fail/delay` });
-    failCount++;
+    // pass 保持 true → 不进 failCount；用 warn 标记让报告打 [WARN] 前缀以示区别
+    results.push({
+      id: "R13", pass: true, warn: true,
+      detail: `过期计划事件 ${stalePlanList.length} 条（不阻塞，详见报告末尾待清理清单）：` +
+        stalePlanList.map(s => `${s.id}(窗口末日 ${s.e})`).join("；"),
+    });
   }
+}
+
+// R14 llId 全表唯一（B1 流水线匹配主键；重复会让两条事件互相抢匹配）
+{
+  const errs = [];
+  const seen = new Map();
+  let n = 0;
+  for (const ev of EVENTS) {
+    if (ev.llId === undefined || ev.llId === null || ev.llId === "") continue;
+    if (typeof ev.llId !== "string") { errs.push(`${ev.id}: llId 非字符串（${JSON.stringify(ev.llId)}）`); continue; }
+    n++;
+    if (seen.has(ev.llId)) errs.push(`llId="${ev.llId}" 被 ${seen.get(ev.llId)} 与 ${ev.id} 同时占用`);
+    else seen.set(ev.llId, ev.id);
+  }
+  record("R14", errs.length === 0,
+    errs.length === 0 ? `${n} 条事件带 llId，无重复` : errs.slice(0, 8).join("；"));
+}
+
+// R15 lock 数组元素 ⊆ {s,e,t,st,satCount,src}
+{
+  const lockable = new Set(GLOSSARY.LOCKABLE_FIELDS);
+  const errs = [];
+  let n = 0;
+  for (const ev of EVENTS) {
+    if (ev.lock === undefined) continue;
+    n++;
+    if (!Array.isArray(ev.lock)) { errs.push(`${ev.id}: lock 非数组（${JSON.stringify(ev.lock)}）`); continue; }
+    for (const f of ev.lock) {
+      if (!lockable.has(f)) {
+        errs.push(`${ev.id}: lock 含非法字段 "${f}"（合法值 {${GLOSSARY.LOCKABLE_FIELDS.join(",")}}；锁 name/op/ty 等保护字段无意义，本就不可覆盖）`);
+      }
+    }
+  }
+  record("R15", errs.length === 0,
+    errs.length === 0 ? `${n} 条事件声明 lock，字段均在合法集合内` : errs.slice(0, 8).join("；"));
 }
 
 // src 分布统计（信息项，不计 PASS/FAIL）
@@ -198,6 +247,14 @@ function makeReport() {
   }
   lines.push("--------------------------------------");
   lines.push(`事件总数: ${EVENTS.length}  |  src 分布: ${distStr}`);
+  // R13 待清理清单：warning 级，不阻塞，但必须在报告末尾显眼列出
+  if (stalePlanList.length > 0) {
+    lines.push("");
+    lines.push(`【待清理清单 · 不阻塞】过期计划事件 ${stalePlanList.length} 条（R13 / warning 级）：`);
+    for (const s of stalePlanList) {
+      lines.push(`  · ${s.id} · ${s.name} · 窗口末日 ${s.e} < DATA_ASOF ${DATA_ASOF} —— 应人工回填为 done/fail/delay`);
+    }
+  }
   lines.push(failCount === 0 ? "结论: ALL PASS ✔" : `结论: FAIL（${failCount} 项不通过，禁止提交）✘`);
   return lines.join("\n");
 }

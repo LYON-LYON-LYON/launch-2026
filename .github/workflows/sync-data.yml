@@ -1,0 +1,63 @@
+name: sync-data
+
+# 数据自动同步流水线（B1）
+# 定时：每日 UTC 02:23 / 14:23（北京时间 10:23 / 22:23），避开整点拥堵
+# 手动：workflow_dispatch 支持应急重跑与"首次 llId 回填"（backfill=true）
+on:
+  schedule:
+    - cron: '23 2,14 * * *'
+  workflow_dispatch:
+    inputs:
+      backfill:
+        description: '宽窗口抓取（首次为存量国际事件回填 llId 时使用）'
+        type: boolean
+        required: false
+        default: false
+      force_update:
+        description: '首次运行也允许更新事实字段（默认只回填 llId）'
+        type: boolean
+        required: false
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+# 同一时间只允许一个同步任务在跑，新触发的取消旧的（防 cron 与手动触发撞车）
+concurrency:
+  group: sync-data
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 抓取 Launch Library 数据
+        run: node scripts/fetch-launches.js ${{ github.event.inputs.backfill == 'true' && '--backfill' || '' }}
+        env:
+          LL_API_KEY: ${{ secrets.LL_API_KEY }}   # 可选；缺省匿名调用，额度降低但可跑
+
+      - name: 字段映射与合并
+        run: node scripts/merge-data.js ${{ github.event.inputs.force_update == 'true' && '--force-update' || '' }}
+
+      # 硬门禁前置：任一校验项 FAIL → validate 退出码 1 → 本 job 终止 → 不会走到建 PR 那一步。
+      # 注意此时 data.js 已被 merge-data.js 改写，但那是 runner 上的临时工作区，不会进仓库。
+      - name: 数据校验（硬门禁）
+        run: node scripts/validate-data.js
+
+      - name: 提交并开 PR
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: data/sync
+          commit-message: 'chore(data): Launch Library 自动同步'
+          title: '数据自动同步 · ${{ github.run_number }}'
+          body-path: .sync/summary.md
+          labels: |
+            data-sync
+            automated

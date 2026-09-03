@@ -12,8 +12,12 @@
  * - ty: 国发/商发
  * - st: done/fail/delay/plan
  * - hl: 是否高亮（1/0）
- * - src: 数据来源（key见SOURCES表：xinhua/spacechina/landspace/cas-space/galactic-energy/orienspace/spacex/est/tbd）
+ * - src: 数据来源（key见SOURCES表：xinhua/spacechina/landspace/cas-space/galactic-energy/orienspace/spacex/launchlib/est/tbd）
  * - note: 备注
+ * - llId: [可选] Launch Library 2 slug，流水线匹配主键，由 scripts/merge-data.js 自动回填，人工不填
+ * - lock: [可选] 字段锁数组，数组内字段不受流水线覆盖（合法值 {s,e,t,st,satCount,src}）
+ *
+ * src 赋值规则：国外·流水线自动合并 → launchlib；est 为历史整理值专用。
  */
 
 /* 厂家分组表 —— 一级大类（国家队/民营/国际），二级厂家，三级型号 */
@@ -403,7 +407,8 @@ const SOURCES = {
   "galactic-energy": {label:"星河动力官网", url:"https://www.galactic-energy.cn/", note:""},
   orienspace: {label:"东方空间官网", url:"https://www.orienspace.com/", note:""},
   spacex: {label:"SpaceX Launches", url:"https://www.spacex.com/launches/", note:""},
-  est: {label:"按公开计划与历史节奏整理（估算）", url:"https://launchlibrary.net/", note:"国际数据为估算值，阶段3接入 Launch Library 2 自动同步后替换"},
+  launchlib: {label:"Launch Library 2（自动同步）", url:"https://launchlibrary.net/", note:"GitHub Actions 定时抓取，经字段合并后入库"},
+  est: {label:"按公开计划与历史节奏整理（估算）", url:"https://launchlibrary.net/", note:"历史整理值专用；国际数据已由 launchlib 流水线接管"},
   tbd: {label:"待官方公布", url:"", note:"排期未定任务"}
 };
 
@@ -479,7 +484,7 @@ const EVENTS = [
   /* ===== 7月 ===== */
   {id:"m7-1", name:"海洋二号E卫星", s:"2026-07-02", e:"2026-07-02", t:"—", rk:"长征四号乙", rkKey:"cz4b", pl:"海洋二号E卫星", satCount:1, site:"酒泉卫星发射中心", op:"国家任务", opKey:"", cat:"other", ty:"国发", st:"done", hl:0, src:"xinhua", note:"海洋动力环境监测。"},
   {id:"m7-2", name:"千帆极轨13组（一箭18星）", s:"2026-07-04", e:"2026-07-04", t:"—", rk:"长征六号改", rkKey:"cz6a", pl:"千帆极轨13组18颗卫星", satCount:18, site:"太原卫星发射中心", op:"垣信卫星 · 千帆星座", opKey:"yuanxin", cat:"yuanxin", ty:"国发", st:"done", hl:0, src:"xinhua", note:"千帆「两天两发」首日。"},
-  {id:"m7-3", name:"千帆极轨15组（一箭20星，在轨238颗）", s:"2026-07-05", e:"2026-07-05", t:"21:43", rk:"长征八号甲（改进型）", rkKey:"cz8a", pl:"千帆极轨15组20颗卫星", satCount:20, site:"海南商业航天发射场", op:"垣信卫星 · 千帆星座", opKey:"yuanxin", cat:"yuanxin", ty:"国发", st:"done", hl:1, src:"xinhua", note:"长八甲改进型首飞，一箭20星创千帆单次纪录，在轨达238颗。"},
+  {id:"m7-3", name:"千帆极轨15组（一箭20星，在轨238颗）", s:"2026-07-05", e:"2026-07-05", t:"21:43", rk:"长征八号甲（改进型）", rkKey:"cz8a", pl:"千帆极轨15组20颗卫星", satCount:20, site:"海南商业航天发射场", op:"垣信卫星 · 千帆星座", opKey:"yuanxin", cat:"yuanxin", ty:"国发", st:"done", hl:1, src:"xinhua", note:"长八甲改进型首飞，一箭20星创千帆单次纪录，在轨达238颗。", lock:["satCount","st"]},
   {id:"m7-4", name:"长征十号乙 · 首飞（海上网系回收）", s:"2026-07-10", e:"2026-07-10", t:"12:15", rk:"长征十号乙", rkKey:"cz10b", pl:"1颗未公开卫星", satCount:1, site:"文昌（海南商业航天发射场）", op:"国家任务", opKey:"", cat:"verify", ty:"国发", st:"done", hl:1, src:"xinhua", note:"新箭首飞即实现一子级海上「网系回收」，全球首次。"},
   {id:"m7-5", name:"一箭9星（引力一号远海首射）", s:"2026-07-22", e:"2026-07-22", t:"—", rk:"引力一号 · 遥四", rkKey:"yyl1", pl:"东坡13/14/17-20星、西光贰号01星、天仪49星、紫丁香三号等9星", satCount:9, site:"上海东部海域（远海海上发射）", op:"东方空间", opKey:"", cat:"other", ty:"商发", st:"done", hl:1, src:"orienspace", note:"全球最大固体火箭首次远海发射。"},
   {id:"m7-6", name:"天链二号06星", s:"2026-07-23", e:"2026-07-23", t:"—", rk:"长征三号乙", rkKey:"cz3b", pl:"天链二号06星", satCount:1, site:"西昌卫星发射中心", op:"国家任务", opKey:"", cat:"other", ty:"国发", st:"done", hl:0, src:"xinhua", note:"天链中继网补网。"},
