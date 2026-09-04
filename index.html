@@ -1412,10 +1412,11 @@ $("#detailBack").onclick = ()=>{
   else showHome();
 };
 
-/* ---------- 启动 ---------- */
+/* ---------- 启动：默认显示「当月月份一览」（当月日历）；点顶部「🌌 全年」看 12 宫格全年全貌 ---------- */
 $("#asofDate").textContent = DATA_ASOF; $("#asofDate2").textContent = DATA_ASOF;
 (function(){ const t=todayStr(); if(t) curMonth=+t.slice(5,7); })();
-renderStats(); renderVendorRow(); renderTabs(); renderHome();
+renderStats(); renderVendorRow();
+showMonth(curMonth);
 
 /* 生成星空（纯装饰，缓慢闪烁） */
 (function(){
