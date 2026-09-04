@@ -398,7 +398,7 @@ const SITES = {
 };
 
 /* 数据基准与来源库 —— 事件 src 字段引用此表 */
-const DATA_ASOF = "2026-08-31";   // 数据整理基准日期
+const DATA_ASOF = "2026-09-04";   // 数据整理基准日期
 const SOURCES = {
   xinhua:  {label:"新华社·航天", url:"https://www.news.cn/aerospace/", note:"中国已执行任务的权威媒体报道汇编"},
   spacechina: {label:"中国航天科技集团", url:"http://www.spacechina.com/", note:"国家任务官方发布"},
@@ -504,7 +504,7 @@ const EVENTS = [
   {id:"lj1", name:"力箭一号遥十七 · 首次海上发射（顺延）", s:"2026-08-20", e:"2026-08-31", t:"窗口（已过）", rk:"力箭一号 · 遥十七", rkKey:"lz1", pl:"一箭3星（应用卫星）", satCount:0, site:"广东海域（海上发射）", op:"中科宇航", opKey:"", cat:"other", ty:"商发", st:"delay", hl:0, src:"xinhua", note:"8月窗口内未实施。8月25日已完成海上发射箭地合练（十余项试验），首次海射进入倒计时，预计9月择机执行，将成中国第5款海射火箭。"},
   {id:"ce7", name:"嫦娥七号探月任务（推迟至2027）", s:"2026-08-24", e:"2026-08-24", t:"—", rk:"长征五号 · 遥十四", rkKey:"cz5", pl:"嫦娥七号月球探测器", satCount:0, site:"文昌航天发射场", op:"国家月球探测四期工程", opKey:"moon", cat:"major", ty:"国发", st:"delay", hl:1, src:"xinhua", note:"官方通报不满足发射条件（19号台风「紫檀」致气象超阈值），2026年窗口取消，预计顺延至2027年（最优2027年8月下旬，次优2027年2-3月）。"},
   {id:"cz12a", name:"长征十二号甲遥二 · 回收验证（待定）", s:"2026-08-26", e:"2026-08-26", t:"待定", rk:"长征十二号甲 · 遥二", rkKey:"cz12a", pl:"一级回收技术验证", satCount:0, site:"海南商业航天发射场（预计）", op:"中国航天科技集团", opKey:"", cat:"verify", ty:"国发", st:"delay", hl:0, src:"xinhua", note:"原市场预估8月26日执行，但截至8月31日无官方发射通告或结果，任务日期待定。"},
-  {id:"m9-0", name:"智神星一号 · 首飞", s:"2026-09-01", e:"2026-09-01", t:"择机", rk:"智神星一号（液氧煤油可复用火箭）", rkKey:"zs1", pl:"基础入轨验证（不回收）", satCount:0, site:"酒泉卫星发射中心", op:"星河动力", opKey:"", cat:"verify", ty:"商发", st:"plan", hl:1, src:"est", note:"9月1日酒泉首飞（原定8月27日改期）。任务代号「驾青虬兮泛星河」，低轨运力7吨，设计复用不低于25次，首飞仅入轨。"},
+  {id:"m9-0", name:"智神星一号 · 首飞", s:"2026-09-01", e:"2026-09-01", t:"10:00", rk:"智神星一号（液氧煤油可复用火箭）", rkKey:"zs1", pl:"基础入轨验证（不回收）", satCount:0, site:"酒泉卫星发射中心", op:"星河动力", opKey:"", cat:"verify", ty:"商发", st:"done", hl:1, src:"galactic-energy", note:"9月1日10时酒泉首飞成功（任务代号「驾青虬兮泛星河」），低轨运力7吨，设计复用不低于25次，首飞仅入轨、后续发次逐步验证回收。"},
 
   /* ===== 9月（计划/预告） ===== */
   {id:"m9-1", name:"千帆极轨16组（9月12日）", s:"2026-09-12", e:"2026-09-12", t:"预计", rk:"长征八号甲 · 遥十一", rkKey:"cz8a", pl:"千帆极轨16A-T组网卫星", satCount:0, site:"海南商业航天发射场", op:"垣信卫星 · 千帆星座", opKey:"yuanxin", cat:"yuanxin", ty:"国发", st:"plan", hl:1, src:"est", note:"9月千帆「双发」之一，与9月17日任务同为高频组网发射。"},
@@ -592,6 +592,12 @@ const EVENTS = [
   {id:"ow-m5-1", name:"OneWeb Gen2 首批验证（Soyuz·一箭36星）", s:"2026-05-18", e:"2026-05-18", t:"—", rk:"Soyuz-2.1b", rkKey:"soyuz", pl:"OneWeb Gen2 ×36", satCount:36, site:"哈萨克斯坦·拜科努尔", op:"OneWeb·Eutelsat", opKey:"oneweb", cat:"oneweb", ty:"国外", st:"done", hl:1, src:"est", note:"二代卫星首次验证·增强手机直连能力"},
   {id:"ow-m9-1", name:"OneWeb Gen2 第二批（计划·一箭36星）", s:"2026-09-20", e:"2026-09-20", t:"预计", rk:"Soyuz-2.1b", rkKey:"soyuz", pl:"OneWeb Gen2 ×36", satCount:0, site:"哈萨克斯坦·拜科努尔", op:"OneWeb·Eutelsat", opKey:"oneweb", cat:"oneweb", ty:"国外", st:"plan", hl:0, src:"est", note:"9月计划批次"},
   {id:"ow-m11-1", name:"OneWeb Gen2 第三批（计划·一箭36星）", s:"2026-11-12", e:"2026-11-12", t:"预计", rk:"Soyuz-2.1b", rkKey:"soyuz", pl:"OneWeb Gen2 ×36", satCount:0, site:"哈萨克斯坦·拜科努尔", op:"OneWeb·Eutelsat", opKey:"oneweb", cat:"oneweb", ty:"国外", st:"plan", hl:0, src:"est", note:"11月计划批次·全年OneWeb累计108颗"},
+
+  /* --- 2026年9月补充（公开发射计划·est，窗口以官方通告为准） --- */
+  {id:"m9-6", name:"吉利07A-L卫星", s:"2026-09-09", e:"2026-09-09", t:"17:00", rk:"长征二号丙", rkKey:"cz2c", pl:"吉利07A-L卫星", satCount:0, site:"酒泉卫星发射中心", op:"航天科技火箭院", opKey:"", cat:"other", ty:"国发", st:"plan", hl:0, src:"est", note:"吉利星座组网卫星，计划9月9日17:00发射（窗口待官方确认）。"},
+  {id:"m9-3", name:"千帆星座（引力一号·遥三·一箭9星）", s:"2026-09-14", e:"2026-09-14", t:"05:30", rk:"引力一号 · 遥三", rkKey:"yyl1", pl:"千帆星座1箭9星", satCount:0, site:"山东海阳东方航天港", op:"垣信卫星 · 千帆星座", opKey:"yuanxin", cat:"yuanxin", ty:"国发", st:"plan", hl:0, src:"est", note:"引力一号首次千帆组网发射，计划9月14日05:30（窗口待官方确认）。"},
+  {id:"m9-4", name:"谷神星二号 · 遥二", s:"2026-09-23", e:"2026-09-23", t:"预计", rk:"谷神星二号 · 遥二", rkKey:"gsc2", pl:"应用卫星（一箭多星，载荷待公布）", satCount:0, site:"酒泉卫星发射中心", op:"星河动力", opKey:"", cat:"verify", ty:"商发", st:"plan", hl:0, src:"est", note:"谷神星二号第二飞（年初遥一首飞失利后复飞），计划9月23日。"},
+  {id:"m9-5", name:"快舟十一号（9月·计划）", s:"2026-09-28", e:"2026-09-28", t:"预计", rk:"快舟十一号", rkKey:"kz11", pl:"载荷待公布", satCount:0, site:"酒泉卫星发射中心", op:"航天科工", opKey:"", cat:"other", ty:"商发", st:"plan", hl:0, src:"est", note:"快舟十一号9月计划发射，具体日期待公布（暂列9月下旬）。"},
 ];
 
 /* 大事记 */
