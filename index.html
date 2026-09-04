@@ -499,13 +499,20 @@
 
   <div class="tabs" id="tabs" data-page-node-id="gUgC6MJ49ZrGSDwUFLOZ4u"></div>
 
-  <!-- 首页：左 当月缩略(3) / 中 选项统计(4) / 右 大事记(3) -->
-  <div id="homeView" data-page-node-id="SGj1jecc1sDdQw8hnGFUWf">
-    <div class="side-card" style="margin-bottom:16px">
-      <h3>2026 · 全年发射全貌</h3>
+  <!-- 全年视图（12宫格 · 点击「🌌 全年」页签进入） -->
+  <div id="yearView" style="display:none">
+    <div class="navrow">
+      <button class="navbtn" onclick="showHome()">🏠 当月一览</button>
+      <span class="nt">2026 · 全年发射全貌</span>
+    </div>
+    <div class="side-card">
       <div class="sc-sub">12 个月一览 · 发射日蓝点 · 今日高亮 · 点击任一月份进入当月日历</div>
       <div class="year-grid" id="yearGrid"></div>
     </div>
+  </div>
+
+  <!-- 首页（默认）：左 当月缩略(3) / 中 选项统计(4) / 右 大事记(3) -->
+  <div id="homeView" data-page-node-id="SGj1jecc1sDdQw8hnGFUWf">
     <div class="home-layout" data-page-node-id="dGtdKKqduZvv0DC92KIGxh">
       <div class="col-left" data-page-node-id="4Zfo0TcaZqsAxJ3tR1bsUj">
         <div class="side-card" data-page-node-id="YFEl9XVMeqvwQ6KpRvz1st">
@@ -557,7 +564,7 @@
   <!-- 月份视图 -->
   <div id="monthView" style="display:none" data-page-node-id="A9M65AziSdepZiBTxkecCx">
     <div class="navrow" data-page-node-id="HySOtUKPEHuP5EOFKypUks">
-      <button class="navbtn" onclick="showHome()" data-page-node-id="SX4mSotpzbDVoWPKHkDFWu">← 返回全年</button>
+      <button class="navbtn" onclick="showHome()" data-page-node-id="SX4mSotpzbDVoWPKHkDFWu">🏠 当月一览</button>
       <button class="navbtn" id="prevM" onclick="shiftMonth(-1)" data-page-node-id="YKRp0lsHs9UwfM77RRpBsg">◀ 上一月</button>
       <span class="nt" id="mTitle" data-page-node-id="BBqJIgSGVPCHgRZjF4MjwU"></span>
       <button class="navbtn" id="nextM" onclick="shiftMonth(1)" data-page-node-id="sx231L8NB3QPvlA9izGXto">下一月 ▶</button>
@@ -774,7 +781,7 @@ function renderVendorRow(){
 function renderTabs(){
   const t=$("#tabs"); t.innerHTML="";
   const mk=(label,fn,cls,on)=>{const b=document.createElement("button");b.className="tab "+cls+(on?" on":"");b.innerHTML=label;b.onclick=fn;t.appendChild(b);};
-  mk("🌌 全年",()=>showHome(),"home",curView==="home");
+  mk("🌌 全年",()=>showYear(),"year",curView==="year");
   MONTHS.forEach(m=>{
     const n=monthEvents(m).length;
     mk(`${MNAME[m]} <small style="opacity:.7">${n}</small>`,()=>showMonth(m),"",curView==="month"&&curMonth===m);
@@ -793,7 +800,6 @@ $("#viewSwitch").addEventListener("click",e=>{
 
 /* ---------- 首页 ---------- */
 function renderHome(){
-  renderYearGrid();
   renderLeftMonth();
   renderTagStats();
   renderMilestones();
@@ -824,6 +830,12 @@ function renderYearGrid(){
   const root=$("#yearGrid"); if(!root) return;
   root.innerHTML="";
   MONTHS.forEach(m=>root.appendChild(renderMonthThumb(m)));
+}
+/* 全年视图（页签「🌌 全年」）：12 宫格 */
+function showYear(){
+  curView="year"; selected=null;
+  $("#homeView").style.display="none"; $("#monthView").style.display="none"; $("#detailView").style.display="none"; $("#yearView").style.display="";
+  renderTabs(); renderYearGrid(); window.scrollTo(0,0);
 }
 
 /* 单月缩略月历：发射日打点 + 当日高亮，点击进入该月详情 */
@@ -916,11 +928,11 @@ function renderTagStats(){
 
 /* ---------- 月份视图 ---------- */
 function showHome(){
-  curView="home"; $("#homeView").style.display=""; $("#monthView").style.display="none"; $("#detailView").style.display="none"; selected=null; renderStats(); renderVendorRow(); renderTabs(); renderHome();
+  curView="home"; $("#homeView").style.display=""; $("#monthView").style.display="none"; $("#detailView").style.display="none"; $("#yearView").style.display="none"; selected=null; renderStats(); renderVendorRow(); renderTabs(); renderHome();
 }
 function showMonth(m){
   curView="month"; curMonth=m; selected=null;
-  $("#homeView").style.display="none"; $("#monthView").style.display=""; $("#detailView").style.display="none";
+  $("#homeView").style.display="none"; $("#monthView").style.display=""; $("#detailView").style.display="none"; $("#yearView").style.display="none";
   $("#mTitle").textContent=`${MNAME[m]} · 2026`;
   $("#calMonth").innerHTML=`${MNAME[m]} <small>2026 · 跨天任务以横条显示 · 点击日程条查看详情</small>`;
   $("#prevM").disabled=(m===1); $("#nextM").disabled=(m===12);
@@ -1100,7 +1112,7 @@ function renderPanel(){
 /* ---------- 专属页（火箭/运营方） ---------- */
 function showDetail(type, key){
   detailReturnView = (curView==="month") ? "month" : "home";
-  $("#homeView").style.display="none"; $("#monthView").style.display="none"; $("#detailView").style.display="block";
+  $("#homeView").style.display="none"; $("#monthView").style.display="none"; $("#detailView").style.display="block"; $("#yearView").style.display="none";
   curView="detail";
 
   const evs = (type==="rocket")
@@ -1171,7 +1183,7 @@ function showDetail(type, key){
 /* ---------- 厂家专属页（一级厂家，下列出所有型号） ---------- */
 function showVendorDetail(type, vk){
   detailReturnView = (curView==="month") ? "month" : "home";
-  $("#homeView").style.display = "none"; $("#monthView").style.display = "none"; $("#detailView").style.display = "block";
+  $("#homeView").style.display = "none"; $("#monthView").style.display = "none"; $("#detailView").style.display = "block"; $("#yearView").style.display = "none";
   curView = "detail";
 
   const v = (type === "rocket") ? VENDORS.rocket[vk] : VENDORS.operator[vk];
@@ -1337,7 +1349,7 @@ function vendorBack(){
 /* ---------- 分类专属页（点击「按分类」标签进入） ---------- */
 function showCatDetail(catKey){
   detailReturnView = (curView==="month") ? "month" : "home";
-  $("#homeView").style.display="none"; $("#monthView").style.display="none"; $("#detailView").style.display="block";
+  $("#homeView").style.display="none"; $("#monthView").style.display="none"; $("#detailView").style.display="block"; $("#yearView").style.display="none";
   curView="detail";
   const c = CATS[catKey];
   if(!c){ $("#detailBody").innerHTML=`<div class="empty">未找到分类 ${esc(catKey)}</div>`; renderTabs(); return; }
@@ -1376,7 +1388,7 @@ function showCatDetail(catKey){
 /* ---------- 状态专属页（点击「按状态」标签进入） ---------- */
 function showStatusDetail(stKey){
   detailReturnView = (curView==="month") ? "month" : "home";
-  $("#homeView").style.display="none"; $("#monthView").style.display="none"; $("#detailView").style.display="block";
+  $("#homeView").style.display="none"; $("#monthView").style.display="none"; $("#detailView").style.display="block"; $("#yearView").style.display="none";
   curView="detail";
   const stMap={done:["成功","#0f8a4c"],fail:["失利","#b91c1c"],delay:["推迟","#c2410c"],plan:["计划中","#a16207"]};
   const [label,color]=stMap[stKey]||["—","#64748b"];
@@ -1412,11 +1424,10 @@ $("#detailBack").onclick = ()=>{
   else showHome();
 };
 
-/* ---------- 启动：默认显示「当月月份一览」（当月日历）；点顶部「🌌 全年」看 12 宫格全年全貌 ---------- */
+/* ---------- 启动：默认「当月月份一览」= 3:4:3 三栏首页；点「🌌 全年」页签看 12 宫格 ---------- */
 $("#asofDate").textContent = DATA_ASOF; $("#asofDate2").textContent = DATA_ASOF;
 (function(){ const t=todayStr(); if(t) curMonth=+t.slice(5,7); })();
-renderStats(); renderVendorRow();
-showMonth(curMonth);
+showHome();
 
 /* 生成星空（纯装饰，缓慢闪烁） */
 (function(){
