@@ -573,7 +573,7 @@
       <button class="navbtn" id="prevM" onclick="shiftMonth(-1)">◀ 上一月</button>
       <span class="nt" id="mTitle"></span>
       <button class="navbtn" id="nextM" onclick="shiftMonth(1)">下一月 ▶</button>
-      <button class="navbtn primary" id="btnToday">回到今天</button>
+      <button class="navbtn primary" id="btnToday" onclick="showToday()">回到今天</button>
     </div>
     <div class="toolbar">
       <span class="label">图例筛选</span>
@@ -945,7 +945,11 @@ function showMonth(m){
   renderTabs(); renderFilters(); renderCalendar(); renderPanel();
 }
 function shiftMonth(d){ const m=curMonth+d; if(m>=1&&m<=12) showMonth(m); }
-function showToday(){ const t=todayStr(); if(t){ curMonth=+t.slice(5,7); showMonth(curMonth); selected=t; renderCalendar(); renderPanel(); } }
+function showToday(){
+  const t=todayStr();
+  if(!t){ showMonth(currentRealMonth()); return; }   // 非 2026 年份：退化为跳当前真实月份，保证按钮永远有可见响应
+  curMonth=+t.slice(5,7); showMonth(curMonth); selected=t; renderCalendar(); renderPanel();
+}
 
 function renderFilters(){
   const box=$("#catFilters"); box.innerHTML="";
