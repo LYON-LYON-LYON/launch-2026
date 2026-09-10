@@ -398,7 +398,7 @@ const SITES = {
 };
 
 /* 数据基准与来源库 —— 事件 src 字段引用此表 */
-const DATA_ASOF = "2026-09-04";   // 数据整理基准日期
+const DATA_ASOF = "2026-09-10";   // 数据整理基准日期
 const SOURCES = {
   xinhua:  {label:"新华社·航天", url:"https://www.news.cn/aerospace/", note:"中国已执行任务的权威媒体报道汇编"},
   spacechina: {label:"中国航天科技集团", url:"http://www.spacechina.com/", note:"国家任务官方发布"},
@@ -506,7 +506,7 @@ const EVENTS = [
   {id:"m9-1", name:"千帆极轨16组（9月12日）", s:"2026-09-12", e:"2026-09-12", t:"预计", rk:"长征八号甲 · 遥十一", rkKey:"cz8a", pl:"千帆极轨16A-T组网卫星", satCount:0, site:"海南商业航天发射场", op:"垣信卫星 · 千帆星座", opKey:"yuanxin", cat:"yuanxin", ty:"国发", st:"plan", hl:1, src:"est", note:"9月千帆「双发」之一，与9月17日任务同为高频组网发射。"},
   {id:"m9-1b", name:"千帆极轨16组（9月17日）", s:"2026-09-17", e:"2026-09-17", t:"预计", rk:"长征十二号 · 遥十", rkKey:"cz12", pl:"千帆极轨16A-T组网卫星", satCount:0, site:"海南商业航天发射场", op:"垣信卫星 · 千帆星座", opKey:"yuanxin", cat:"yuanxin", ty:"国发", st:"plan", hl:0, src:"est", note:"千帆星座9月第二次组网发射，全年324颗目标冲刺。"},
   {id:"m9-1c", name:"风云四号M气象卫星", s:"2026-09-29", e:"2026-09-29", t:"预计", rk:"长征三号乙 · 遥一百二十", rkKey:"cz3b", pl:"风云四号M气象卫星", satCount:0, site:"西昌卫星发射中心", op:"国家气象卫星工程", opKey:"weather", cat:"other", ty:"国发", st:"plan", hl:0, src:"est", note:"新一代静止轨道气象卫星。"},
-  {id:"m9-1d", name:"西昌任务（载荷未公布）", s:"2026-09-10", e:"2026-09-10", t:"预计", rk:"长征三号乙 · 遥一百一十七", rkKey:"cz3b", pl:"未公布", satCount:0, site:"西昌卫星发射中心", op:"国家任务", opKey:"", cat:"other", ty:"国发", st:"plan", hl:0, src:"est", note:"据发射计划预告，载荷信息未公布。"},
+  {id:"m9-1d", name:"西昌任务（载荷未公布）", s:"", e:"", t:"待定", rk:"长征三号乙 · 遥一百一十七", rkKey:"cz3b", pl:"未公布", satCount:0, site:"西昌卫星发射中心", op:"国家任务", opKey:"", cat:"other", ty:"国发", st:"plan", tbd:1, month:9, hl:0, src:"tbd", note:"原挂 9月10日，经核：国际源（Launch Library 2.2）西昌无任何已排定发射，且 9/10 当日全球仅长二丁/远征三号@酒泉一发（不同任务不同发射场）；原始中文计划表仅称「2026年9月」未给具体日期，该 9-10 属月度推测占位。故移除日期改为待定（tbd:1, month:9），待官方公布后回填。"},
   {id:"m9-2", name:"中国移动03星（择机）", s:"", e:"", t:"待定", rk:"待定", rkKey:"", pl:"中国移动03星（搭载星载基站）", satCount:0, site:"待定", op:"中国移动", opKey:"cmcc", cat:"other", ty:"商发", st:"plan", tbd:1, month:9, hl:0, src:"tbd", note:"验证「星上再生」模式与卫星物联网业务，发射日期未定。"},
 
   /* ===== 10-12月（占位·计划预告区） ===== */
@@ -562,7 +562,8 @@ const EVENTS = [
   {id:"sx-m8-4", name:"Starlink 12-30（一箭22星）", s:"2026-08-25", e:"2026-08-25", t:"—", rk:"Falcon 9 · B1076", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:22, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"est", note:"8月4批·累计89颗·星链在轨突破7700颗"},
 
   /* SpaceX 9-12月计划 */
-  {id:"sx-m9-1", name:"Starlink 12-31（9月·计划）", s:"2026-09-08", e:"2026-09-08", t:"预计", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:0, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"plan", hl:0, src:"est", note:"9月首批"},
+  {id:"sx-m9-1", name:"Starlink Group 15-23（一箭27星）", s:"2026-09-02", e:"2026-09-02", t:"16:42", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×27", satCount:27, site:"加州范登堡·4E工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"launchlib", note:"原记为「Starlink 12-31」（该批次号在任何公开源中均不存在），经 Launch Library 2.2 核实 9 月首批实为 Group 15-23：net=2026-09-02T08:42:12Z（北京 16:42），范登堡 SLC-4E，一箭 27 星入 LEO，成功。注意：库内沿用「12-xx」编号体系，与国际源「Group 15-xx」不一致，批次号以国际源为准。团队外部查证另记一级编号 B1063。"},
+  {id:"sx-m9-1b", name:"Starlink Group 15-24（一箭27星）", s:"2026-09-06", e:"2026-09-06", t:"22:26", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×27", satCount:27, site:"加州范登堡·4E工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"launchlib", note:"2026-09-06T14:26:54Z（北京 22:26）范登堡 SLC-4E 发射，一箭 27 星入 LEO，成功。数据源 Launch Library 2.2（mission description: A batch of 27 satellites）。库内原无对应条目，本次补录。"},
   {id:"sx-m9-2", name:"Starlink 12-32（9月·计划）", s:"2026-09-22", e:"2026-09-22", t:"预计", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×22", satCount:0, site:"佛州卡角·40号工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"plan", hl:0, src:"est", note:""},
   {id:"sx-m10-1", name:"Starlink 10月组网（计划×4）", s:"2026-10-06", e:"2026-10-27", t:"窗口", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×约90颗", satCount:0, site:"佛州/加州交替", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"plan", hl:0, src:"est", note:"10月预计4次·累计约90颗"},
   {id:"sx-m11-1", name:"Starlink 11月组网（计划×4）", s:"2026-11-03", e:"2026-11-24", t:"窗口", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×约90颗", satCount:0, site:"佛州/加州交替", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"plan", hl:0, src:"est", note:"11月预计4次"},
@@ -590,7 +591,7 @@ const EVENTS = [
   {id:"ow-m11-1", name:"OneWeb Gen2 第三批（计划·一箭36星）", s:"2026-11-12", e:"2026-11-12", t:"预计", rk:"Soyuz-2.1b", rkKey:"soyuz", pl:"OneWeb Gen2 ×36", satCount:0, site:"哈萨克斯坦·拜科努尔", op:"OneWeb·Eutelsat", opKey:"oneweb", cat:"oneweb", ty:"国外", st:"plan", hl:0, src:"est", note:"11月计划批次·全年OneWeb累计108颗"},
 
   /* --- 2026年9月补充（公开发射计划·est，窗口以官方通告为准） --- */
-  {id:"m9-6", name:"吉利07A-L卫星", s:"2026-09-09", e:"2026-09-09", t:"17:00", rk:"长征二号丙", rkKey:"cz2c", pl:"吉利07A-L卫星", satCount:0, site:"酒泉卫星发射中心", op:"航天科技火箭院", opKey:"", cat:"other", ty:"国发", st:"plan", hl:0, src:"est", note:"吉利星座组网卫星，计划9月9日17:00发射（窗口待官方确认）。"},
+  {id:"m9-6", name:"吉利07A-L卫星", s:"2026-09-10", e:"2026-09-10", t:"17:00", rk:"长征二号丁 · 远征三号", rkKey:"cz2d", pl:"未公布（国际源记为 Unknown Payload）", satCount:0, site:"酒泉卫星发射中心", op:"航天科技火箭院", opKey:"", cat:"other", ty:"国发", st:"plan", hl:0, src:"est", note:"原记长征二号丙 / 9月9日17:00。国际源（Launch Library 2.2）记 Long March 2D/YZ-3、net=2026-09-10T09:00Z（北京 17:00）、酒泉 94 号工位（Launch Area 94 / SLS-2）、载荷 Unknown、status=Go；发射时刻与发射场与库内原记录逐字吻合，判定为同一任务由 9/9 顺延至 9/10，非取消、非过期占位。火箭型号中外源不一致（库内/国内源记长征二号丙，国际源记长征二号丁+远征三号上面级），载荷国际源记为 Unknown，均待官方确认。截至 2026-09-10 北京 10:08 尚未发射，故状态保持「计划中」。rkKey 沿用基础型 cz2d（参照 m3-7 长征二号丙/远征一号S 用 cz2c 的先例）。"},
   {id:"m9-3", name:"千帆星座（引力一号·遥三·一箭9星）", s:"2026-09-14", e:"2026-09-14", t:"05:30", rk:"引力一号 · 遥三", rkKey:"yyl1", pl:"千帆星座1箭9星", satCount:0, site:"山东海阳东方航天港", op:"垣信卫星 · 千帆星座", opKey:"yuanxin", cat:"yuanxin", ty:"国发", st:"plan", hl:0, src:"est", note:"引力一号首次千帆组网发射，计划9月14日05:30（窗口待官方确认）。"},
   {id:"m9-4", name:"谷神星二号 · 遥二", s:"2026-09-23", e:"2026-09-23", t:"预计", rk:"谷神星二号 · 遥二", rkKey:"gsc2", pl:"应用卫星（一箭多星，载荷待公布）", satCount:0, site:"酒泉卫星发射中心", op:"星河动力", opKey:"", cat:"verify", ty:"商发", st:"plan", hl:0, src:"est", note:"谷神星二号第二飞（年初遥一首飞失利后复飞），计划9月23日。"},
   {id:"m9-5", name:"快舟十一号（9月·计划）", s:"2026-09-28", e:"2026-09-28", t:"预计", rk:"快舟十一号", rkKey:"kz11", pl:"载荷待公布", satCount:0, site:"酒泉卫星发射中心", op:"航天科工", opKey:"", cat:"other", ty:"商发", st:"plan", hl:0, src:"est", note:"快舟十一号9月计划发射，具体日期待公布（暂列9月下旬）。"},
