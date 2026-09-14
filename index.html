@@ -636,7 +636,9 @@
 <script>
 const MONTHS = [1,2,3,4,5,6,7,8,9,10,11,12];
 const activeCats = new Set(Object.keys(CATS));
-let typeFilter = "all";
+const ALL_TYPES = ["国发","商发","国外"];
+const typeSel = new Set(ALL_TYPES);      // 多选集合；默认三项全选 = 「全部」
+const typeMatch = e => typeSel.has(e.ty);   // 类型命中：默认三项全选即「全部」
 let regionFilter = "all"; // all | cn | intl
 let statusFilter = "all"; // all | done | fail | delay | plan
 let curView = "home", curMonth = 8, selected = null;
@@ -676,11 +678,11 @@ const addDays = (d,n)=>{ const x=new Date(d); x.setDate(x.getDate()+n); return x
 const fmt = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
 const esc = s => String(s==null?"":s).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const evMonth = e => e.s ? parse(e.s).getMonth()+1 : (e.month||0);
-/* 全局图例筛选也作用于顶部统计：结合 activeCats + typeFilter */
-const statFiltered = () => EVENTS.filter(e => regionMatch(e) && activeCats.has(e.cat) && (typeFilter==="all" || e.ty===typeFilter));
+/* 全局图例筛选也作用于顶部统计：结合 activeCats + typeSel（类型多选） */
+const statFiltered = () => EVENTS.filter(e => regionMatch(e) && activeCats.has(e.cat) && typeMatch(e));
 const visibleEvents = () => statFiltered();
 const monthEvents = m => EVENTS.filter(e=>evMonth(e)===m && regionMatch(e));
-const visibleIn = m => monthEvents(m).filter(e=>activeCats.has(e.cat)&&(typeFilter==="all"||e.ty===typeFilter)&&(statusFilter==="all"||e.st===statusFilter));
+const visibleIn = m => monthEvents(m).filter(e=>activeCats.has(e.cat)&&typeMatch(e)&&(statusFilter==="all"||e.st===statusFilter));
 function todayStr(){ const n=new Date(); return n.getFullYear()===YEAR&&MONTHS.includes(n.getMonth()+1)?fmt(n):null; }
 
 /* ---------- 顶部统计 ---------- */
@@ -690,7 +692,10 @@ function renderStats(){
         delay=evs.filter(e=>e.st==="delay").length, plan=evs.filter(e=>e.st==="plan").length;
   const totalSat = evs.filter(e=>e.st==="done").reduce((s,e)=>s+(e.satCount||0),0);
   const cnCount = evs.filter(e=>!isIntl(e)).length, intlCount = evs.filter(e=>isIntl(e)).length;
-  const typeLabel = typeFilter==="all" ? (regionFilter==="all"?"全球":regionFilter==="cn"?"中国":"国际") : typeFilter;
+  /* 全选=全球/中国/国际；部分选中按固定顺序拼接，如「国发+商发」 */
+  const typeLabel = typeSel.size===ALL_TYPES.length
+    ? (regionFilter==="all"?"全球":regionFilter==="cn"?"中国":"国际")
+    : ALL_TYPES.filter(t=>typeSel.has(t)).join("+");
   const catOff = activeCats.size < Object.keys(CATS).length ? `· ${Object.keys(CATS).length - activeCats.size}类关` : "";
   $("#stats").innerHTML =
     `<div class="stat${statusFilter!=='all'||regionFilter!=='all'?' active':''}" onclick="onStatClick('reset')"><b>${evs.length}</b>项任务（全年·${typeLabel}${catOff}）</div>`+
@@ -704,10 +709,10 @@ function renderStats(){
 
 /* ---------- 统计栏点击联动（v8 增补：数字可点击 → 筛选/日历） ---------- */
 function resetAllFilters(){
-  statusFilter="all"; regionFilter="all"; typeFilter="all";
+  statusFilter="all"; regionFilter="all"; ALL_TYPES.forEach(t=>typeSel.add(t));
   Object.keys(CATS).forEach(k=>activeCats.add(k));
   [...$("#viewSwitch").children].forEach(x=>x.classList.toggle("on", x.dataset.region==="all"));
-  [...$("#typeSeg").children].forEach(x=>x.classList.toggle("on", x.dataset.type==="all"));
+  syncTypeUI();
   updateSegAllBtn();
 }
 function setRegion(r){
@@ -963,18 +968,41 @@ function renderFilters(){
     box.appendChild(el);
   }
 }
+/* 类型多选：「全部」= 三项全选；点子项在该项独占 / 切换之间自动切换（见下）
+   返回 false 表示本次点击被忽略 */
+function toggleType(t){
+  if(t==="all"){ ALL_TYPES.forEach(x=>typeSel.add(x)); return true; }
+  /* 全选态下点子项 = 只看该类型：兼容旧版单选手感（点「国发」→ 只剩国发），之后再加选即为多选 */
+  if(ALL_TYPES.every(x=>typeSel.has(x))){ typeSel.clear(); typeSel.add(t); return true; }
+  /* 已是最后一项时拒绝取消，避免出现 0 条结果的空页面 */
+  if(typeSel.has(t)){ if(typeSel.size<=1) return false; typeSel.delete(t); }
+  else { typeSel.add(t); }
+  return true;
+}
+/* 两处控件（首页侧栏 / 月份页工具栏）状态互相同步，始终一致 */
+function syncTypeUI(){
+  const allOn = ALL_TYPES.every(t=>typeSel.has(t));
+  ["#typeSeg","#typeSegHome"].forEach(sel=>{
+    const box=$(sel); if(!box) return;
+    [...box.children].forEach(x=>{
+      const t=x.dataset.type;
+      x.classList.toggle("on", t==="all" ? allOn : typeSel.has(t));
+    });
+  });
+}
 $("#typeSeg").addEventListener("click",e=>{
   const b=e.target.closest("button"); if(!b) return;
-  typeFilter=b.dataset.type;
-  [...$("#typeSeg").children].forEach(x=>x.classList.toggle("on",x===b));
+  const t=b.dataset.type;
+  if(!toggleType(t)) return;
+  syncTypeUI();
   renderCalendar(); renderPanel(); renderStats();
 });
-/* 首页类型筛选（与顶部一致，同步全局 typeFilter 并刷新首页） */
+/* 首页类型筛选（与顶部一致，同为多选；同步全局 typeSel 并刷新首页） */
 $("#typeSegHome").addEventListener("click",e=>{
   const b=e.target.closest("button"); if(!b) return;
-  typeFilter=b.dataset.type;
-  [...$("#typeSegHome").children].forEach(x=>x.classList.toggle("on",x===b));
-  [...$("#typeSeg").children].forEach(x=>x.classList.toggle("on", x.dataset.type===typeFilter));
+  const t=b.dataset.type;
+  if(!toggleType(t)) return;
+  syncTypeUI();
   renderStats(); renderVendorRow(); renderTabs();
   if(curView==="home") renderHome();
   else if(curView==="month"){ renderFilters(); renderCalendar(); renderPanel(); }
@@ -1437,6 +1465,7 @@ $("#detailBack").onclick = ()=>{
 /* ---------- 启动：默认「当月月份一览」= 3:4:3 三栏首页；点「🌌 全年」页签看 12 宫格 ---------- */
 $("#asofDate").textContent = DATA_ASOF; $("#asofDate2").textContent = DATA_ASOF;
 (function(){ const t=todayStr(); if(t) curMonth=+t.slice(5,7); })();
+syncTypeUI();   // 初始全选：HTML 里只有「全部」带 .on，这里补齐三个子项高亮，避免显示与实际不同步
 showHome();
 
 /* 生成星空（纯装饰，缓慢闪烁） */
