@@ -86,13 +86,13 @@
 
 ---
 
-## 4. Falcon 9 Block 5 | USSF-153（尚未发射）
+## 4. Falcon 9 Block 5 | USSF-153
 
 | 字段 | 值 |
 |---|---|
 | net (UTC) | `2026-09-10T15:42:00Z` |
 | 北京时间 | 2026-09-10 23:42 |
-| 状态 | `Go` / Go for Launch（**尚未发射**） |
+| 状态 | **`Success` / Launch Successful**（已发射成功；原记 `Go` 为发射前状态，2026-09-14 复核已变更） |
 | 火箭 | Falcon 9（`full_name` = Falcon 9 Block 5） |
 | 服务商 | SpaceX |
 | 载荷 | USSF-153 |
@@ -105,6 +105,60 @@
 
 不入表原因：虽为 SpaceX/Falcon 9，但载荷是**美国太空军军用任务**，不属于「星链星座组网」口径，
 若计入 `spacex` 分类会虚增星链组网统计，故暂存。
+
+补充（2026-09-14 复核）：一级 B1081 第 27 飞；为 SpaceX 2026 年第 5 次国安任务；载荷保密，外部分析疑为 Starshield 批次（**未经官方确认，不作定论**）。
+
+---
+
+## 5. Electron | "Happily Ever Faster"（BlackSky Gen-3 5）
+
+| 字段 | 值 |
+|---|---|
+| net (UTC) | `2026-09-11T03:28:00Z` |
+| 北京时间 | 2026-09-11 11:28 |
+| 状态 | `Success` / Launch Successful |
+| 火箭 | Electron |
+| 服务商 | Rocket Lab |
+| 载荷 | BlackSky Gen-3 卫星（第 5 颗 Gen-3） |
+| 任务类型 | Earth Science / 商业遥感 |
+| 发射工位 | Rocket Lab Launch Complex 1A |
+| 发射场 | Rocket Lab Launch Complex 1, Mahia Peninsula, New Zealand（新西兰玛希亚） |
+| 入轨卫星数 | **1**（外部查证口径；LL description 未明确给出星数，若以 LL 为准应记「待核实」） |
+| 轨道 | Low Earth Orbit |
+| slug | `electron-happily-ever-faster-blacksky-gen-3-5` |
+
+不入表原因：BlackSky 商业遥感星座，非本站三大国际口径（starlink / kuiper / oneweb）。
+
+---
+
+## 6. Falcon 9 Block 5 | O3b mPower 11-13（O3b mPOWER F13）
+
+| 字段 | 值 |
+|---|---|
+| net (UTC) | `2026-09-13T18:49:00Z` |
+| 北京时间 | 2026-09-14 02:49 |
+| 状态 | `Success` / Launch Successful |
+| 火箭 | Falcon 9（`full_name` = Falcon 9 Block 5） |
+| 服务商 | SpaceX（客户 SES） |
+| 载荷 | O3b mPOWER 11 / 12 / 13 |
+| 任务类型 | Communications（中轨宽带通信星座） |
+| 发射工位 | Space Launch Complex 40 |
+| 发射场 | Cape Canaveral SFS, FL, USA（佛州卡角） |
+| 入轨卫星数 | **3** |
+| 轨道 | Medium Earth Orbit |
+| slug | `falcon-9-block-5-o3b-mpower-11-13` |
+
+不入表原因：SES 的 O3b mPOWER 属中轨通信星座，非本站三大国际口径。
+
+里程碑（外部查证口径，供参考）：本次为**猎鹰系列第 700 次发射**，并标志 O3b mPOWER 星座 13 星组网收官。
+
+---
+
+## 7. 2026-09-10 ~ 09-14 区间说明（本轮复核）
+
+- **9/11、9/12、9/13 全球零轨道发射**；9/14 仅 O3b mPower（北京 02:49）一发。
+- **中国 9/11–9/14 零发射**。
+- 上述 3 条（USSF-153 / Electron BlackSky / O3b mPower）即为该区间全部已核实的口径外国际发射。
 
 ---
 
