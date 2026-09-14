@@ -162,7 +162,11 @@ async function loadEndpoint(name, query, maxPages) {
     return { data: { count: 0, results: [] }, fromCache: true };
   }
 
-  const params = new URLSearchParams(Object.assign({ limit: String(PAGE_LIMIT), mode: "list" }, query));
+  // mode 必须为 "detailed"：LL2 的 "list" 模式只返回扁平字段（lsp_name / mission / pad / location 均为字符串），
+  // 而 scripts/merge-data.js 的 mapLaunch() 读的是嵌套结构（rocket.configuration.name / launch_service_provider.name /
+  // mission.name / pad.name / pad.location.name）。用 list 会导致 100% 事件取不到火箭型号（rkKey 恒为 undefined），
+  // 自动同步形同失效。详见 docs/audit-2026-09-08.md 的 P1-6。
+  const params = new URLSearchParams(Object.assign({ limit: String(PAGE_LIMIT), mode: "detailed" }, query));
   let url = `${API_BASE}/${name}/?${params.toString()}`;
   let merged = [];
 
