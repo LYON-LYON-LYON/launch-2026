@@ -162,6 +162,104 @@
 
 ---
 
+## 8. 2026-09-15 复核新增（口径外国际发射 · 4 条）
+
+> 整理日期：2026-09-15（北京 09:10）
+> 数据源：`scripts/fetch-launches.js --force`（`mode=detailed`）+ 航天日报（SpaceLab·小发射）9/15 日报交叉
+
+### 8.1 Vega-C | Sentinel-3C & FLEX
+
+| 字段 | 值 |
+|---|---|
+| net (UTC) | `2026-09-15T01:21:07Z` |
+| 北京时间 | 2026-09-15 09:21 |
+| 状态 | `Go` / Go for Launch（**尚未发射**，复核时窗口在 11 分钟后） |
+| 火箭 | Vega-C（`full_name` = Vega-C） |
+| 服务商 | Avio S.p.A |
+| 载荷 | Sentinel-3C（哥白尼计划）+ FLEX（ESA Earth Explorer 荧光探测器） |
+| 任务类型 | Earth Science（对地观测） |
+| 发射工位 | Ariane Launch Area 1 (ELV) |
+| 发射场 | Guiana Space Centre, French Guiana（法属圭亚那库鲁） |
+| 轨道 | Sun-Synchronous Orbit |
+| 入轨卫星数 | **2**（Sentinel-3C 与 FLEX 各 1 颗；LL description 未显式给星数，**本表按载荷构成记 2，若以 LL 原文为准应记「待核实」**） |
+| slug | `vega-c-sentinel-3c-flex` |
+| LL uuid | `8effc13a-c658-4d2e-9f15-8dba4d7fe2dd` |
+| last_updated | `2026-09-15T00:25:26Z` |
+
+不入表原因：ESA/哥白尼对地观测任务，非本站三大国际口径（starlink / kuiper / oneweb）。
+
+---
+
+### 8.2 Falcon 9 Block 5 | USSF-259
+
+| 字段 | 值 |
+|---|---|
+| net (UTC) | `2026-09-16T01:00:00Z` |
+| 北京时间 | 2026-09-16 09:00 |
+| 状态 | `Go` / Go for Launch |
+| 火箭 | Falcon 9（`full_name` = Falcon 9 Block 5） |
+| 服务商 | SpaceX |
+| 载荷 | USSF-259（美国太空军保密任务） |
+| 任务类型 | Government/Top Secret |
+| 发射工位 | Space Launch Complex 4E |
+| 发射场 | Vandenberg SFB, CA, USA（加州范登堡） |
+| 轨道 | Polar Orbit |
+| slug | `falcon-9-block-5-ussf-259` |
+| LL uuid | `17c71937-dd80-406f-bb47-0c9ee9a24276` |
+
+不入表原因：虽为 SpaceX/Falcon 9，但载荷是**美国太空军军用任务**，计入 `spacex` 会虚增星链组网统计。
+LL description 摘要：*"USSF-259 is a classified mission… It is possibly a batch of classified LEO satellites based on SpaceX's Starshield satellite bus…"* —— **「疑为 Starshield」系 LL 的分析推断，非官方确认，不作定论**。
+
+---
+
+### 8.3 Soyuz 2.1b | Progress MS-35 (96P)
+
+| 字段 | 值 |
+|---|---|
+| net (UTC) | `2026-09-16T13:33:53Z` |
+| 北京时间 | 2026-09-16 21:33 |
+| 状态 | `Go` / Go for Launch |
+| 火箭 | Soyuz 2.1b（`full_name` = Soyuz 2.1b） |
+| 服务商 | Russian Federal Space Agency (ROSCOSMOS) |
+| 载荷 | Progress MS-35（国际空间站货运补给，96P） |
+| 任务类型 | Resupply |
+| 发射工位 | 31/6 |
+| 发射场 | Baikonur Cosmodrome, Republic of Kazakhstan（拜科努尔） |
+| 轨道 | Low Earth Orbit |
+| slug | `soyuz-21b-progress-ms-35-96p` |
+| LL uuid | `d793ba47-faf5-4bab-a386-39a9ccc49c90` |
+
+不入表原因：空间站货运补给，非星座组网口径。
+
+⚠️ **口径变更提示**：本条与上轮（2026-09-10 前后）外部查证的"滑至 9/16 00:00 UTC 且 status 改 TBD"**不一致**——本次 LL 返回为 `2026-09-16T13:33:53Z`、`net_precision=Second`、`status=Go`（已恢复到具体时刻且为 Go）。**以本次 LL 返回为准，不做推算。**
+
+---
+
+### 8.4 Starship | Flight 14（★ 排期变更）
+
+| 字段 | 值 |
+|---|---|
+| net (UTC) | `2026-09-22T12:15:00Z` |
+| 北京时间 | 2026-09-22 20:15 |
+| 状态 | **`TBC` / To Be Confirmed** |
+| 火箭 | Starship（`full_name` = Starship V3） |
+| 服务商 | SpaceX |
+| 载荷 | Flight 14（第 14 次试飞；Starship V3 第 3 飞，**首次部署星链卫星**） |
+| 任务类型 | Test Flight |
+| 发射工位 | Orbital Launch Pad 2 |
+| 发射场 | SpaceX Starbase, TX, USA |
+| 轨道 | Low Earth Orbit |
+| slug | `starship-flight-14` |
+| LL uuid | `7d1afb26-6f9c-429b-9ccf-29012fd1e519` |
+| last_updated | `2026-09-14T14:11:21Z` |
+
+★ **排期变更：已由 9/18 推迟至 9/22**（上轮记录为 `2026-09-18T12:15Z`）。
+**双源确认**：LL 本次返回 net 已改 `2026-09-22T12:15Z`；航天日报 9/15 日报载「第 14 次飞行最早定于 **9 月 22 日**」。
+
+不入表原因：试飞性质，非星座组网口径（本站 `verify` 分类目前只用于中国民营火箭首飞与星舰试飞，需主理人确认后决定是否入表）。
+
+---
+
 ## 附：本次已入表的两条（对照，便于复核）
 
 这两条已写入 `data.js`，此处仅留档对照：
