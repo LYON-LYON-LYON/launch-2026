@@ -326,6 +326,13 @@
   }
   .ecard:hover{transform:translateY(-1px); border-color:color-mix(in srgb, var(--c) 45%, var(--line)); box-shadow:0 3px 10px rgba(16,42,84,.08)}
   .ecard .t{font-size:13.5px; font-weight:600; display:flex; gap:7px; align-items:center; flex-wrap:wrap}
+  /* 一键复制：按钮自身不可选中，避免把「复制」二字混进用户的文本选区 */
+  .copybtn{
+    margin-left:auto; font-size:10.5px; padding:2px 8px; border-radius:999px;
+    border:1px solid var(--line); background:#fff; color:var(--muted);
+    cursor:pointer; white-space:nowrap; transition:.15s; user-select:none;
+  }
+  .copybtn:hover{border-color:var(--blue); color:var(--blue)}
   .badge{font-size:10.5px; padding:2px 8px; border-radius:999px; border:1px solid var(--line); color:var(--muted); white-space:nowrap; background:#fff}
   .badge.cat{border-color:color-mix(in srgb, var(--c) 55%, transparent); color:var(--cd); background:color-mix(in srgb, var(--c) 12%, #fff)}
   .badge.done{color:#0f8a4c; border-color:rgba(24,169,87,.4); background:rgba(24,169,87,.08)}
@@ -1081,11 +1088,47 @@ function renderCalendar(){
   }
 }
 
+/* 卡片/复制文案共用的日期区间文案，避免两处算法漂移。
+   ev.s===ev.e → 单日；s、e 都有 → 起–止；否则 → 待定 */
+function fmtRange(ev){
+  const d1=`${+ev.s.slice(5,7)}月${+ev.s.slice(8)}日`;
+  return ev.s===ev.e ? d1 : (ev.s&&ev.e ? `${d1} – ${+ev.e.slice(5,7)}月${+ev.e.slice(8)}日` : "待定");
+}
+/* 卡片纯文本版（字段口径与卡片可见信息一致），供一键复制 */
+function buildCopyText(ev){
+  const lines=[];
+  lines.push(ev.name||"—");
+  const tail = (ev.t && ev.t!=="—") ? " · "+ev.t : "";
+  lines.push("日期："+fmtRange(ev)+tail);
+  lines.push("火箭："+(ev.rk||"—"));
+  lines.push("载荷："+(ev.pl||"—")+(ev.satCount>0?`（${ev.satCount}颗）`:""));
+  lines.push("发射场："+(ev.site||"—"));
+  lines.push("运营方："+(ev.op||"—"));
+  lines.push("状态："+(ST_TXT[ev.st]||"计划中"));
+  if(ev.note) lines.push("备注："+ev.note);
+  if(ev.src && SOURCES[ev.src]) lines.push(`来源：${SOURCES[ev.src].label} · 数据基准 ${DATA_ASOF}`);
+  return lines.join("\n");
+}
+/* 写入剪贴板：优先异步 API；file:// 下 clipboard 不可用，回退 textarea + execCommand */
+function copyText(txt, btn){
+  const flash=()=>{ const o=btn.textContent; btn.textContent="已复制 ✓"; setTimeout(()=>btn.textContent=o,1200); };
+  const legacy=()=>{ const ta=document.createElement("textarea"); ta.value=txt;
+    ta.style.position="fixed"; ta.style.top="-1000px"; document.body.appendChild(ta);
+    ta.focus(); ta.select(); try{ document.execCommand("copy"); flash(); }catch(_){}
+    document.body.removeChild(ta); };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(flash).catch(legacy);
+  } else legacy();
+}
+/* 复制按钮的实际动作：面板内直绑、详情页走委托，共用这一份逻辑 */
+function copyBtnHandler(btn){
+  const ev=EVENTS.find(x=>x.id===btn.dataset.copy);
+  if(ev) copyText(buildCopyText(ev), btn);
+}
 /* 事件卡片渲染——火箭/运营方字段跳转公司主页（一级），型号页从公司页进入 */
 function cardHTML(ev){
   const c=CATS[ev.cat]||CATS.other;
-  const d1=`${+ev.s.slice(5,7)}月${+ev.s.slice(8)}日`;
-  const range=ev.s===ev.e?d1:(ev.s&&ev.e?`${d1} – ${+ev.e.slice(5,7)}月${+ev.e.slice(8)}日`:"待定");
+  const range=fmtRange(ev);
   const rkLink = ev.rkKey && RK2VENDOR[ev.rkKey]
     ? `<a onclick="showVendorDetail('rocket','${RK2VENDOR[ev.rkKey]}');event.stopPropagation();">${esc(ev.rk)}</a>`
     : esc(ev.rk)||"—";
@@ -1103,7 +1146,7 @@ function cardHTML(ev){
       <span class="badge cat">${c.label}</span>
       <span class="badge">${esc(ev.ty)}</span>
       <span class="badge ${ev.st==="fail"?"fail":ev.st==="delay"?"delay":ev.st==="done"?"done":"plan"}">${ST_ICON[ev.st]||"◌"} ${ST_TXT[ev.st]||"计划中"}</span>
-      ${satBadge}
+      ${satBadge}<button class="copybtn" data-copy="${ev.id}" title="复制本条任务信息">复制</button>
     </div>
     <dl class="kv">
       <dt>日期</dt><dd>${range}${ev.t&&ev.t!=="—"?" · "+esc(ev.t):""}</dd>
@@ -1139,13 +1182,27 @@ function renderPanel(){
   if(selected) body+="</div>";
   p.innerHTML=body;
   p.querySelectorAll(".ecard").forEach(card=>{
-    card.onclick=()=>{
+    let dx0=0, dy0=0;
+    card.onmousedown=e=>{ dx0=e.clientX; dy0=e.clientY; };
+    card.onclick=e=>{
+      /* 拖选/拖拽过（位移超阈值）就不跳转，保住用户的文本选区 */
+      if(Math.abs(e.clientX-dx0)>4 || Math.abs(e.clientY-dy0)>4) return;
+      if(e.target.closest(".copybtn")) return;   /* 点复制按钮不跳转 */
       const ev=EVENTS.find(x=>x.id===card.dataset.id);
       if(!ev||!ev.s)return;
       selected=ev.s; renderCalendar(); renderPanel(); p.scrollTop=0;
     };
   });
+  /* 一键复制：按钮自己 stopPropagation，配合上面 onclick 里的 .copybtn 判断，双保险 */
+  p.querySelectorAll(".copybtn").forEach(btn=>{
+    btn.onclick=e=>{ e.stopPropagation(); copyBtnHandler(btn); };
+  });
 }
+/* 火箭/运营方/分类等专属页也用 cardHTML 渲染，那里没有跳转逻辑，用委托一次绑定、永久生效 */
+$("#detailBody").addEventListener("click",e=>{
+  const btn=e.target.closest(".copybtn"); if(!btn) return;
+  e.stopPropagation(); copyBtnHandler(btn);
+});
 
 /* ---------- 专属页（火箭/运营方） ---------- */
 function showDetail(type, key){
