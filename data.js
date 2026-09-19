@@ -398,7 +398,7 @@ const SITES = {
 };
 
 /* 数据基准与来源库 —— 事件 src 字段引用此表 */
-const DATA_ASOF = "2026-09-17";   // 数据整理基准日期
+const DATA_ASOF = "2026-09-20";   // 数据整理基准日期
 const SOURCES = {
   xinhua:  {label:"新华社·航天", url:"https://www.news.cn/aerospace/", note:"中国已执行任务的权威媒体报道汇编"},
   spacechina: {label:"中国航天科技集团", url:"http://www.spacechina.com/", note:"国家任务官方发布"},
@@ -564,7 +564,7 @@ const EVENTS = [
   /* SpaceX 9-12月计划 */
   {id:"sx-m9-1", name:"Starlink Group 15-23（一箭27星）", s:"2026-09-02", e:"2026-09-02", t:"16:42", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×27", satCount:27, site:"加州范登堡·4E工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"launchlib", note:"原记为「Starlink 12-31」（该批次号在任何公开源中均不存在），经 Launch Library 2.2 核实 9 月首批实为 Group 15-23：net=2026-09-02T08:42:12Z（北京 16:42），范登堡 SLC-4E，一箭 27 星入 LEO，成功。注意：库内沿用「12-xx」编号体系，与国际源「Group 15-xx」不一致，批次号以国际源为准。团队外部查证另记一级编号 B1063。"},
   {id:"sx-m9-1b", name:"Starlink Group 15-24（一箭27星）", s:"2026-09-06", e:"2026-09-06", t:"22:26", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×27", satCount:27, site:"加州范登堡·4E工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"launchlib", note:"2026-09-06T14:26:54Z（北京 22:26）范登堡 SLC-4E 发射，一箭 27 星入 LEO，成功。数据源 Launch Library 2.2（mission description: A batch of 27 satellites）。库内原无对应条目，本次补录。"},
-  {id:"sx-m9-2", name:"Starlink Group 15-27（一箭27星）", s:"2026-09-20", e:"2026-09-20", t:"09:47", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×27", satCount:0, site:"加州范登堡·4E工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"plan", hl:0, src:"est", note:"原记 12-32 / 9-22；经 LL 核实 9 月下旬星链批次为 Group 15-27，net=2026-09-20T01:47Z（北京 09:47），范登堡 SLC-4E，27 星。沿用国际源 Group 编号体系。"},
+  {id:"sx-m9-2", name:"Starlink Group 15-27（一箭27星）", s:"2026-09-20", e:"2026-09-20", t:"09:47", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×27", satCount:0, site:"加州范登堡·4E工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"plan", hl:0, src:"est", llId:"falcon-9-block-5-starlink-group-15-27", note:"原记 12-32 / 9-22；经 LL 核实 9 月下旬星链批次为 Group 15-27，net=2026-09-20T01:47Z（北京 09:47），范登堡 SLC-4E，27 星。沿用国际源 Group 编号体系。"},
   {id:"sx-m10-1", name:"Starlink 10月组网（计划×4）", s:"2026-10-06", e:"2026-10-27", t:"窗口", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×约90颗", satCount:0, site:"佛州/加州交替", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"plan", hl:0, src:"est", note:"10月预计4次·累计约90颗"},
   {id:"sx-m11-1", name:"Starlink 11月组网（计划×4）", s:"2026-11-03", e:"2026-11-24", t:"窗口", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×约90颗", satCount:0, site:"佛州/加州交替", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"plan", hl:0, src:"est", note:"11月预计4次"},
   {id:"sx-m12-1", name:"Starlink 12月组网（计划×4）", s:"2026-12-01", e:"2026-12-29", t:"窗口", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×约90颗", satCount:0, site:"佛州/加州交替", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"plan", hl:0, src:"est", note:"12月预计4次·全年星链~70次·~1500颗入轨"},
