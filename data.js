@@ -398,7 +398,7 @@ const SITES = {
 };
 
 /* 数据基准与来源库 —— 事件 src 字段引用此表 */
-const DATA_ASOF = "2026-09-17";   // 数据整理基准日期
+const DATA_ASOF = "2026-09-20";   // 数据整理基准日期
 const SOURCES = {
   xinhua:  {label:"新华社·航天", url:"https://www.news.cn/aerospace/", note:"中国已执行任务的权威媒体报道汇编"},
   spacechina: {label:"中国航天科技集团", url:"http://www.spacechina.com/", note:"国家任务官方发布"},
@@ -564,7 +564,7 @@ const EVENTS = [
   /* SpaceX 9-12月计划 */
   {id:"sx-m9-1", name:"Starlink Group 15-23（一箭27星）", s:"2026-09-02", e:"2026-09-02", t:"16:42", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×27", satCount:27, site:"加州范登堡·4E工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"launchlib", note:"原记为「Starlink 12-31」（该批次号在任何公开源中均不存在），经 Launch Library 2.2 核实 9 月首批实为 Group 15-23：net=2026-09-02T08:42:12Z（北京 16:42），范登堡 SLC-4E，一箭 27 星入 LEO，成功。注意：库内沿用「12-xx」编号体系，与国际源「Group 15-xx」不一致，批次号以国际源为准。团队外部查证另记一级编号 B1063。"},
   {id:"sx-m9-1b", name:"Starlink Group 15-24（一箭27星）", s:"2026-09-06", e:"2026-09-06", t:"22:26", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×27", satCount:27, site:"加州范登堡·4E工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"launchlib", note:"2026-09-06T14:26:54Z（北京 22:26）范登堡 SLC-4E 发射，一箭 27 星入 LEO，成功。数据源 Launch Library 2.2（mission description: A batch of 27 satellites）。库内原无对应条目，本次补录。"},
-  {id:"sx-m9-2", name:"Starlink Group 15-27（一箭27星）", s:"2026-09-20", e:"2026-09-20", t:"09:47", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×27", satCount:0, site:"加州范登堡·4E工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"plan", hl:0, src:"est", note:"原记 12-32 / 9-22；经 LL 核实 9 月下旬星链批次为 Group 15-27，net=2026-09-20T01:47Z（北京 09:47），范登堡 SLC-4E，27 星。沿用国际源 Group 编号体系。"},
+  {id:"sx-m9-2", name:"Starlink Group 15-27（一箭27星）", s:"2026-09-20", e:"2026-09-20", t:"09:47", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×27", satCount:27, site:"加州范登堡·4E工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"launchlib", note:"原记 12-32 / 9-22；经 LL 核实 9 月下旬星链批次为 Group 15-27，net=2026-09-20T01:47Z（北京 09:47），范登堡 SLC-4E，一箭 27 星（Starlink v2 mini）。北京时间 2026-09-20 09:47 发射（LL 状态 Launch in Flight，发射已实施），入 LEO，成功。沿用国际源 Group 编号体系。"},
   {id:"sx-m10-1", name:"Starlink 10月组网（计划×4）", s:"2026-10-06", e:"2026-10-27", t:"窗口", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×约90颗", satCount:0, site:"佛州/加州交替", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"plan", hl:0, src:"est", note:"10月预计4次·累计约90颗"},
   {id:"sx-m11-1", name:"Starlink 11月组网（计划×4）", s:"2026-11-03", e:"2026-11-24", t:"窗口", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×约90颗", satCount:0, site:"佛州/加州交替", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"plan", hl:0, src:"est", note:"11月预计4次"},
   {id:"sx-m12-1", name:"Starlink 12月组网（计划×4）", s:"2026-12-01", e:"2026-12-29", t:"窗口", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×约90颗", satCount:0, site:"佛州/加州交替", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"plan", hl:0, src:"est", note:"12月预计4次·全年星链~70次·~1500颗入轨"},
@@ -595,8 +595,9 @@ const EVENTS = [
   {id:"m9-7", name:"朱雀二号改进型遥七 · 千帆极轨19组（一箭十星）", s:"2026-09-15", e:"2026-09-15", t:"14:26", rk:"朱雀二号改进型 · 遥七", rkKey:"zq2", pl:"千帆极轨19组共10颗卫星", satCount:10, site:"东风商业航天创新试验区（LA-96A）", op:"垣信卫星 · 千帆星座", opKey:"yuanxin", cat:"yuanxin", ty:"商发", st:"done", hl:1, src:"xinhua", note:"2026-09-15 14:26 酒泉东风商业航天创新试验区发射成功，将千帆极轨19组共10颗卫星送入预定轨道，朱雀二号系列第9次飞行；我国民营火箭首次执行规模化卫星互联网星座组网任务（蓝箭航天承运）。据新华社、央视新闻。"},
   {id:"m9-3", name:"引力一号遥三 · 千帆极轨组网（一箭九星）", s:"2026-09-16", e:"2026-09-16", t:"06:00", rk:"引力一号 · 遥三", rkKey:"yyl1", pl:"千帆极轨组网卫星（一箭九星）", satCount:9, site:"山东海阳附近海域（东方航天港·海上发射）", op:"垣信卫星 · 千帆星座", opKey:"yuanxin", cat:"yuanxin", ty:"国发", st:"done", hl:1, src:"launchlib", note:"2026-09-16 约06:00（北京时间）山东海阳附近海域（东方航天港）海上发射成功，一箭九星将千帆极轨组网卫星送入轨道（东方空间·引力一号遥三承运）。经 Launch Library 2.2 核实发射成功，载荷官方确认为千帆星座。注：海域名称两源冲突（民间记「东海」、LL 记「Yellow Sea/黄海」），本站采用中性表述「山东海阳附近海域」，以官方通告为准。"},
   {id:"m9-4", name:"谷神星二号 · 遥二", s:"2026-09-23", e:"2026-09-23", t:"预计", rk:"谷神星二号 · 遥二", rkKey:"gsc2", pl:"应用卫星（一箭多星，载荷待公布）", satCount:0, site:"酒泉卫星发射中心", op:"星河动力", opKey:"", cat:"verify", ty:"商发", st:"plan", hl:0, src:"est", note:"谷神星二号第二飞（年初遥一首飞失利后复飞），计划9月23日。"},
-  {id:"m9-5", name:"快舟十一号遥三（一箭双星）", s:"2026-09-17", e:"2026-09-17", t:"10:35", rk:"快舟十一号 · 遥三", rkKey:"kz11", pl:"天仪51星（彩云SAR01）· 天仪52星（一箭双星）", satCount:0, site:"酒泉卫星发射中心", op:"快舟航天空间科技", opKey:"", cat:"other", ty:"商发", st:"plan", hl:0, src:"est", note:"航天科工火箭更名「快舟航天空间科技有限公司」后首次发射。计划 9/17 10:35-10:40 北京、酒泉 LA-95A，执行一箭双星：天仪51星（即彩云SAR01，C波段雷达遥感，云南彩云星座）与天仪52星（新技术试验星）。据 LL 状态仍为 Go（待发射），截至 2026-09-17 末未见官方成功公示，暂留 plan；成功与否待下次更新回填。"},
-  {id:"m9-8", name:"长征二号丁（9月19日·载荷未公布）", s:"2026-09-19", e:"2026-09-19", t:"18:50", rk:"长征二号丁", rkKey:"cz2d", pl:"未公布", satCount:0, site:"太原卫星发射中心", op:"国家任务", opKey:"", cat:"other", ty:"国发", st:"plan", hl:0, src:"est", note:"国际源（Launch Library 2.2）记 Long March 2D、net=2026-09-19T10:50Z（北京 18:50）、太原卫星发射中心 LC-9、status=Go；中文源（今日头条/搜狐 9/14「一周六发·四大发射工位接力」梳理）同源记「太原卫星发射中心方面，长征二号丁运载火箭计划于9月19日执行发射任务」。双源确认，库内 9/19 原无条目，本次补录。载荷未公布。"},
+  {id:"m9-5", name:"快舟十一号遥三（一箭双星）", s:"2026-09-17", e:"2026-09-17", t:"10:40", rk:"快舟十一号 · 遥三", rkKey:"kz11", pl:"天仪51星（彩云SAR01）· 天仪52星（一箭双星）", satCount:2, site:"酒泉卫星发射中心", op:"快舟航天空间科技", opKey:"", cat:"other", ty:"商发", st:"done", hl:0, src:"xinhua", note:"航天科工火箭更名「快舟航天空间科技有限公司」后首次发射（快舟十一号第7飞）。北京时间 2026-09-17 10:40 酒泉 LA-95A 一箭双星，成功将天仪51星（彩云SAR01，C波段雷达遥感，云南彩云星座）与天仪52星（新技术试验星）送入预定轨道，发射任务圆满成功。经新华社、央视新闻、中国新闻网多源确认。"},
+  {id:"m9-8", name:"长征二号丁 · 一箭四星（株洲太空星际 PIESAT-2 13~16星）", s:"2026-09-19", e:"2026-09-19", t:"18:50", rk:"长征二号丁", rkKey:"cz2d", pl:"株洲太空星际 PIESAT-2 13~16星（银河航天研制·4颗X波段SAR）", satCount:4, site:"太原卫星发射中心", op:"国家任务", opKey:"", cat:"other", ty:"国发", st:"done", hl:0, src:"spacechina", note:"北京时间 2026-09-19 18:50 太原卫星发射中心 LC-9，长征二号丁一箭四星成功将株洲太空星际 PIESAT-2 13~16星送入预定轨道，发射任务圆满成功（长征系列第 668 次飞行）。4 颗卫星均由银河航天自主研制，为高分辨率合成孔径雷达（SAR）卫星，搭载星上智能处理与任务规划载荷。经中国航天科技集团官网、人民网、央视新闻确认。"},
+  {id:"m9-9", name:"力箭一号（酒泉·载荷待定）", s:"2026-09-20", e:"2026-09-20", t:"12:00", rk:"力箭一号", rkKey:"lz1", pl:"未知载荷（LL 记 Unknown Payload）", satCount:0, site:"酒泉卫星发射中心", op:"中科宇航", opKey:"", cat:"other", ty:"商发", st:"plan", hl:0, src:"launchlib", note:"经 Launch Library 2.2 核实，2026-09-20T04:00Z（北京 12:00）酒泉发射区 130 有一发力箭一号（Kinetica 1）任务，status=Go，载荷暂记为 Unknown Payload（Details TBD）。库内原无对应条目，本次补录为计划状态；成功与否及卫星数量待官方公布后回填。"}
 ];
 
 /* 大事记 */
@@ -623,4 +624,7 @@ const MILESTONES = [
   {d:"2026-09-15", t:"民营火箭首次规模化星座组网", s:"朱雀二号改进型遥七一箭十星将千帆极轨19组送入轨道，蓝箭航天承运，我国民营商业火箭首次执行巨型星座批量组网发射。", k:"产业", c:"#eab308"},
   {d:"2026-09-16", t:"引力一号遥三海上一箭九星", s:"东方空间引力一号遥三在山东海阳附近海域（东方航天港）成功实施海上发射，将千帆极轨组网卫星一箭九星送入轨道。", k:"星座", c:"#22c55e"},
   {d:"2026-09-17", t:"长征十二号遥十发射星网低轨25组", s:"航天科技集团长征十二号遥十在海南商业航天发射场成功将卫星互联网低轨25A-I组送入近地轨道，GW（星网）星座组网自8月低轨24组后再度加注。", k:"星座", c:"#3b82f6"},
+  {d:"2026-09-17", t:"快舟十一号遥三一箭双星", s:"快舟航天空间科技快舟十一号遥三在酒泉一箭双星，将天仪51星（彩云SAR01，C波段雷达遥感）与天仪52星送入预定轨道，快舟十一号第7次飞行，商业航天高频发射延续。", k:"商发", c:"#eab308"},
+  {d:"2026-09-19", t:"长征二号丁一箭四星 PIESAT-2 13~16", s:"太原卫星发射中心长征二号丁一箭四星成功发射株洲太空星际 PIESAT-2 13~16星（银河航天研制·4颗X波段SAR），长征系列第668次飞行。", k:"国发", c:"#3b82f6"},
+  {d:"2026-09-20", t:"Starlink Group 15-27 一箭27星", s:"SpaceX 范登堡 SLC-4E 发射星链 Group 15-27 一批 27 颗 v2 mini 卫星入近地轨道，星链组网持续高频部署。", k:"国际·星座", c:"#0c4a8c"},
 ];
