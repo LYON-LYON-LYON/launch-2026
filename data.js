@@ -398,7 +398,7 @@ const SITES = {
 };
 
 /* 数据基准与来源库 —— 事件 src 字段引用此表 */
-const DATA_ASOF = "2026-09-20";   // 数据整理基准日期
+const DATA_ASOF = "2026-09-23";   // 数据整理基准日期
 const SOURCES = {
   xinhua:  {label:"新华社·航天", url:"https://www.news.cn/aerospace/", note:"中国已执行任务的权威媒体报道汇编"},
   spacechina: {label:"中国航天科技集团", url:"http://www.spacechina.com/", note:"国家任务官方发布"},
@@ -505,6 +505,7 @@ const EVENTS = [
   /* ===== 9月（计划/预告） ===== */
   {id:"m9-1", name:"千帆极轨16组（日期待定）", s:"", e:"", t:"待定", rk:"长征八号甲 · 遥十一", rkKey:"cz8a", pl:"千帆极轨16A-T组网卫星", satCount:0, site:"海南商业航天发射场", op:"垣信卫星 · 千帆星座", opKey:"yuanxin", cat:"yuanxin", ty:"国发", st:"plan", tbd:1, month:9, hl:1, src:"est", note:"原定 9/12。经 LL（slipped to Sep 30 00:00 UTC、状态改 To Be Determined）与垣信官方口径（9/13 浦江创新论坛称千帆累计 238 颗，与 9/5 持平，期间无千帆发射）确认未发射、已推迟，新窗口未定。载荷名无官方源（LL 标 Unknown Payload）。注：「海南商业航天发射场」与「文昌」为同一地点。"},
   {id:"m9-1b", name:"星网低轨25组（长征十二号遥十）", s:"2026-09-17", e:"2026-09-17", t:"08:32", rk:"长征十二号 · 遥十", rkKey:"cz12", pl:"卫星互联网低轨25A-I组网卫星", satCount:0, site:"海南商业航天发射场", op:"中国星网", opKey:"satnet", cat:"xingwang", ty:"国发", st:"done", hl:1, src:"xinhua", note:"原预案记千帆极轨16组，经 Launch Library 2.2 与中文公开源（维基百科中国运载火箭发射列表、腾讯新闻、spacemapper）核实：2026-09-17 08:32 海南商业航天发射场实射载荷为卫星互联网低轨25A-I组（GW/星网），非千帆；千帆16组已于 9/16 由引力一号遥三以一箭九星发射（见 m9-3）。故将本事件改归星网（opKey:satnet），长征十二号遥十成功送星网低轨25组入轨，GW星座自8月低轨24组后再度组网。"},
+  {id:"m9-26", name:"星网低轨26组（长征八号甲遥十一）", s:"2026-09-23", e:"2026-09-23", t:"21:30", rk:"长征八号甲 · 遥十一", rkKey:"cz8a", pl:"卫星互联网低轨26A-I组网卫星（一箭多星，数量待公布）", satCount:0, site:"海南商业航天发射场", op:"中国星网", opKey:"satnet", cat:"xingwang", ty:"国发", st:"plan", hl:0, src:"launchlib", note:"经 Launch Library 2.2 核实：net=2026-09-23T13:30Z（北京 21:30），海南商业航天发射场一号工位（Commercial LC-1 / Wenchang）长征八号甲（Long March 8A）任务 status=Go，载荷 Unknown Payload，执行卫星互联网低轨26组组网发射。中文公开源（海南商发/中国航天科技集团）9/19 完成垂直转运，窗口预计 20:30–21:49，计划 9/23 晚间择机发射。截至本数据基准（9/23 11:00）尚未实施，记为计划状态；成功与否及卫星数量待官方公布后回填。"},
   {id:"m9-1c", name:"风云四号M气象卫星", s:"2026-09-29", e:"2026-09-29", t:"预计", rk:"长征三号乙 · 遥一百二十", rkKey:"cz3b", pl:"风云四号M气象卫星", satCount:0, site:"西昌卫星发射中心", op:"国家气象卫星工程", opKey:"weather", cat:"other", ty:"国发", st:"plan", hl:0, src:"est", note:"新一代静止轨道气象卫星。"},
   {id:"m9-1d", name:"西昌任务（载荷未公布·日期待定）", s:"", e:"", t:"待定", rk:"长征三号乙（遥号待确认）", rkKey:"cz3b", pl:"未公布", satCount:0, site:"西昌卫星发射中心", op:"国家任务", opKey:"", cat:"other", ty:"国发", st:"plan", tbd:1, month:9, hl:0, src:"tbd", note:"原挂 9月10日，经核：国际源（Launch Library 2.2）西昌无任何已排定发射，且 9/10 当日全球仅长二丁/远征三号@酒泉一发（不同任务不同发射场）；原始中文计划表仅称「2026年9月」未给具体日期，该 9-10 属月度推测占位。故移除日期改为待定（tbd:1, month:9），待官方公布后回填。补充：截至 2026-09-14 西昌仍无排期（LL2 manifest 无西昌排定发射）；遥号 117 与 120 两份中文计划表互相冲突、无官方源绑定，暂不锁定遥号，记为「长征三号乙（遥号待确认）」。"},
   {id:"m9-2", name:"中国移动03星（择机）", s:"", e:"", t:"待定", rk:"待定", rkKey:"", pl:"中国移动03星（搭载星载基站）", satCount:0, site:"待定", op:"中国移动", opKey:"cmcc", cat:"other", ty:"商发", st:"plan", tbd:1, month:9, hl:0, src:"tbd", note:"验证「星上再生」模式与卫星物联网业务，发射日期未定。"},
@@ -587,7 +588,7 @@ const EVENTS = [
   /* --- OneWeb（已完成第一阶段·2026年补网+二代验证） --- */
   {id:"ow-m2-1", name:"OneWeb 补网批次（Soyuz·一箭36星）", s:"2026-02-28", e:"2026-02-28", t:"—", rk:"Soyuz-2.1b", rkKey:"soyuz", pl:"OneWeb Gen1.5 ×36", satCount:36, site:"哈萨克斯坦·拜科努尔", op:"OneWeb·Eutelsat", opKey:"oneweb", cat:"oneweb", ty:"国外", st:"done", hl:1, src:"est", note:"2026年首次补网·填补轨道间隙"},
   {id:"ow-m5-1", name:"OneWeb Gen2 首批验证（Soyuz·一箭36星）", s:"2026-05-18", e:"2026-05-18", t:"—", rk:"Soyuz-2.1b", rkKey:"soyuz", pl:"OneWeb Gen2 ×36", satCount:36, site:"哈萨克斯坦·拜科努尔", op:"OneWeb·Eutelsat", opKey:"oneweb", cat:"oneweb", ty:"国外", st:"done", hl:1, src:"est", note:"二代卫星首次验证·增强手机直连能力"},
-  {id:"ow-m9-1", name:"OneWeb Gen2 第二批（计划·一箭36星）", s:"2026-09-20", e:"2026-09-20", t:"预计", rk:"Soyuz-2.1b", rkKey:"soyuz", pl:"OneWeb Gen2 ×36", satCount:0, site:"哈萨克斯坦·拜科努尔", op:"OneWeb·Eutelsat", opKey:"oneweb", cat:"oneweb", ty:"国外", st:"plan", hl:0, src:"est", note:"9月计划批次"},
+  {id:"ow-m9-1", name:"OneWeb Gen2 第二批（待排期·一箭36星）", s:"", e:"", t:"待定", rk:"Soyuz-2.1b", rkKey:"soyuz", pl:"OneWeb Gen2 ×36", satCount:0, site:"哈萨克斯坦·拜科努尔", op:"OneWeb·Eutelsat", opKey:"oneweb", cat:"oneweb", ty:"国外", st:"plan", hl:0, src:"tbd", tbd:1, month:9, note:"原记 9/20；经 Launch Library 2.2 核实 9/20 无 Soyuz/OneWeb 发射（previous 窗口 9/20~9/24 仅 Kinetica 1 与 Starlink 15-27 两发），该 9/20 批次未实施，改为待排期（tbd:1, month:9），具体日期待官方公布后回填。"},
   {id:"ow-m11-1", name:"OneWeb Gen2 第三批（计划·一箭36星）", s:"2026-11-12", e:"2026-11-12", t:"预计", rk:"Soyuz-2.1b", rkKey:"soyuz", pl:"OneWeb Gen2 ×36", satCount:0, site:"哈萨克斯坦·拜科努尔", op:"OneWeb·Eutelsat", opKey:"oneweb", cat:"oneweb", ty:"国外", st:"plan", hl:0, src:"est", note:"11月计划批次·全年OneWeb累计108颗"},
 
   /* --- 2026年9月补充（公开发射计划·est，窗口以官方通告为准） --- */
@@ -597,7 +598,7 @@ const EVENTS = [
   {id:"m9-4", name:"谷神星二号 · 遥二", s:"2026-09-23", e:"2026-09-23", t:"预计", rk:"谷神星二号 · 遥二", rkKey:"gsc2", pl:"应用卫星（一箭多星，载荷待公布）", satCount:0, site:"酒泉卫星发射中心", op:"星河动力", opKey:"", cat:"verify", ty:"商发", st:"plan", hl:0, src:"est", note:"谷神星二号第二飞（年初遥一首飞失利后复飞），计划9月23日。"},
   {id:"m9-5", name:"快舟十一号遥三（一箭双星）", s:"2026-09-17", e:"2026-09-17", t:"10:40", rk:"快舟十一号 · 遥三", rkKey:"kz11", pl:"天仪51星（彩云SAR01）· 天仪52星（一箭双星）", satCount:2, site:"酒泉卫星发射中心", op:"快舟航天空间科技", opKey:"", cat:"other", ty:"商发", st:"done", hl:0, src:"xinhua", note:"航天科工火箭更名「快舟航天空间科技有限公司」后首次发射（快舟十一号第7飞）。北京时间 2026-09-17 10:40 酒泉 LA-95A 一箭双星，成功将天仪51星（彩云SAR01，C波段雷达遥感，云南彩云星座）与天仪52星（新技术试验星）送入预定轨道，发射任务圆满成功。经新华社、央视新闻、中国新闻网多源确认。"},
   {id:"m9-8", name:"长征二号丁 · 一箭四星（株洲太空星际 PIESAT-2 13~16星）", s:"2026-09-19", e:"2026-09-19", t:"18:50", rk:"长征二号丁", rkKey:"cz2d", pl:"株洲太空星际 PIESAT-2 13~16星（银河航天研制·4颗X波段SAR）", satCount:4, site:"太原卫星发射中心", op:"国家任务", opKey:"", cat:"other", ty:"国发", st:"done", hl:0, src:"spacechina", note:"北京时间 2026-09-19 18:50 太原卫星发射中心 LC-9，长征二号丁一箭四星成功将株洲太空星际 PIESAT-2 13~16星送入预定轨道，发射任务圆满成功（长征系列第 668 次飞行）。4 颗卫星均由银河航天自主研制，为高分辨率合成孔径雷达（SAR）卫星，搭载星上智能处理与任务规划载荷。经中国航天科技集团官网、人民网、央视新闻确认。"},
-  {id:"m9-9", name:"力箭一号（酒泉·载荷待定）", s:"2026-09-20", e:"2026-09-20", t:"12:00", rk:"力箭一号", rkKey:"lz1", pl:"未知载荷（LL 记 Unknown Payload）", satCount:0, site:"酒泉卫星发射中心", op:"中科宇航", opKey:"", cat:"other", ty:"商发", st:"plan", hl:0, src:"launchlib", note:"经 Launch Library 2.2 核实，2026-09-20T04:00Z（北京 12:00）酒泉发射区 130 有一发力箭一号（Kinetica 1）任务，status=Go，载荷暂记为 Unknown Payload（Details TBD）。库内原无对应条目，本次补录为计划状态；成功与否及卫星数量待官方公布后回填。"}
+  {id:"m9-9", name:"力箭一号遥十八（酒泉·一箭九星）", s:"2026-09-20", e:"2026-09-20", t:"12:03", rk:"力箭一号", rkKey:"lz1", pl:"超智算一号等9颗卫星（含鹏城南科一号、秦岭卫星01/02星等）", satCount:9, site:"酒泉卫星发射中心", op:"中科宇航", opKey:"", cat:"other", ty:"商发", st:"done", hl:1, src:"launchlib", note:"经 Launch Library 2.2 核实并据新华社/央视/网易/腾讯等多源确认：2026-09-20T04:03Z（北京 12:03）酒泉发射区 130 力箭一号遥十八（Kinetica 1）成功实施一箭九星发射，将「超智算一号」（国内首个首箭首星一体化太空算力卫星）、鹏城南科一号、秦岭卫星01/02星等共9颗卫星送入太阳同步轨道，任务取得圆满成功（中科宇航承运，力箭一号第16次飞行、累计送星超110颗）。"}
 ];
 
 /* 大事记 */
@@ -627,4 +628,5 @@ const MILESTONES = [
   {d:"2026-09-17", t:"快舟十一号遥三一箭双星", s:"快舟航天空间科技快舟十一号遥三在酒泉一箭双星，将天仪51星（彩云SAR01，C波段雷达遥感）与天仪52星送入预定轨道，快舟十一号第7次飞行，商业航天高频发射延续。", k:"商发", c:"#eab308"},
   {d:"2026-09-19", t:"长征二号丁一箭四星 PIESAT-2 13~16", s:"太原卫星发射中心长征二号丁一箭四星成功发射株洲太空星际 PIESAT-2 13~16星（银河航天研制·4颗X波段SAR），长征系列第668次飞行。", k:"国发", c:"#3b82f6"},
   {d:"2026-09-20", t:"Starlink Group 15-27 一箭27星", s:"SpaceX 范登堡 SLC-4E 发射星链 Group 15-27 一批 27 颗 v2 mini 卫星入近地轨道，星链组网持续高频部署。", k:"国际·星座", c:"#0c4a8c"},
+  {d:"2026-09-20", t:"力箭一号遥十八一箭九星·太空算力首星入轨", s:"中科宇航力箭一号遥十八在酒泉东风商业航天创新试验区一箭九星发射成功，将「超智算一号」（国内首个首箭首星一体化太空算力卫星）、鹏城南科一号、秦岭卫星01/02星等送入太阳同步轨道，开启「算力上天、天数天算」工程化落地关键一步。", k:"商发", c:"#eab308"}
 ];
