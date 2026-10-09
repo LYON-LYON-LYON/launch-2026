@@ -398,7 +398,7 @@ const SITES = {
 };
 
 /* 数据基准与来源库 —— 事件 src 字段引用此表 */
-const DATA_ASOF = "2026-10-08";   // 数据整理基准日期
+const DATA_ASOF = "2026-10-10";   // 数据整理基准日期
 const SOURCES = {
   xinhua:  {label:"新华社·航天", url:"https://www.news.cn/aerospace/", note:"中国已执行任务的权威媒体报道汇编"},
   spacechina: {label:"中国航天科技集团", url:"http://www.spacechina.com/", note:"国家任务官方发布"},
@@ -513,7 +513,7 @@ const EVENTS = [
 
   /* ===== 10-12月（占位·计划预告区） ===== */
   {id:"m10-1", name:"千帆极轨17组（10月·计划）", s:"2026-10-14", e:"2026-10-14", t:"待定", rk:"力箭二号 · 遥二", rkKey:"lz2", pl:"千帆极轨17A-R组网卫星", satCount:0, site:"酒泉卫星发射中心", op:"垣信卫星 · 千帆星座", opKey:"yuanxin", cat:"yuanxin", ty:"国发", st:"plan", month:10, hl:0, src:"est", note:"千帆星座10月组网任务（力箭二号遥二，计划 2026-10-14，火箭与载荷以官方通告为准）。"},
-  {id:"m10-2", name:"星网低轨27组（10月·计划）", s:"2026-10-10", e:"2026-10-10", t:"待定", rk:"长征十二号", rkKey:"cz12", pl:"卫星互联网低轨27A-I组", satCount:0, site:"海南商业航天发射场", op:"中国星网", opKey:"satnet", cat:"xingwang", ty:"国发", st:"plan", month:10, hl:0, src:"est", note:"卫星互联网低轨27组（GW 星座下一编号批次），原计划 2026-10-10（长征十二号遥十，海南商发），具体以官方通告为准。注：低轨25组已于 9/17 发射（见 m9-1b），此处为下一编号批次。"},
+  {id:"m10-2", name:"星网低轨27组（10月·计划）", s:"2026-10-10", e:"2026-10-10", t:"待定", rk:"长征十二号", rkKey:"cz12", pl:"卫星互联网低轨27A-I组", satCount:0, site:"海南商业航天发射场", op:"中国星网", opKey:"satnet", cat:"xingwang", ty:"国发", st:"plan", month:10, hl:0, src:"est", note:"卫星互联网低轨27组（GW 星座下一编号批次），原NOTAM排期 2026-10-10（长征十二号遥十，海南商发）。截至 2026-10-10 官方未发布成功通报，第三方源亦称「尚无官方机构明确证实」，状态保留 plan；若窗口变动将顺延。注：低轨25组已于 9/17 发射（见 m9-1b），此处为下一编号批次。"},
   {id:"m11-1", name:"千帆极轨18组（11月·待排期）", s:"", e:"", t:"待定", rk:"长征八号甲", rkKey:"cz8a", pl:"千帆极轨18组组网卫星", satCount:0, site:"海南商业航天发射场", op:"垣信卫星 · 千帆星座", opKey:"yuanxin", cat:"yuanxin", ty:"国发", st:"plan", tbd:1, month:11, hl:0, src:"tbd", note:"千帆星座11月组网任务（排期待定）。"},
   {id:"m12-1", name:"全年收官任务（12月·待定）", s:"", e:"", t:"待定", rk:"待定", rkKey:"", pl:"待定", satCount:0, site:"待定", op:"国家任务", opKey:"", cat:"other", ty:"国发", st:"plan", tbd:1, month:12, hl:0, src:"tbd", note:"12月全年收官任务，具体排期待官方公布。"},
 
