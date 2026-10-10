@@ -32,3 +32,42 @@
   - 卫星数 satCount：`0`（API 正则抓取，务必核实）
   - 运营方 opKey：`intl`，分类 cat：`other`
   - LL 状态 TBD → 建议 st=`plan`
+## 2026-10-11 自动同步（3 条）
+
+| LL slug | 建议名称 | 日期 | 火箭 | 发射场 | 建议 ty | 建议 opKey | 星数 | LL 状态 |
+|---|---|---|---|---|---|---|---|---|
+| `long-march-12-satnet-leo-group-27` | SatNet LEO Group 27 | 2026-10-10 | 长征十二号（cz12） | 文昌航天发射场·2号工位 | 国发 | intl | 0 | Success |
+| `long-march-12-satnet-leo-group-27` | SatNet LEO Group 27 | 2026-10-10 | 长征十二号（cz12） | 文昌航天发射场·2号工位 | 国发 | intl | 0 | Success |
+| `long-march-12a-flight-2` | Flight 2 | 2026-10-31 | 长征十二号甲（cz12a） | 酒泉卫星发射中心 | 国发 | intl | 0 | TBD |
+
+### 逐条建议字段值
+
+- **SatNet LEO Group 27**（`long-march-12-satnet-leo-group-27`）
+  - 服务商：China Aerospace Science and Technology Corporation → 建议 ty=`国发`
+  - 建议 id：`m-m10-?`（需人工定序号）
+  - 日期 s/e：`2026-10-10` / `2026-10-10`，时刻：`03:27`
+  - 火箭 rkKey：`cz12`（长征十二号）
+  - 载荷 pl：`SatNet LEO Group 27`
+  - 卫星数 satCount：`0`（API 正则抓取，务必核实）
+  - 运营方 opKey：`intl`，分类 cat：`other`
+  - LL 状态 Success → 建议 st=`done`
+
+- **SatNet LEO Group 27**（`long-march-12-satnet-leo-group-27`）
+  - 服务商：China Aerospace Science and Technology Corporation → 建议 ty=`国发`
+  - 建议 id：`m-m10-?`（需人工定序号）
+  - 日期 s/e：`2026-10-10` / `2026-10-10`，时刻：`03:27`
+  - 火箭 rkKey：`cz12`（长征十二号）
+  - 载荷 pl：`SatNet LEO Group 27`
+  - 卫星数 satCount：`0`（API 正则抓取，务必核实）
+  - 运营方 opKey：`intl`，分类 cat：`other`
+  - LL 状态 Success → 建议 st=`done`
+
+- **Flight 2**（`long-march-12a-flight-2`）
+  - 服务商：China Aerospace Science and Technology Corporation → 建议 ty=`国发`
+  - 建议 id：`m-m10-?`（需人工定序号）
+  - 日期 s/e：`2026-10-31` / `2026-10-31`，时刻：`—`
+  - 火箭 rkKey：`cz12a`（长征十二号甲）
+  - 载荷 pl：`Flight 2`
+  - 卫星数 satCount：`0`（API 正则抓取，务必核实）
+  - 运营方 opKey：`intl`，分类 cat：`other`
+  - LL 状态 TBD → 建议 st=`plan`
