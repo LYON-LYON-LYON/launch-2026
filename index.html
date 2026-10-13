@@ -686,11 +686,13 @@ const fmt = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-$
 const esc = s => String(s==null?"":s).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const evMonth = e => e.s ? parse(e.s).getMonth()+1 : (e.month||0);
 /* 全局图例筛选也作用于顶部统计：结合 activeCats + typeSel（类型多选） */
-const statFiltered = () => EVENTS.filter(e => regionMatch(e) && activeCats.has(e.cat) && typeMatch(e));
+const statFiltered = () => EVENTS.filter(e => regionMatch(e) && activeCats.has(e.cat) && typeMatch(e) && !isExpiredPlan(e));
 const visibleEvents = () => statFiltered();
-const monthEvents = m => EVENTS.filter(e=>evMonth(e)===m && regionMatch(e));
-const visibleIn = m => monthEvents(m).filter(e=>activeCats.has(e.cat)&&typeMatch(e)&&(statusFilter==="all"||e.st===statusFilter));
+const monthEvents = m => EVENTS.filter(e=>evMonth(e)===m && regionMatch(e) && !isExpiredPlan(e));
+const visibleIn = m => monthEvents(m).filter(e=>activeCats.has(e.cat)&&typeMatch(e)&&!isExpiredPlan(e)&&(statusFilter==="all"||e.st===statusFilter));
 function todayStr(){ const n=new Date(); return n.getFullYear()===YEAR&&MONTHS.includes(n.getMonth()+1)?fmt(n):null; }
+/* 过期计划：起始日早于 DATA_ASOF 视为「已过去的计划」，渲染层不展示（覆盖日历/列表/统计/各详情视图） */
+const isExpiredPlan = e => e.st==="plan" && !!e.s && parse(e.s) < parse(DATA_ASOF||fmt(new Date()));
 
 /* ---------- 顶部统计 ---------- */
 function renderStats(){
@@ -763,7 +765,7 @@ function renderVendorRow(){
   // 火箭行：按 大类(国家队/民营/国际) → 厂家 分组
   let stateR = [], privR = [], intlR = [];
   Object.entries(VENDORS.rocket).forEach(([vk, v]) => {
-    const rkEvents = v.models.flatMap(mk => EVENTS.filter(e => e.rkKey === mk && regionMatch(e)));
+    const rkEvents = v.models.flatMap(mk => EVENTS.filter(e => e.rkKey === mk && regionMatch(e) && !isExpiredPlan(e)));
     const n = rkEvents.length;
     if (n === 0) return; // 零发射不显示，保持精简
     const sat = rkEvents.filter(e => e.st === "done").reduce((s, e) => s + (e.satCount || 0), 0);
@@ -776,7 +778,7 @@ function renderVendorRow(){
   // 卫星行：中国/国际两组
   let cnO = [], intlO = [];
   Object.entries(VENDORS.operator).forEach(([vk, v]) => {
-    const opEvents = EVENTS.filter(e => e.opKey === v.key && regionMatch(e));
+    const opEvents = EVENTS.filter(e => e.opKey === v.key && regionMatch(e) && !isExpiredPlan(e));
     const n = opEvents.length;
     if (n === 0) return;
     const sat = opEvents.filter(e => e.st === "done").reduce((s, e) => s + (e.satCount || 0), 0);
@@ -921,7 +923,7 @@ function renderLeftMonth(){
 function renderTagStats(){
   const catBox = $("#catChips"); catBox.innerHTML = "";
   Object.entries(CATS).forEach(([key,c])=>{
-    const n = EVENTS.filter(e=>e.cat===key && regionMatch(e)).length;
+    const n = EVENTS.filter(e=>e.cat===key && regionMatch(e) && !isExpiredPlan(e)).length;
     const chip = document.createElement("div");
     chip.className = "tag-chip";
     chip.style.setProperty("--tc", c.hex);
@@ -933,7 +935,7 @@ function renderTagStats(){
   const stBox = $("#statusChips"); stBox.innerHTML = "";
   const stMap = [["done","成功","#0f8a4c"],["fail","失利","#b91c1c"],["delay","推迟","#c2410c"],["plan","计划","#a16207"]];
   stMap.forEach(([k,label,col])=>{
-    const n = EVENTS.filter(e=>e.st===k && regionMatch(e)).length;
+    const n = EVENTS.filter(e=>e.st===k && regionMatch(e) && !isExpiredPlan(e)).length;
     const chip = document.createElement("div");
     chip.className = "tag-chip";
     chip.style.setProperty("--tc", col);
@@ -1052,7 +1054,7 @@ function renderCalendar(){
       if(inMonth) cell.onclick=()=>{ selected=ds; renderCalendar(); renderPanel(); };
       week.appendChild(cell);
     }
-    const evs=evsAll.filter(e=>e.s&&e.e&&e.e>=ws&&e.s<=we)
+    const evs=evsAll.filter(e=>e.s&&e.e&&e.e>=ws&&e.s<=we&&!isExpiredPlan(e))
       .sort((a,b)=>a.s.localeCompare(b.s)||b.e.localeCompare(a.e));
     const lanes=[];
     for(const ev of evs){
@@ -1166,7 +1168,7 @@ function renderPanel(){
   const dated=list.filter(e=>e.s), tbd=list.filter(e=>!e.s);
   let body="";
   if(selected){
-    const onDay=dated.filter(e=>selected>=e.s&&selected<=e.e);
+    const onDay=dated.filter(e=>selected>=e.s&&selected<=e.e&&!isExpiredPlan(e));
     const [y,m,d]=selected.split("-");
     const wd="日一二三四五六"[parse(selected).getDay()];
     body=`<h3>${+m}月${+d}日 · 星期${wd}</h3>
@@ -1211,8 +1213,8 @@ function showDetail(type, key){
   curView="detail";
 
   const evs = (type==="rocket")
-    ? EVENTS.filter(e=>e.rkKey===key && regionMatch(e))
-    : EVENTS.filter(e=>e.opKey===key && regionMatch(e));
+    ? EVENTS.filter(e=>e.rkKey===key && regionMatch(e) && !isExpiredPlan(e))
+    : EVENTS.filter(e=>e.opKey===key && regionMatch(e) && !isExpiredPlan(e));
 
   const info = (type==="rocket") ? ROCKETS[key] : OPERATORS[key];
   if(!info){ $("#detailBody").innerHTML=`<div class="empty">未找到 ${key} 的信息</div>`; return; }
@@ -1287,9 +1289,9 @@ function showVendorDetail(type, vk){
   // 统计该厂家所有型号的发射事件
   let evs = [];
   if (type === "rocket") {
-    evs = v.models.flatMap(mk => EVENTS.filter(e => e.rkKey === mk && regionMatch(e)));
+    evs = v.models.flatMap(mk => EVENTS.filter(e => e.rkKey === mk && regionMatch(e) && !isExpiredPlan(e)));
   } else {
-    evs = EVENTS.filter(e => e.opKey === v.key && regionMatch(e));
+    evs = EVENTS.filter(e => e.opKey === v.key && regionMatch(e) && !isExpiredPlan(e));
   }
   evs = evs.slice().sort((a,b)=>(a.s||"9999").localeCompare(b.s||"9999"));
 
@@ -1372,7 +1374,7 @@ function showVendorDetail(type, vk){
     const rows = v.models.map(mk => {
       const r = ROCKETS[mk];
       if (!r) return null;
-      const mevs = EVENTS.filter(e => e.rkKey === mk && regionMatch(e));
+      const mevs = EVENTS.filter(e => e.rkKey === mk && regionMatch(e) && !isExpiredPlan(e));
       const mDone = mevs.filter(e => e.st === "done").length;
       const mFail = mevs.filter(e => e.st === "fail").length;
       const mSat = mevs.filter(e => e.st === "done").reduce((s, e) => s + (e.satCount || 0), 0);
@@ -1448,7 +1450,7 @@ function showCatDetail(catKey){
   curView="detail";
   const c = CATS[catKey];
   if(!c){ $("#detailBody").innerHTML=`<div class="empty">未找到分类 ${esc(catKey)}</div>`; renderTabs(); return; }
-  const evs = EVENTS.filter(e=>e.cat===catKey && regionMatch(e)).slice().sort((a,b)=>(a.s||"9999").localeCompare(b.s||"9999"));
+  const evs = EVENTS.filter(e=>e.cat===catKey && regionMatch(e) && !isExpiredPlan(e)).slice().sort((a,b)=>(a.s||"9999").localeCompare(b.s||"9999"));
   const n=evs.length, done=evs.filter(e=>e.st==="done").length, fail=evs.filter(e=>e.st==="fail").length,
         delay=evs.filter(e=>e.st==="delay").length, plan=evs.filter(e=>e.st==="plan").length,
         totalSat=evs.filter(e=>e.st==="done").reduce((s,e)=>s+(e.satCount||0),0),
@@ -1487,7 +1489,7 @@ function showStatusDetail(stKey){
   curView="detail";
   const stMap={done:["成功","#0f8a4c"],fail:["失利","#b91c1c"],delay:["推迟","#c2410c"],plan:["计划中","#a16207"]};
   const [label,color]=stMap[stKey]||["—","#64748b"];
-  const evs = EVENTS.filter(e=>e.st===stKey && regionMatch(e)).slice().sort((a,b)=>(a.s||"9999").localeCompare(b.s||"9999"));
+  const evs = EVENTS.filter(e=>e.st===stKey && regionMatch(e) && !isExpiredPlan(e)).slice().sort((a,b)=>(a.s||"9999").localeCompare(b.s||"9999"));
   const n=evs.length, totalSat=evs.filter(e=>e.st==="done").reduce((s,e)=>s+(e.satCount||0),0),
         successRate=n>0?Math.round(evs.filter(e=>e.st==="done").length/n*100):"—";
   const hero=`<div class="detail-hero" style="border-top:4px solid ${color}">
