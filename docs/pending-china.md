@@ -32,3 +32,64 @@
   - 卫星数 satCount：`0`（API 正则抓取，务必核实）
   - 运营方 opKey：`intl`，分类 cat：`other`
   - LL 状态 TBD → 建议 st=`plan`
+## 2026-10-25 自动同步（5 条）
+
+| LL slug | 建议名称 | 日期 | 火箭 | 发射场 | 建议 ty | 建议 opKey | 星数 | LL 状态 |
+|---|---|---|---|---|---|---|---|---|
+| `long-march-4b-yaogan-53-07-to-0956-19-to-21` | Yaogan 53-07 to 09/56-19 to 21 | 2026-10-24 | 长征四号乙（cz4b） | 酒泉卫星发射中心 | 国发 | intl | 0 | Success |
+| `long-march-6a-yaogan-50-03` | Yaogan 50-03 | 2026-10-23 | 长征六号改/甲（cz6a） | 太原卫星发射中心·9A工位 | 国发 | intl | 0 | Success |
+| `long-march-4b-yaogan-53-07-to-0956-19-to-21` | Yaogan 53-07 to 09/56-19 to 21 | 2026-10-24 | 长征四号乙（cz4b） | 酒泉卫星发射中心 | 国发 | intl | 0 | Success |
+| `long-march-8a-unknown-payload` | Unknown Payload | 2026-10-25 | 长征八号甲/改进型（cz8a） | 文昌航天发射场·1号工位 | 国发 | intl | 0 | Go |
+| `long-march-12a-flight-2` | Flight 2 | 2026-10-31 | 长征十二号甲（cz12a） | 酒泉卫星发射中心 | 国发 | intl | 0 | TBD |
+
+### 逐条建议字段值
+
+- **Yaogan 53-07 to 09/56-19 to 21**（`long-march-4b-yaogan-53-07-to-0956-19-to-21`）
+  - 服务商：China Aerospace Science and Technology Corporation → 建议 ty=`国发`
+  - 建议 id：`m-m10-?`（需人工定序号）
+  - 日期 s/e：`2026-10-24` / `2026-10-24`，时刻：`03:25`
+  - 火箭 rkKey：`cz4b`（长征四号乙）
+  - 载荷 pl：`Yaogan 53-07 to 09/56-19 to 21`
+  - 卫星数 satCount：`0`（API 正则抓取，务必核实）
+  - 运营方 opKey：`intl`，分类 cat：`other`
+  - LL 状态 Success → 建议 st=`done`
+
+- **Yaogan 50-03**（`long-march-6a-yaogan-50-03`）
+  - 服务商：China Aerospace Science and Technology Corporation → 建议 ty=`国发`
+  - 建议 id：`m-m10-?`（需人工定序号）
+  - 日期 s/e：`2026-10-23` / `2026-10-23`，时刻：`18:15`
+  - 火箭 rkKey：`cz6a`（长征六号改/甲）
+  - 载荷 pl：`Yaogan 50-03`
+  - 卫星数 satCount：`0`（API 正则抓取，务必核实）
+  - 运营方 opKey：`intl`，分类 cat：`other`
+  - LL 状态 Success → 建议 st=`done`
+
+- **Yaogan 53-07 to 09/56-19 to 21**（`long-march-4b-yaogan-53-07-to-0956-19-to-21`）
+  - 服务商：China Aerospace Science and Technology Corporation → 建议 ty=`国发`
+  - 建议 id：`m-m10-?`（需人工定序号）
+  - 日期 s/e：`2026-10-24` / `2026-10-24`，时刻：`03:25`
+  - 火箭 rkKey：`cz4b`（长征四号乙）
+  - 载荷 pl：`Yaogan 53-07 to 09/56-19 to 21`
+  - 卫星数 satCount：`0`（API 正则抓取，务必核实）
+  - 运营方 opKey：`intl`，分类 cat：`other`
+  - LL 状态 Success → 建议 st=`done`
+
+- **Unknown Payload**（`long-march-8a-unknown-payload`）
+  - 服务商：China Aerospace Science and Technology Corporation → 建议 ty=`国发`
+  - 建议 id：`m-m10-?`（需人工定序号）
+  - 日期 s/e：`2026-10-25` / `2026-10-25`，时刻：`09:50`
+  - 火箭 rkKey：`cz8a`（长征八号甲/改进型）
+  - 载荷 pl：`Unknown Payload`
+  - 卫星数 satCount：`0`（API 正则抓取，务必核实）
+  - 运营方 opKey：`intl`，分类 cat：`other`
+  - LL 状态 Go → 建议 st=`plan`
+
+- **Flight 2**（`long-march-12a-flight-2`）
+  - 服务商：China Aerospace Science and Technology Corporation → 建议 ty=`国发`
+  - 建议 id：`m-m10-?`（需人工定序号）
+  - 日期 s/e：`2026-10-31` / `2026-10-31`，时刻：`—`
+  - 火箭 rkKey：`cz12a`（长征十二号甲）
+  - 载荷 pl：`Flight 2`
+  - 卫星数 satCount：`0`（API 正则抓取，务必核实）
+  - 运营方 opKey：`intl`，分类 cat：`other`
+  - LL 状态 TBD → 建议 st=`plan`
