@@ -565,6 +565,7 @@
         <div class="side-card">
           <h3>航空航天大事记</h3>
           <div class="sc-sub">政策 · 资本 · 技术 · 行业</div>
+          <div id="mlineFilter" style="display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 14px"></div>
           <div id="mlineList"></div>
         </div>
       </div>
@@ -830,9 +831,45 @@ function renderHome(){
 }
 
 /* ---------- 大事记 ---------- */
+/* 类型筛选（精简口径）：星座/火箭/国发/商发/国际/政策产业/其他（其他为兜底，自动涵盖未映射的新类型） */
+const MLINE_FILTERS=[
+  ["all","全部","#1e293b",()=>true],
+  ["星座","星座","#22c55e",k=>k==="星座"],
+  ["火箭","火箭","#a855f7",k=>k==="火箭"],
+  ["国发","国发","#3b82f6",k=>k==="国发"],
+  ["商发","商发","#eab308",k=>k==="商发"],
+  ["国际","国际","#0c4a8c",k=>k.startsWith("国际")],
+  ["政策产业","政策产业","#0ea5e9",k=>["政策","产业","资本"].includes(k)],
+  ["其他","其他","#64748b",null], // 兜底：不匹配以上任何一类
+];
+let mlineFilterKey="all";
+function mlineFilterFn(key){
+  if(key==="其他"){
+    const fs=MLINE_FILTERS.filter(f=>f[3]&&f[0]!=="all").map(f=>f[3]);
+    return k=>!fs.some(fn=>fn(k));
+  }
+  return MLINE_FILTERS.find(f=>f[0]===key)[3];
+}
 function renderMilestones(){
+  const fb=$("#mlineFilter");
+  if(fb){
+    fb.innerHTML="";
+    MLINE_FILTERS.forEach(([key,label,col])=>{
+      const n=MILESTONES.filter(mi=>mlineFilterFn(key)(mi.k)).length;
+      if(key!=="all"&&n===0)return;
+      const chip=document.createElement("span");
+      chip.className="chip-filter"+(mlineFilterKey===key?" on":"");
+      chip.style.setProperty("--c",col);
+      chip.style.padding="3px 10px"; chip.style.fontSize="11.5px";
+      chip.innerHTML=`<span class="dot"></span>${label}<span class="cnt">${n}</span>`;
+      chip.title=`${label}：${n} 条`;
+      chip.onclick=()=>{mlineFilterKey=key;renderMilestones();};
+      fb.appendChild(chip);
+    });
+  }
   const list=$("#mlineList"); list.innerHTML="";
-  MILESTONES.slice().sort((a,b)=>a.d.localeCompare(b.d)).forEach(mi=>{
+  const fn=mlineFilterFn(mlineFilterKey);
+  MILESTONES.slice().sort((a,b)=>a.d.localeCompare(b.d)).filter(mi=>fn(mi.k)).forEach(mi=>{
     const [y,m,d]=mi.d.split("-");
     const el=document.createElement("div");
     el.className="mline";
