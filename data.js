@@ -403,7 +403,7 @@ const SITES = {
 };
 
 /* 数据基准与来源库 —— 事件 src 字段引用此表 */
-const DATA_ASOF = "2026-10-26";   // 数据整理基准日期
+const DATA_ASOF = "2026-10-28";   // 数据整理基准日期
 const SOURCES = {
   xinhua:  {label:"新华社·航天", url:"https://www.news.cn/aerospace/", note:"中国已执行任务的权威媒体报道汇编"},
   spacechina: {label:"中国航天科技集团", url:"http://www.spacechina.com/", note:"国家任务官方发布"},
@@ -579,7 +579,7 @@ const EVENTS = [
   {id:"sx-m9-2", name:"Starlink Group 15-27（一箭27星）", s:"2026-09-20", e:"2026-09-20", t:"09:47", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×27", satCount:27, site:"加州范登堡·4E工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"launchlib", note:"原记 12-32 / 9-22；经 LL 核实 9 月下旬星链批次为 Group 15-27，net=2026-09-20T01:47Z（北京 09:47），范登堡 SLC-4E，一箭 27 星（Starlink v2 mini）。北京时间 2026-09-20 09:47 发射（LL 状态 Launch in Flight，发射已实施），入 LEO，成功。沿用国际源 Group 编号体系。"},
   {id:"sx-m10-1", name:"Starlink Group 15-25（一箭27星）", s:"2026-10-13", e:"2026-10-13", t:"08:28", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×27", satCount:27, site:"加州范登堡·4E工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"launchlib", note:"net=2026-10-13T00:28Z（北京08:28），范登堡 SLC-4E，一箭27星（v2 mini）。星链三周停飞后首发（上一批为9-20 Group 15-27）。替换原「10月组网计划×4」占位。"},
   {id:"sx-m10-2", name:"Starlink Group 15-15（一箭27星）", s:"2026-10-22", e:"2026-10-22", t:"07:02", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×27", satCount:27, site:"加州范登堡·4E工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"launchlib", note:"net=2026-10-21T23:02Z（北京10-22 07:02），范登堡 SLC-4E，一箭27星（v2 mini）。10-20 技术 scrub 后一日补发；助推器 B1082 第12次飞行，回收船 OCISLY。本次为 SpaceX 首次24小时内从三个不同发射台连发三枚 Falcon 9。"},
-  {id:"sx-m10-3", name:"Starlink Group 15-16（计划·一箭27星）", s:"2026-10-26", e:"2026-10-26", t:"13:00", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×27", satCount:0, site:"加州范登堡·4E工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"plan", hl:0, src:"est", note:"国际排期源：net=2026-10-26T05:00Z（北京10-26 13:00，窗口至17:00），范登堡 SLC-4E，一箭27星。原定 10-24 05:29Z，两度推迟各约24小时；助推器 B1082 第26次飞行，回收船 OCISLY。"},
+  {id:"sx-m10-3", name:"Starlink Group 15-16（一箭27星）", s:"2026-10-27", e:"2026-10-27", t:"15:25", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×27", satCount:27, site:"加州范登堡·4E工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"done", hl:0, src:"launchlib", note:"net=2026-10-27T07:25Z（北京10-27 15:25），范登堡 SLC-4E，一箭27星。助推器 B1082 第26次飞行，回收船 OCISLY 成功回收。原定 10-24 05:29Z，四度推迟后成功；2026年 SpaceX 第117次 Falcon 9 发射。"},
   {id:"sx-m10-4", name:"Starlink Group 15-18（计划·一箭27星）", s:"2026-10-29", e:"2026-10-29", t:"12:17", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×27", satCount:0, site:"加州范登堡·4E工位", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"plan", hl:0, src:"est", note:"国际排期源：net=2026-10-29T04:17Z（北京10-29 12:17，窗口至16:17），范登堡 SLC-4E，一箭27星，回收船 OCISLY。"},
   {id:"sx-m11-1", name:"Starlink 11月组网（计划×4）", s:"2026-11-03", e:"2026-11-24", t:"窗口", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×约90颗", satCount:0, site:"佛州/加州交替", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"plan", hl:0, src:"est", note:"11月预计4次"},
   {id:"sx-m12-1", name:"Starlink 12月组网（计划×4）", s:"2026-12-01", e:"2026-12-29", t:"窗口", rk:"Falcon 9", rkKey:"falcon9", pl:"Starlink v2 mini ×约90颗", satCount:0, site:"佛州/加州交替", op:"SpaceX·星链", opKey:"starlink", cat:"spacex", ty:"国外", st:"plan", hl:0, src:"est", note:"12月预计4次·全年星链~70次·~1500颗入轨"},
@@ -671,5 +671,6 @@ const MILESTONES = [
   {d:"2026-09-24", t:"长征六号甲发射遥感四十号04组·长征系列第670飞", s:"太原卫星发射中心长征六号甲（遥十九）成功将遥感四十号04组（三颗）送入轨道，长征系列运载火箭累计发射达 670 次。", k:"国发", c:"#3b82f6"},
   {d:"2026-10-23", t:"遥感五十号03星入轨·长征系列第672飞", s:"太原卫星发射中心长征六号甲遥二十九于 18:15 成功将遥感五十号03星送入太阳同步轨道（长征系列第 672 次飞行），暮光效应「太空水母」火箭云刷屏。", k:"国发", c:"#3b82f6"},
   {d:"2026-10-24", t:"长四乙一箭六星·遥感53/56号六星入轨", s:"酒泉卫星发射中心长征四号乙遥七十七于 03:25 一箭六星，将遥感五十三号07-09星、遥感五十六号19-21星送入预定轨道（长征系列第 673 次飞行）。", k:"国发", c:"#3b82f6"},
-  {d:"2026-10-25", t:"星网低轨28组入轨·三天三发圆满收官", s:"海南商业航天发射场长征八号甲遥十二于 10:03 成功将卫星互联网低轨28组卫星送入预定轨道（长征系列第 674 次飞行）；10-23至25日三天三发全部成功，全年发射次数达 76 次。", k:"星座", c:"#22c55e"}
+  {d:"2026-10-25", t:"星网低轨28组入轨·三天三发圆满收官", s:"海南商业航天发射场长征八号甲遥十二于 10:03 成功将卫星互联网低轨28组卫星送入预定轨道（长征系列第 674 次飞行）；10-23至25日三天三发全部成功，全年发射次数达 76 次。", k:"星座", c:"#22c55e"},
+  {d:"2026-10-27", t:"Starlink Group 15-16 一箭27星成功发射", s:"SpaceX Falcon 9 B1082 第26飞于 15:25（北京时间）从范登堡 SLC-4E 发射星链 Group 15-16 共27颗 v2 mini 卫星，助推器成功回收于 OCISLY。", k:"国际·星座", c:"#0c4a8c"}
 ];
