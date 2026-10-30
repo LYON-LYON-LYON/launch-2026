@@ -403,7 +403,7 @@ const SITES = {
 };
 
 /* 数据基准与来源库 —— 事件 src 字段引用此表 */
-const DATA_ASOF = "2026-10-30";   // 数据整理基准日期
+const DATA_ASOF = "2026-10-31";   // 数据整理基准日期
 const SOURCES = {
   xinhua:  {label:"新华社·航天", url:"https://www.news.cn/aerospace/", note:"中国已执行任务的权威媒体报道汇编"},
   spacechina: {label:"中国航天科技集团", url:"http://www.spacechina.com/", note:"国家任务官方发布"},
@@ -596,7 +596,7 @@ const EVENTS = [
   {id:"kp-m6-1", name:"Kuiper Sat 28-54（Vulcan·一箭27星）", s:"2026-06-12", e:"2026-06-12", t:"—", rk:"Vulcan Centaur · VC2L", rkKey:"vulcan", pl:"Project Kuiper ×27", satCount:27, site:"佛州卡角·41号工位", op:"亚马逊·Kuiper", opKey:"kuiper", cat:"amazon", ty:"国外", st:"done", hl:1, src:"est", note:"Vulcan 首次执行Kuiper任务"},
   {id:"kp-m8-1", name:"Kuiper Sat 55-81（Atlas V·一箭27星）", s:"2026-08-12", e:"2026-08-12", t:"—", rk:"Atlas V · 401", rkKey:"atlasV", pl:"Project Kuiper ×27", satCount:27, site:"佛州卡角·41号工位", op:"亚马逊·Kuiper", opKey:"kuiper", cat:"amazon", ty:"国外", st:"done", hl:0, src:"est", note:"8月批次·累计81颗入轨"},
   {id:"kp-m9-1", name:"Kuiper LV-01（Vulcan·首担Leo批次）", s:"2026-11-13", e:"2026-11-13", t:"待定", rk:"Vulcan Centaur · VC6L", rkKey:"vulcan", pl:"Amazon Leo ×40（亚马逊官方口径）", satCount:0, site:"佛州卡角·41号工位", op:"亚马逊·Kuiper", opKey:"kuiper", cat:"amazon", ty:"国外", st:"plan", month:11, hl:0, src:"est", note:"原记 9/15→9/30→10-29（NET）；10-24 LL2 推迟至 NET 11月，10-28 亚马逊官方任务页更新定档 2026-11-13（待靶场批准，卡角 SLC-41）。40颗 Leo 卫星为迄今最大批次，系 Vulcan 固体助推器喷嘴问题后的复飞任务（助推器采用改进喷嘴设计），也是亚马逊 38 次 Vulcan Leo 合同首发。合并吸收原 kp-m10-1（10-20 Atlas V 占位，无源佐证）。"},
-  {id:"kp-m11-1", name:"Kuiper LE-04（Ariane 64·欧洲首担Leo批次）", s:"2026-11-23", e:"2026-11-23", t:"待定", rk:"Ariane 6 · 64构型", rkKey:"ariane6", pl:"Amazon Leo ×35", satCount:0, site:"法属圭亚那 · 库鲁ELA-4", op:"亚马逊·Kuiper", opKey:"kuiper", cat:"amazon", ty:"国外", st:"plan", hl:0, src:"est", note:"国际排期源：net=2026-11-23，Arianespace Ariane 64（四助推构型）从库鲁 ELA-4 一箭35星，为欧洲火箭首次承担 Amazon Leo 组网批次（任务代号 LE-04）。原 11-18 Vulcan 批次占位无源佐证，替换为此确定排期。"},
+  {id:"kp-m11-1", name:"Kuiper LE-04（Ariane 64·欧洲首担Leo批次）", s:"2026-11-23", e:"2026-11-23", t:"待定", rk:"Ariane 6 · 64构型", rkKey:"ariane6", pl:"Amazon Leo ×35", satCount:0, site:"法属圭亚那 · 库鲁ELA-4", op:"亚马逊·Kuiper", opKey:"kuiper", cat:"amazon", ty:"国外", st:"plan", hl:0, src:"est", llId:"ariane-64-block-2-amazon-leo-le-04", note:"国际排期源：net=2026-11-23，Arianespace Ariane 64（四助推构型）从库鲁 ELA-4 一箭35星，为欧洲火箭首次承担 Amazon Leo 组网批次（任务代号 LE-04）。原 11-18 Vulcan 批次占位无源佐证，替换为此确定排期。"},
   {id:"kp-m12-1", name:"Kuiper 12月批次（计划）", s:"2026-12-10", e:"2026-12-10", t:"预计", rk:"Atlas V", rkKey:"atlasV", pl:"Project Kuiper ×27", satCount:0, site:"佛州卡角·41号工位", op:"亚马逊·Kuiper", opKey:"kuiper", cat:"amazon", ty:"国外", st:"plan", hl:0, src:"est", note:"12月计划批次·全年Kuiper累计约162颗"},
 
   /* --- OneWeb（已完成第一阶段·2026年补网+二代验证） --- */
