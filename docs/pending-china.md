@@ -32,3 +32,97 @@
   - 卫星数 satCount：`0`（API 正则抓取，务必核实）
   - 运营方 opKey：`intl`，分类 cat：`other`
   - LL 状态 TBD → 建议 st=`plan`
+## 2026-11-07 自动同步（8 条）
+
+| LL slug | 建议名称 | 日期 | 火箭 | 发射场 | 建议 ty | 建议 opKey | 星数 | LL 状态 |
+|---|---|---|---|---|---|---|---|---|
+| `ceres-2-4-satellites` | 4 satellites | 2026-11-07 | 谷神星二号（gsc2） | 酒泉卫星发射中心 | 商发 | intl | 4 | Success |
+| `long-march-2c-yaogan-51-07-to-09` | Yaogan 51-07 to 09 | 2026-11-05 | 长征二号丙（cz2c） | 西昌卫星发射中心·3号工位 | 国发 | intl | 0 | Success |
+| `ceres-2-4-satellites` | 4 satellites | 2026-11-07 | 谷神星二号（gsc2） | 酒泉卫星发射中心 | 商发 | intl | 4 | Success |
+| `long-march-12-satnet-leo-group-tbd` | SatNet LEO Group TBD? | 2026-11-09 | 长征十二号（cz12） | 文昌航天发射场·2号工位 | 国发 | intl | 0 | Go |
+| `long-march-2d-unknown-payload` | Unknown Payload | 2026-11-11 | 长征二号丁（cz2d） | 酒泉卫星发射中心 | 国发 | intl | 0 | Go |
+| `long-march-8a-satnet-leo-group-tbd` | SatNet LEO Group TBD? | 2026-11-20 | 长征八号甲/改进型（cz8a） | 文昌航天发射场·1号工位 | 国发 | intl | 0 | TBC |
+| `long-march-12-satnet-leo-group-tbd-2` | SatNet LEO Group TBD? | 2026-11-24 | 长征十二号（cz12） | 文昌航天发射场·2号工位 | 国发 | intl | 0 | TBC |
+| `long-march-2fg-shenzhou-24` | Shenzhou 24 | 2026-11-25 | 长征二号F（cz2f） | 酒泉卫星发射中心 | 国发 | intl | 0 | TBD |
+
+### 逐条建议字段值
+
+- **4 satellites**（`ceres-2-4-satellites`）
+  - 服务商：Galactic Energy → 建议 ty=`商发`
+  - 建议 id：`m-m11-?`（需人工定序号）
+  - 日期 s/e：`2026-11-07` / `2026-11-07`，时刻：`07:37`
+  - 火箭 rkKey：`gsc2`（谷神星二号）
+  - 载荷 pl：`4 satellites ×4`
+  - 卫星数 satCount：`4`（API 正则抓取，务必核实）
+  - 运营方 opKey：`intl`，分类 cat：`other`
+  - LL 状态 Success → 建议 st=`done`
+
+- **Yaogan 51-07 to 09**（`long-march-2c-yaogan-51-07-to-09`）
+  - 服务商：China Aerospace Science and Technology Corporation → 建议 ty=`国发`
+  - 建议 id：`m-m11-?`（需人工定序号）
+  - 日期 s/e：`2026-11-05` / `2026-11-06`，时刻：`23:58`
+  - 火箭 rkKey：`cz2c`（长征二号丙）
+  - 载荷 pl：`Yaogan 51-07 to 09`
+  - 卫星数 satCount：`0`（API 正则抓取，务必核实）
+  - 运营方 opKey：`intl`，分类 cat：`other`
+  - LL 状态 Success → 建议 st=`done`
+
+- **4 satellites**（`ceres-2-4-satellites`）
+  - 服务商：Galactic Energy → 建议 ty=`商发`
+  - 建议 id：`m-m11-?`（需人工定序号）
+  - 日期 s/e：`2026-11-07` / `2026-11-07`，时刻：`07:37`
+  - 火箭 rkKey：`gsc2`（谷神星二号）
+  - 载荷 pl：`4 satellites ×4`
+  - 卫星数 satCount：`4`（API 正则抓取，务必核实）
+  - 运营方 opKey：`intl`，分类 cat：`other`
+  - LL 状态 Success → 建议 st=`done`
+
+- **SatNet LEO Group TBD?**（`long-march-12-satnet-leo-group-tbd`）
+  - 服务商：China Aerospace Science and Technology Corporation → 建议 ty=`国发`
+  - 建议 id：`m-m11-?`（需人工定序号）
+  - 日期 s/e：`2026-11-09` / `2026-11-09`，时刻：`04:25`
+  - 火箭 rkKey：`cz12`（长征十二号）
+  - 载荷 pl：`SatNet LEO Group TBD?`
+  - 卫星数 satCount：`0`（API 正则抓取，务必核实）
+  - 运营方 opKey：`intl`，分类 cat：`other`
+  - LL 状态 Go → 建议 st=`plan`
+
+- **Unknown Payload**（`long-march-2d-unknown-payload`）
+  - 服务商：China Aerospace Science and Technology Corporation → 建议 ty=`国发`
+  - 建议 id：`m-m11-?`（需人工定序号）
+  - 日期 s/e：`2026-11-11` / `2026-11-11`，时刻：`19:40`
+  - 火箭 rkKey：`cz2d`（长征二号丁）
+  - 载荷 pl：`Unknown Payload`
+  - 卫星数 satCount：`0`（API 正则抓取，务必核实）
+  - 运营方 opKey：`intl`，分类 cat：`other`
+  - LL 状态 Go → 建议 st=`plan`
+
+- **SatNet LEO Group TBD?**（`long-march-8a-satnet-leo-group-tbd`）
+  - 服务商：China Aerospace Science and Technology Corporation → 建议 ty=`国发`
+  - 建议 id：`m-m11-?`（需人工定序号）
+  - 日期 s/e：`2026-11-20` / `2026-11-20`，时刻：`19:00`
+  - 火箭 rkKey：`cz8a`（长征八号甲/改进型）
+  - 载荷 pl：`SatNet LEO Group TBD?`
+  - 卫星数 satCount：`0`（API 正则抓取，务必核实）
+  - 运营方 opKey：`intl`，分类 cat：`other`
+  - LL 状态 TBC → 建议 st=`plan`
+
+- **SatNet LEO Group TBD?**（`long-march-12-satnet-leo-group-tbd-2`）
+  - 服务商：China Aerospace Science and Technology Corporation → 建议 ty=`国发`
+  - 建议 id：`m-m11-?`（需人工定序号）
+  - 日期 s/e：`2026-11-24` / `2026-11-24`，时刻：`15:00`
+  - 火箭 rkKey：`cz12`（长征十二号）
+  - 载荷 pl：`SatNet LEO Group TBD?`
+  - 卫星数 satCount：`0`（API 正则抓取，务必核实）
+  - 运营方 opKey：`intl`，分类 cat：`other`
+  - LL 状态 TBC → 建议 st=`plan`
+
+- **Shenzhou 24**（`long-march-2fg-shenzhou-24`）
+  - 服务商：China Aerospace Science and Technology Corporation → 建议 ty=`国发`
+  - 建议 id：`m-m11-?`（需人工定序号）
+  - 日期 s/e：`2026-11-25` / `2026-11-25`，时刻：`—`
+  - 火箭 rkKey：`cz2f`（长征二号F）
+  - 载荷 pl：`Shenzhou 24`
+  - 卫星数 satCount：`0`（API 正则抓取，务必核实）
+  - 运营方 opKey：`intl`，分类 cat：`other`
+  - LL 状态 TBD → 建议 st=`plan`
