@@ -32,3 +32,75 @@
   - 卫星数 satCount：`0`（API 正则抓取，务必核实）
   - 运营方 opKey：`intl`，分类 cat：`other`
   - LL 状态 TBD → 建议 st=`plan`
+## 2026-11-11 自动同步（6 条）
+
+| LL slug | 建议名称 | 日期 | 火箭 | 发射场 | 建议 ty | 建议 opKey | 星数 | LL 状态 |
+|---|---|---|---|---|---|---|---|---|
+| `long-march-12-satnet-leo-group-29` | SatNet LEO Group 29 | 2026-11-09 | 长征十二号（cz12） | 文昌航天发射场·2号工位 | 国发 | intl | 0 | Success |
+| `long-march-2d-unknown-payload` | Unknown Payload | 2026-11-11 | 长征二号丁（cz2d） | 酒泉卫星发射中心 | 国发 | intl | 0 | Go |
+| `kuaizhou-11-unknown-payload` | Unknown Payload | 2026-11-13 | 快舟十一号（kz11） | 酒泉卫星发射中心 | 商发 | intl | 0 | Go |
+| `long-march-8a-satnet-leo-group-tbd` | SatNet LEO Group TBD? | 2026-11-20 | 长征八号甲/改进型（cz8a） | 文昌航天发射场·1号工位 | 国发 | intl | 0 | TBC |
+| `long-march-12-satnet-leo-group-tbd` | SatNet LEO Group TBD? | 2026-11-24 | 长征十二号（cz12） | 文昌航天发射场·2号工位 | 国发 | intl | 0 | TBC |
+| `long-march-2fg-shenzhou-24` | Shenzhou 24 | 2026-11-25 | 长征二号F（cz2f） | 酒泉卫星发射中心 | 国发 | intl | 0 | TBD |
+
+### 逐条建议字段值
+
+- **SatNet LEO Group 29**（`long-march-12-satnet-leo-group-29`）
+  - 服务商：China Aerospace Science and Technology Corporation → 建议 ty=`国发`
+  - 建议 id：`m-m11-?`（需人工定序号）
+  - 日期 s/e：`2026-11-09` / `2026-11-09`，时刻：`04:24`
+  - 火箭 rkKey：`cz12`（长征十二号）
+  - 载荷 pl：`SatNet LEO Group 29`
+  - 卫星数 satCount：`0`（API 正则抓取，务必核实）
+  - 运营方 opKey：`intl`，分类 cat：`other`
+  - LL 状态 Success → 建议 st=`done`
+
+- **Unknown Payload**（`long-march-2d-unknown-payload`）
+  - 服务商：China Aerospace Science and Technology Corporation → 建议 ty=`国发`
+  - 建议 id：`m-m11-?`（需人工定序号）
+  - 日期 s/e：`2026-11-11` / `2026-11-11`，时刻：`19:40`
+  - 火箭 rkKey：`cz2d`（长征二号丁）
+  - 载荷 pl：`Unknown Payload`
+  - 卫星数 satCount：`0`（API 正则抓取，务必核实）
+  - 运营方 opKey：`intl`，分类 cat：`other`
+  - LL 状态 Go → 建议 st=`plan`
+
+- **Unknown Payload**（`kuaizhou-11-unknown-payload`）
+  - 服务商：ExPace → 建议 ty=`商发`
+  - 建议 id：`m-m11-?`（需人工定序号）
+  - 日期 s/e：`2026-11-13` / `2026-11-13`，时刻：`03:50`
+  - 火箭 rkKey：`kz11`（快舟十一号）
+  - 载荷 pl：`Unknown Payload`
+  - 卫星数 satCount：`0`（API 正则抓取，务必核实）
+  - 运营方 opKey：`intl`，分类 cat：`other`
+  - LL 状态 Go → 建议 st=`plan`
+
+- **SatNet LEO Group TBD?**（`long-march-8a-satnet-leo-group-tbd`）
+  - 服务商：China Aerospace Science and Technology Corporation → 建议 ty=`国发`
+  - 建议 id：`m-m11-?`（需人工定序号）
+  - 日期 s/e：`2026-11-20` / `2026-11-20`，时刻：`19:00`
+  - 火箭 rkKey：`cz8a`（长征八号甲/改进型）
+  - 载荷 pl：`SatNet LEO Group TBD?`
+  - 卫星数 satCount：`0`（API 正则抓取，务必核实）
+  - 运营方 opKey：`intl`，分类 cat：`other`
+  - LL 状态 TBC → 建议 st=`plan`
+
+- **SatNet LEO Group TBD?**（`long-march-12-satnet-leo-group-tbd`）
+  - 服务商：China Aerospace Science and Technology Corporation → 建议 ty=`国发`
+  - 建议 id：`m-m11-?`（需人工定序号）
+  - 日期 s/e：`2026-11-24` / `2026-11-24`，时刻：`15:00`
+  - 火箭 rkKey：`cz12`（长征十二号）
+  - 载荷 pl：`SatNet LEO Group TBD?`
+  - 卫星数 satCount：`0`（API 正则抓取，务必核实）
+  - 运营方 opKey：`intl`，分类 cat：`other`
+  - LL 状态 TBC → 建议 st=`plan`
+
+- **Shenzhou 24**（`long-march-2fg-shenzhou-24`）
+  - 服务商：China Aerospace Science and Technology Corporation → 建议 ty=`国发`
+  - 建议 id：`m-m11-?`（需人工定序号）
+  - 日期 s/e：`2026-11-25` / `2026-11-25`，时刻：`—`
+  - 火箭 rkKey：`cz2f`（长征二号F）
+  - 载荷 pl：`Shenzhou 24`
+  - 卫星数 satCount：`0`（API 正则抓取，务必核实）
+  - 运营方 opKey：`intl`，分类 cat：`other`
+  - LL 状态 TBD → 建议 st=`plan`
