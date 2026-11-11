@@ -11,7 +11,7 @@
  * 幂等缓存：原始响应落 .sync/raw-*.json（已 gitignore），缓存新鲜则跳过请求。
  * 限额保护：单次运行总请求数硬上限 MAX_REQUESTS=6（LL 免费匿名档约 15 请求/小时/IP）。
  * 优雅降级：网络失败 / 超时不视为阻塞 —— 记日志 + 写 .sync/fetch-status.json 后 exit 0，
- *           merge-data.js 读到空结果即视为"本次无变更"，不产生 PR。
+ *           merge-data.js 读到空结果即视为"本次无变更"，不产生提交。
  *
  * 用法：
  *   node scripts/fetch-launches.js                 # 常规（缓存新鲜则跳过网络）
@@ -62,10 +62,12 @@ const TIMEOUT_MS = envInt("LL_TIMEOUT_MS", 20000);
 const API_KEY = process.env.LL_API_KEY || "";
 const AUTH_SCHEME = process.env.LL_AUTH_SCHEME || "Token";
 
-/* 首次运行自动进入回填模式：data.js 里还没有任何 llId 时，窄窗口抓不到存量事件 */
+/* 首次运行自动进入回填模式：data.js 里还没有任何真实 llId 字段时，窄窗口抓不到存量事件
+   注意：data.js 顶部字段说明注释里写着 "llId: [可选]"，只判断 /\bllId\s*:/ 会永远误判为
+   "已有 llId"，使宽窗口回填从未自动启用。故这里只匹配真实赋值 llId:"..." / llId:'...'。 */
 let AUTO_BACKFILL = false;
 try {
-  AUTO_BACKFILL = !/\bllId\s*:/.test(fs.readFileSync(DATA_FILE, "utf8"));
+  AUTO_BACKFILL = !/\bllId\s*:\s*["']/.test(fs.readFileSync(DATA_FILE, "utf8"));
 } catch (e) {
   AUTO_BACKFILL = false; // data.js 读不到时不臆断，按常规窗口走
 }

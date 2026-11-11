@@ -4,21 +4,21 @@
  *
  * 定位：CI / 本地维护脚本，零第三方依赖，不被浏览器加载。
  * 输入：.sync/raw-previous.json、.sync/raw-upcoming.json（由 fetch-launches.js 产出）
- * 输出：data.js（有变更才写）、docs/pending-china.md（追加）、.sync/summary.md（PR 正文）
+ * 输出：data.js（有变更才写）、docs/pending-china.md（追加）、.sync/summary.md（运行摘要）
  *
  * 核心安全机制（"宁可漏抓不可污染"）：
  *   1. 中国事件永不入库 —— 命中即分流到 docs/pending-china.md，EVENTS 一行不动；
  *   2. 全局保护字段永不覆盖（name/pl/op/opKey/cat/ty/hl/note/tbd/month/lock/llId）；
  *   3. 逐事件 lock 数组可锁住"事实字段也信人工"的场景（如垣信批次星数先于 API 公布）；
  *   4. 写盘前自检：语法可编译 + 事件不丢失 + 保护字段零漂移，任一不满足则拒绝写盘；
- *   5. 首次运行（data.js 尚无 llId）自动进入"仅回填 llId"模式，保证首个 PR 不含内容误改。
+ *   5. 首次运行（data.js 尚无 llId）自动进入"仅回填 llId"模式，保证首轮同步不含内容误改。
  *
  * 用法：
  *   node scripts/merge-data.js                  # 常规合并（首次运行自动仅回填 llId）
  *   node scripts/merge-data.js --dry-run        # 只报告不写盘
  *   node scripts/merge-data.js --force-update   # 首次运行也允许更新事实字段
  *
- * 退出码：恒为 0。真正的门禁是紧随其后的 scripts/validate-data.js（FAIL 则 exit 1、不建 PR）。
+ * 退出码：恒为 0。真正的门禁是紧随其后的 scripts/validate-data.js（FAIL 则 exit 1、不推送 master）。
  */
 "use strict";
 
@@ -374,7 +374,7 @@ function main() {
       dirty = true;
     }
 
-    // 2) 事实字段更新（首次运行跳过，保证首 PR 内容零误改）
+    // 2) 事实字段更新（首次运行跳过，保证首轮同步内容零误改）
     if (!backfillOnly) {
       const contentChanges = [];
       for (const f of g.UPDATABLE_FIELDS) {
@@ -680,7 +680,7 @@ function main() {
     }
   }
 
-  /* ---- 摘要（PR 正文） ---- */
+  /* ---- 摘要（Actions Step Summary） ---- */
   const stamp = new Date(Date.now() + 8 * 3600 * 1000).toISOString().slice(0, 19).replace("T", " ") + " (北京时间)";
   const L = [];
   L.push("## 数据自动同步摘要");
@@ -749,7 +749,7 @@ function main() {
   if (stats.needSatCount.length > 0) {
     L.push(`### ⚠ 待人工补星数（${stats.needSatCount.length} 条）`);
     L.push("");
-    L.push("> 以下事件状态为 done 但 satCount=0，疑漏抓星数，仍进 PR 但需人工补齐。");
+    L.push("> 以下事件状态为 done 但 satCount=0，疑漏抓星数，仍会随同步提交，需人工补齐。");
     L.push("");
     for (const n of stats.needSatCount) L.push(`- ${n.id} · ${n.name}`);
     L.push("");
@@ -765,10 +765,10 @@ function main() {
   }
 
   if (stalePlan.length > 0) {
-    L.push(`### ⚠ 过期计划事件（${stalePlan.length} 条，R13 会拦截本 PR）`);
+    L.push(`### ⚠ 过期计划事件（${stalePlan.length} 条，R13 warning 级、不阻塞）`);
     L.push("");
     L.push("> DATA_ASOF 推进后，以下 plan 事件的窗口已过。这些多为中国事件 —— 流水线**不会**自动改动，");
-    L.push("> 但校验器 R13 会把它们判为 FAIL 从而拦下本 PR。请人工回填为 done/fail/delay 后重跑 workflow_dispatch。");
+    L.push("> R13 在校验器中为 **warning 级、不阻塞推送**，仅在此列出待清理清单。请人工回填为 done/fail/delay。");
     L.push("");
     for (const s of stalePlan) L.push(`- ${s.id} · ${s.name} · 窗口末日 ${s.e} < DATA_ASOF ${stats.dataAsof.new}`);
     L.push("");
