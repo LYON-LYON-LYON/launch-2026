@@ -1116,3 +1116,31 @@
   - 卫星数 satCount：`0`（API 正则抓取，务必核实）
   - 运营方 opKey：`intl`，分类 cat：`other`
   - LL 状态 TBD → 建议 st=`plan`
+## 2026-11-12 自动同步（2 条）
+
+| LL slug | 建议名称 | 日期 | 火箭 | 发射场 | 建议 ty | 建议 opKey | 星数 | LL 状态 |
+|---|---|---|---|---|---|---|---|---|
+| `long-march-2d-cas-pathfinder-1` | CAS Pathfinder-1 | 2026-11-11 | 长征二号丁（cz2d） | 酒泉卫星发射中心 | 国发 | intl | 1 | Success |
+| `long-march-2d-cas-pathfinder-1` | CAS Pathfinder-1 | 2026-11-11 | 长征二号丁（cz2d） | 酒泉卫星发射中心 | 国发 | intl | 1 | Success |
+
+### 逐条建议字段值
+
+- **CAS Pathfinder-1**（`long-march-2d-cas-pathfinder-1`）
+  - 服务商：China Aerospace Science and Technology Corporation → 建议 ty=`国发`
+  - 建议 id：`m-m11-?`（需人工定序号）
+  - 日期 s/e：`2026-11-11` / `2026-11-11`，时刻：`19:41`
+  - 火箭 rkKey：`cz2d`（长征二号丁）
+  - 载荷 pl：`CAS Pathfinder-1 ×1`
+  - 卫星数 satCount：`1`（API 正则抓取，务必核实）
+  - 运营方 opKey：`intl`，分类 cat：`other`
+  - LL 状态 Success → 建议 st=`done`
+
+- **CAS Pathfinder-1**（`long-march-2d-cas-pathfinder-1`）
+  - 服务商：China Aerospace Science and Technology Corporation → 建议 ty=`国发`
+  - 建议 id：`m-m11-?`（需人工定序号）
+  - 日期 s/e：`2026-11-11` / `2026-11-11`，时刻：`19:41`
+  - 火箭 rkKey：`cz2d`（长征二号丁）
+  - 载荷 pl：`CAS Pathfinder-1 ×1`
+  - 卫星数 satCount：`1`（API 正则抓取，务必核实）
+  - 运营方 opKey：`intl`，分类 cat：`other`
+  - LL 状态 Success → 建议 st=`done`
