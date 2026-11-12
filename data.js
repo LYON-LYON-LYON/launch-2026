@@ -640,6 +640,9 @@ const EVENTS = [
   {id:"m12-6", name:"长征十号乙 · 遥二（待排期）", s:"", e:"", t:"待定", rk:"长征十号乙 · 遥二", rkKey:"cz10b", pl:"待官方披露", satCount:0, site:"海南商业航天发射场", op:"国家任务", opKey:"", cat:"other", ty:"国发", st:"plan", tbd:1, month:12, hl:0, src:"tbd", note:"航警日历（10-23）：12月海南商发，近地轨道。"},
   {id:"m12-7", name:"长征十二号乙 · 遥二（待排期）", s:"", e:"", t:"待定", rk:"长征十二号乙 · 遥二", rkKey:"cz12b", pl:"待官方披露", satCount:0, site:"酒泉卫星发射中心", op:"国家任务", opKey:"", cat:"other", ty:"国发", st:"plan", tbd:1, month:12, hl:0, src:"tbd", note:"航警日历（10-23）：12月酒泉，近地轨道。长十二乙6-01首飞（千帆十组）后第二发。"},
   {id:"m12-8", name:"长征七号甲 · 遥二十一（待排期）", s:"", e:"", t:"待定", rk:"长征七号甲 · 遥二十一", rkKey:"cz7a", pl:"待官方披露（GTO）", satCount:0, site:"文昌航天发射场", op:"国家任务", opKey:"", cat:"other", ty:"国发", st:"plan", tbd:1, month:12, hl:0, src:"tbd", note:"航警日历（10-23）：12月文昌，地球同步转移轨道。"},
+
+  /* --- 自动同步新增（Launch Library 2.2） --- */
+  {id:"il-m11-1", name:"USSF-627", s:"2026-11-12", e:"2026-11-12", t:"12:36", rk:"Falcon 9", rkKey:"falcon9", pl:"USSF-627", satCount:0, site:"加州范登堡·4E工位", op:"国际商业任务", opKey:"intl", cat:"other", ty:"国外", st:"done", hl:0, src:"launchlib", note:"", llId:"falcon-9-block-5-ussf-627"},
 ];
 
 /* 大事记 */
