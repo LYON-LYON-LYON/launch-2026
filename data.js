@@ -643,6 +643,9 @@ const EVENTS = [
 
   /* --- 自动同步新增（Launch Library 2.2） --- */
   {id:"il-m11-1", name:"USSF-627", s:"2026-11-12", e:"2026-11-12", t:"12:36", rk:"Falcon 9", rkKey:"falcon9", pl:"USSF-627", satCount:0, site:"加州范登堡·4E工位", op:"国际商业任务", opKey:"intl", cat:"other", ty:"国外", st:"done", hl:0, src:"launchlib", note:"", llId:"falcon-9-block-5-ussf-627"},
+
+  /* --- 自动同步新增（Launch Library 2.2） --- */
+  {id:"il-m11-2", name:"The Mountain God Rises (iQPS Launch 10)", s:"2026-11-14", e:"2026-11-14", t:"13:30", rk:"Electron", rkKey:"electron", pl:"The Mountain God Rises (iQPS Launch 10)", satCount:0, site:"新西兰·玛西亚半岛·1A工位", op:"国际商业任务", opKey:"intl", cat:"other", ty:"国外", st:"done", hl:0, src:"launchlib", note:"", llId:"electron-the-mountain-god-rises-iqps-launch-10"},
 ];
 
 /* 大事记 */
