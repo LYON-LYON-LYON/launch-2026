@@ -646,6 +646,9 @@ const EVENTS = [
 
   /* --- 自动同步新增（Launch Library 2.2） --- */
   {id:"il-m11-2", name:"The Mountain God Rises (iQPS Launch 10)", s:"2026-11-14", e:"2026-11-14", t:"13:30", rk:"Electron", rkKey:"electron", pl:"The Mountain God Rises (iQPS Launch 10)", satCount:0, site:"新西兰·玛西亚半岛·1A工位", op:"国际商业任务", opKey:"intl", cat:"other", ty:"国外", st:"done", hl:0, src:"launchlib", note:"", llId:"electron-the-mountain-god-rises-iqps-launch-10"},
+
+  /* --- 自动同步新增（Launch Library 2.2） --- */
+  {id:"ss-m11-1", name:"Starlink Group 31-2 (Starship Flight 15)", s:"2026-11-14", e:"2026-11-14", t:"06:47", rk:"Starship", rkKey:"starship", pl:"Starlink Group 31-2 (Starship Flight 15)", satCount:0, site:"德州博卡奇卡·Starbase", op:"SpaceX", opKey:"spacex", cat:"verify", ty:"国外", st:"done", hl:0, src:"launchlib", note:"", llId:"starship-starlink-group-31-2-starship-flight-15"},
 ];
 
 /* 大事记 */
