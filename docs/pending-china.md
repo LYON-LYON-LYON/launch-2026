@@ -1144,3 +1144,20 @@
   - 卫星数 satCount：`1`（API 正则抓取，务必核实）
   - 运营方 opKey：`intl`，分类 cat：`other`
   - LL 状态 Success → 建议 st=`done`
+## 2026-11-18 自动同步（1 条）
+
+| LL slug | 建议名称 | 日期 | 火箭 | 发射场 | 建议 ty | 建议 opKey | 星数 | LL 状态 |
+|---|---|---|---|---|---|---|---|---|
+| `long-march-6c-unknown-payload` | Unknown Payload | 2026-11-21 | 长征六号丙（cz6c） | 太原卫星发射中心·9A工位 | 国发 | intl | 0 | Go |
+
+### 逐条建议字段值
+
+- **Unknown Payload**（`long-march-6c-unknown-payload`）
+  - 服务商：China Aerospace Science and Technology Corporation → 建议 ty=`国发`
+  - 建议 id：`m-m11-?`（需人工定序号）
+  - 日期 s/e：`2026-11-21` / `2026-11-21`，时刻：`11:50`
+  - 火箭 rkKey：`cz6c`（长征六号丙）
+  - 载荷 pl：`Unknown Payload`
+  - 卫星数 satCount：`0`（API 正则抓取，务必核实）
+  - 运营方 opKey：`intl`，分类 cat：`other`
+  - LL 状态 Go → 建议 st=`plan`
