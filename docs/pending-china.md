@@ -1180,3 +1180,31 @@
 **国际侧补充**：`vulcan-vc6l-amazon-leo-lv-01`（Amazon Leo LV-01）经 LL2 Failure 与新华社、人民网、ULA 官方确认，北京 11-16 01:40 发射失利、40 颗 Leo 卫星全部损失，已闭环为 `kp-m9-1`（`st=fail`，`satCount=0` 按本站失利事件惯例记未入轨）。
 
 **遗留**：11-12 自动同步中同一 llId 重复追加 2 条，说明待审清单的去重逻辑仍有边界问题，后续可单独修复；本轮不改动同步脚本。
+## 2026-11-19 自动同步（2 条）
+
+| LL slug | 建议名称 | 日期 | 火箭 | 发射场 | 建议 ty | 建议 opKey | 星数 | LL 状态 |
+|---|---|---|---|---|---|---|---|---|
+| `long-march-2d-shijian-24` | Shijian 24 | 2026-11-19 | 长征二号丁（cz2d） | 太原卫星发射中心·9号工位 | 国发 | intl | 0 | Success |
+| `long-march-2d-shijian-24` | Shijian 24 | 2026-11-19 | 长征二号丁（cz2d） | 太原卫星发射中心·9号工位 | 国发 | intl | 0 | Success |
+
+### 逐条建议字段值
+
+- **Shijian 24**（`long-march-2d-shijian-24`）
+  - 服务商：China Aerospace Science and Technology Corporation → 建议 ty=`国发`
+  - 建议 id：`m-m11-?`（需人工定序号）
+  - 日期 s/e：`2026-11-19` / `2026-11-19`，时刻：`06:51`
+  - 火箭 rkKey：`cz2d`（长征二号丁）
+  - 载荷 pl：`Shijian 24`
+  - 卫星数 satCount：`0`（API 正则抓取，务必核实）
+  - 运营方 opKey：`intl`，分类 cat：`other`
+  - LL 状态 Success → 建议 st=`done`
+
+- **Shijian 24**（`long-march-2d-shijian-24`）
+  - 服务商：China Aerospace Science and Technology Corporation → 建议 ty=`国发`
+  - 建议 id：`m-m11-?`（需人工定序号）
+  - 日期 s/e：`2026-11-19` / `2026-11-19`，时刻：`06:51`
+  - 火箭 rkKey：`cz2d`（长征二号丁）
+  - 载荷 pl：`Shijian 24`
+  - 卫星数 satCount：`0`（API 正则抓取，务必核实）
+  - 运营方 opKey：`intl`，分类 cat：`other`
+  - LL 状态 Success → 建议 st=`done`
