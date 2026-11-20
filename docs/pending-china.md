@@ -1221,3 +1221,31 @@
   - 卫星数 satCount：`0`（API 正则抓取，务必核实）
   - 运营方 opKey：`intl`，分类 cat：`other`
   - LL 状态 TBC → 建议 st=`plan`
+## 2026-11-21 自动同步（2 条）
+
+| LL slug | 建议名称 | 日期 | 火箭 | 发射场 | 建议 ty | 建议 opKey | 星数 | LL 状态 |
+|---|---|---|---|---|---|---|---|---|
+| `long-march-8a-satnet-leo-group-30` | SatNet LEO Group 30 | 2026-11-20 | 长征八号甲/改进型（cz8a） | 文昌航天发射场·1号工位 | 国发 | intl | 0 | Success |
+| `long-march-6a-unknown-payload` | Unknown Payload | 2026-11-27 | 长征六号改/甲（cz6a） | 太原卫星发射中心·9A工位 | 国发 | intl | 0 | Go |
+
+### 逐条建议字段值
+
+- **SatNet LEO Group 30**（`long-march-8a-satnet-leo-group-30`）
+  - 服务商：China Aerospace Science and Technology Corporation → 建议 ty=`国发`
+  - 建议 id：`m-m11-?`（需人工定序号）
+  - 日期 s/e：`2026-11-20` / `2026-11-20`，时刻：`19:59`
+  - 火箭 rkKey：`cz8a`（长征八号甲/改进型）
+  - 载荷 pl：`SatNet LEO Group 30`
+  - 卫星数 satCount：`0`（API 正则抓取，务必核实）
+  - 运营方 opKey：`intl`，分类 cat：`other`
+  - LL 状态 Success → 建议 st=`done`
+
+- **Unknown Payload**（`long-march-6a-unknown-payload`）
+  - 服务商：China Aerospace Science and Technology Corporation → 建议 ty=`国发`
+  - 建议 id：`m-m11-?`（需人工定序号）
+  - 日期 s/e：`2026-11-27` / `2026-11-27`，时刻：`21:00`
+  - 火箭 rkKey：`cz6a`（长征六号改/甲）
+  - 载荷 pl：`Unknown Payload`
+  - 卫星数 satCount：`0`（API 正则抓取，务必核实）
+  - 运营方 opKey：`intl`，分类 cat：`other`
+  - LL 状态 Go → 建议 st=`plan`
