@@ -1204,3 +1204,20 @@
 | 星网低轨30组 | LL2 已给出 11-20 19:59 长八甲 Go 窗口，与 `m11-5`（11-20~23 20:00）吻合；今晚才发射，本轮不改事件状态 |
 
 **同步脚本修复**：`scripts/merge-data.js` 的待审去重原实现只比对写盘前的旧文件，同一批次内 LL2 返回的重复 slug 会被重复追加。已改为「旧文件 + 本批次 seen 集合」双重去重，并清理了上述两处历史重复条目。
+## 2026-11-20 自动同步（1 条）
+
+| LL slug | 建议名称 | 日期 | 火箭 | 发射场 | 建议 ty | 建议 opKey | 星数 | LL 状态 |
+|---|---|---|---|---|---|---|---|---|
+| `kinetica-1-unknown-payload` | Unknown Payload | 2026-11-29 | 力箭一号（lz1） | Haiyang Oriental Spaceport | 商发 | intl | 0 | TBC |
+
+### 逐条建议字段值
+
+- **Unknown Payload**（`kinetica-1-unknown-payload`）
+  - 服务商：CAS Space → 建议 ty=`商发`
+  - 建议 id：`m-m11-?`（需人工定序号）
+  - 日期 s/e：`2026-11-29` / `2026-11-29`，时刻：`09:00`
+  - 火箭 rkKey：`lz1`（力箭一号）
+  - 载荷 pl：`Unknown Payload`
+  - 卫星数 satCount：`0`（API 正则抓取，务必核实）
+  - 运营方 opKey：`intl`，分类 cat：`other`
+  - LL 状态 TBC → 建议 st=`plan`
