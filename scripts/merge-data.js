@@ -630,7 +630,14 @@ function main() {
   if (stats.pendingChina.length > 0 && !DRY_RUN) {
     fs.mkdirSync(DOCS_DIR, { recursive: true });
     const prev = fs.existsSync(PENDING_FILE) ? fs.readFileSync(PENDING_FILE, "utf8") : "";
-    const fresh = stats.pendingChina.filter((m) => !prev.includes(m.llId));
+    // 同批次内也要去重：LL2 的 previous/upcoming 窗口可能返回同一 slug 两次，
+    // 旧实现只比对「写盘前」的 prev，导致同一 llId 在一次运行中被追加两遍。
+    const seenPending = new Set();
+    const fresh = stats.pendingChina.filter((m) => {
+      if (prev.includes(m.llId) || seenPending.has(m.llId)) return false;
+      seenPending.add(m.llId);
+      return true;
+    });
     if (fresh.length > 0) {
       if (!prev) {
         fs.writeFileSync(PENDING_FILE, [

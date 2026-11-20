@@ -1116,11 +1116,10 @@
   - 卫星数 satCount：`0`（API 正则抓取，务必核实）
   - 运营方 opKey：`intl`，分类 cat：`other`
   - LL 状态 TBD → 建议 st=`plan`
-## 2026-11-12 自动同步（2 条）
+## 2026-11-12 自动同步（1 条 · 已按 llId 去重）
 
 | LL slug | 建议名称 | 日期 | 火箭 | 发射场 | 建议 ty | 建议 opKey | 星数 | LL 状态 |
 |---|---|---|---|---|---|---|---|---|
-| `long-march-2d-cas-pathfinder-1` | CAS Pathfinder-1 | 2026-11-11 | 长征二号丁（cz2d） | 酒泉卫星发射中心 | 国发 | intl | 1 | Success |
 | `long-march-2d-cas-pathfinder-1` | CAS Pathfinder-1 | 2026-11-11 | 长征二号丁（cz2d） | 酒泉卫星发射中心 | 国发 | intl | 1 | Success |
 
 ### 逐条建议字段值
@@ -1135,15 +1134,8 @@
   - 运营方 opKey：`intl`，分类 cat：`other`
   - LL 状态 Success → 建议 st=`done`
 
-- **CAS Pathfinder-1**（`long-march-2d-cas-pathfinder-1`）
-  - 服务商：China Aerospace Science and Technology Corporation → 建议 ty=`国发`
-  - 建议 id：`m-m11-?`（需人工定序号）
-  - 日期 s/e：`2026-11-11` / `2026-11-11`，时刻：`19:41`
-  - 火箭 rkKey：`cz2d`（长征二号丁）
-  - 载荷 pl：`CAS Pathfinder-1 ×1`
-  - 卫星数 satCount：`1`（API 正则抓取，务必核实）
-  - 运营方 opKey：`intl`，分类 cat：`other`
-  - LL 状态 Success → 建议 st=`done`
+> 注：旧版去重缺陷曾把同一 llId 追加两遍，2026-11-20 已清理为 1 条。该任务已于 11-19 人工核实闭环为 `m11-15`（官方一箭四星，非 LL 的 1 星），本条仅留历史记录。
+
 ## 2026-11-18 自动同步（1 条）
 
 | LL slug | 建议名称 | 日期 | 火箭 | 发射场 | 建议 ty | 建议 opKey | 星数 | LL 状态 |
@@ -1180,11 +1172,10 @@
 **国际侧补充**：`vulcan-vc6l-amazon-leo-lv-01`（Amazon Leo LV-01）经 LL2 Failure 与新华社、人民网、ULA 官方确认，北京 11-16 01:40 发射失利、40 颗 Leo 卫星全部损失，已闭环为 `kp-m9-1`（`st=fail`，`satCount=0` 按本站失利事件惯例记未入轨）。
 
 **遗留**：11-12 自动同步中同一 llId 重复追加 2 条，说明待审清单的去重逻辑仍有边界问题，后续可单独修复；本轮不改动同步脚本。
-## 2026-11-19 自动同步（2 条）
+## 2026-11-19 自动同步（1 条 · 已按 llId 去重）
 
 | LL slug | 建议名称 | 日期 | 火箭 | 发射场 | 建议 ty | 建议 opKey | 星数 | LL 状态 |
 |---|---|---|---|---|---|---|---|---|
-| `long-march-2d-shijian-24` | Shijian 24 | 2026-11-19 | 长征二号丁（cz2d） | 太原卫星发射中心·9号工位 | 国发 | intl | 0 | Success |
 | `long-march-2d-shijian-24` | Shijian 24 | 2026-11-19 | 长征二号丁（cz2d） | 太原卫星发射中心·9号工位 | 国发 | intl | 0 | Success |
 
 ### 逐条建议字段值
@@ -1199,12 +1190,17 @@
   - 运营方 opKey：`intl`，分类 cat：`other`
   - LL 状态 Success → 建议 st=`done`
 
-- **Shijian 24**（`long-march-2d-shijian-24`）
-  - 服务商：China Aerospace Science and Technology Corporation → 建议 ty=`国发`
-  - 建议 id：`m-m11-?`（需人工定序号）
-  - 日期 s/e：`2026-11-19` / `2026-11-19`，时刻：`06:51`
-  - 火箭 rkKey：`cz2d`（长征二号丁）
-  - 载荷 pl：`Shijian 24`
-  - 卫星数 satCount：`0`（API 正则抓取，务必核实）
-  - 运营方 opKey：`intl`，分类 cat：`other`
-  - LL 状态 Success → 建议 st=`done`
+> 注：旧版去重缺陷曾把同一 llId 追加两遍，2026-11-20 已清理为 1 条。该任务已于 11-19 人工核实闭环为 `m11-16`（实践二十四号，11-19 06:51 太原，长征第 678 飞），本条仅留历史记录。
+
+## 2026-11-20 核实结论（例行更新，覆盖至 11-20 上午）
+
+> 本轮无新增实发射，`data.js` 事件内容不变；`DATA_ASOF` 已由自动同步推进至 2026-11-20。
+
+| 核查项 | 结论 |
+|---|---|
+| 11-19 晚 ~ 11-20 上午国内发射 | 国家航天局「最新消息」仍以 11-19 实践二十四号为最新发射通报，无新增；新华社/央视亦无新通稿 |
+| 国际侧（LL2 11/18–11/22） | 仅 11-18 Shijian 24 为 Success（已闭环）；其余 USSF-317（11-20 14:43 北京）、SatNet LEO TBD（11-20 19:59）、长六丙 Unknown（11-21 11:50）、NROL-136（11-21 20:30）均为 Go 未发射 |
+| 神舟二十四号 | CMSE 11-17 后无更新，仍为「近日择机实施发射」，保持 `st=plan`，不标 done |
+| 星网低轨30组 | LL2 已给出 11-20 19:59 长八甲 Go 窗口，与 `m11-5`（11-20~23 20:00）吻合；今晚才发射，本轮不改事件状态 |
+
+**同步脚本修复**：`scripts/merge-data.js` 的待审去重原实现只比对写盘前的旧文件，同一批次内 LL2 返回的重复 slug 会被重复追加。已改为「旧文件 + 本批次 seen 集合」双重去重，并清理了上述两处历史重复条目。
