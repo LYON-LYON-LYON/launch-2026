@@ -653,6 +653,9 @@ const EVENTS = [
 
   /* --- 自动同步新增（Launch Library 2.2） --- */
   {id:"ss-m11-1", name:"Starlink Group 31-2 (Starship Flight 15)", s:"2026-11-14", e:"2026-11-14", t:"06:47", rk:"Starship", rkKey:"starship", pl:"Starlink Group 31-2 (Starship Flight 15)", satCount:0, site:"德州博卡奇卡·Starbase", op:"SpaceX", opKey:"spacex", cat:"verify", ty:"国外", st:"done", hl:0, src:"launchlib", note:"", llId:"starship-starlink-group-31-2-starship-flight-15"},
+
+  /* --- 自动同步新增（Launch Library 2.2） --- */
+  {id:"il-m11-3", name:"USSF-317", s:"2026-11-21", e:"2026-11-21", t:"12:20", rk:"Falcon 9", rkKey:"falcon9", pl:"USSF-317", satCount:0, site:"加州范登堡·4E工位", op:"国际商业任务", opKey:"intl", cat:"other", ty:"国外", st:"done", hl:0, src:"launchlib", note:"", llId:"falcon-9-block-5-ussf-317"},
 ];
 
 /* 大事记 */
