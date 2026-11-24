@@ -659,6 +659,9 @@ const EVENTS = [
 
   /* --- 自动同步新增（Launch Library 2.2） --- */
   {id:"il-m11-4", name:"NROL-136", s:"2026-11-22", e:"2026-11-22", t:"20:23", rk:"Falcon 9", rkKey:"falcon9", pl:"NROL-136", satCount:0, site:"加州范登堡·4E工位", op:"国际商业任务", opKey:"intl", cat:"other", ty:"国外", st:"done", hl:0, src:"launchlib", note:"", llId:"falcon-9-block-5-nrol-136"},
+
+  /* --- 自动同步新增（Launch Library 2.2） --- */
+  {id:"il-m11-5", name:"Progress MS-36 (97P)", s:"2026-11-24", e:"2026-11-24", t:"18:17", rk:"Soyuz-2", rkKey:"soyuz", pl:"Progress MS-36 (97P)", satCount:0, site:"哈萨克斯坦·拜科努尔", op:"国际商业任务", opKey:"intl", cat:"other", ty:"国外", st:"done", hl:0, src:"launchlib", note:"", llId:"soyuz-21b-progress-ms-36-97p"},
 ];
 
 /* 大事记 */
