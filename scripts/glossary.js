@@ -448,9 +448,9 @@ function parseSatCount(launchName, missionDesc) {
     /一箭\s*(\d{1,3})\s*星/,              // 一箭22星
     /×\s*(\d{1,3})\b/,                    // ×22（U+00D7）
     /\bx\s*(\d{1,3})\b/i,                 // x 22（ASCII 乘号）
-    /\b(\d{1,3})\s*satellites?\b/i,       // 22 satellites
-    /\b(\d{1,3})\s*spacecraft\b/i,        // 36 spacecraft
-    /\b(\d{1,3})\s*stars?\b/i,            // 22 stars
+    /(?<![\d,\-])\b(\d{1,3})\s*satellites?\b/i,  // 22 satellites；排除 3,276 / 35-40 的后半段
+    /(?<![\d,\-])\b(\d{1,3})\s*spacecraft\b/i,   // 36 spacecraft
+    /(?<![\d,\-])\b(\d{1,3})\s*stars?\b/i,       // 22 stars
   ];
   for (const re of patterns) {
     const m = text.match(re);

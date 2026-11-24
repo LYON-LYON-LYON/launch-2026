@@ -1249,3 +1249,18 @@
   - 卫星数 satCount：`0`（API 正则抓取，务必核实）
   - 运营方 opKey：`intl`，分类 cat：`other`
   - LL 状态 Go → 建议 st=`plan`
+
+## 2026-11-24 核实结论（例行更新）
+
+> 本轮闭环 1 条国内发射、更新 1 条载人任务；自动同步已补齐 2 条国际发射。
+
+| 待审 / 关注项 | 核实结论 | 处理结果 |
+|---|---|---|
+| `long-march-8a-satnet-leo-group-30`（11-21 自动同步） | 新华社：11-20 19:59 海南商发，长征八号甲成功发射卫星互联网低轨30组 | 已闭环为 `m11-5`（done，src=xinhua，星数官方未公布记 0） |
+| `kinetica-1-unknown-payload`（力箭一号 11-29 TBC，东方航天港） | 未来窗口，载荷未公布，无官方通稿 | **保持待审、不入库** |
+| `long-march-6a-unknown-payload`（长六号改/甲 11-27 11:50 太原 Go） | 未来窗口，载荷未公布 | **保持待审、不入库** |
+| `long-march-2d-unknown-payload`（11-26 09:35Z 太原） | 未来窗口，LL 载荷 Unknown | **保持待审、不入库** |
+| 神舟二十四号（`long-march-2fg-shenzhou-24`） | CMSE/央视 11-24 新闻发布会：瞄准北京 11-25 08:18 发射；乘组汤洪波（指令长）、武毅、穆罕默德·齐尚·阿里 | 更新 `m11-2` 为官方定档时间 + 乘组名单，保持 `st=plan`（尚未发射） |
+| USSF-317 / NROL-136 | LL2 状态 Success，北京时间 11-21 12:20 / 11-22 20:23 范登堡发射 | 自动同步已入库为 `il-m11-3` / `il-m11-4`，本轮不改 |
+
+**数据修复**：自动同步把 `kp-m11-1`（Amazon Leo LE-04）的 `satCount` 写成 276，系 `parseSatCount` 把 LL2 任务描述中「planned to be composed of 3,276 satellites」（星座总规模）误抓为本次星数。已将 `satCount` 改回 0、加 `lock:["satCount"]` 保护，并修正 `scripts/glossary.js` 正则排除千分位与区间写法（3,276 / 35-40）；4 个回归用例通过。
