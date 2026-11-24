@@ -404,7 +404,7 @@ const SITES = {
 };
 
 /* 数据基准与来源库 —— 事件 src 字段引用此表 */
-const DATA_ASOF = "2026-11-24";   // 数据整理基准日期
+const DATA_ASOF = "2026-11-25";   // 数据整理基准日期
 const SOURCES = {
   xinhua:  {label:"新华社·航天", url:"https://www.news.cn/aerospace/", note:"中国已执行任务的权威媒体报道汇编"},
   spacechina: {label:"中国航天科技集团", url:"http://www.spacechina.com/", note:"国家任务官方发布"},
@@ -597,7 +597,7 @@ const EVENTS = [
   {id:"kp-m6-1", name:"Kuiper Sat 28-54（Vulcan·一箭27星）", s:"2026-06-12", e:"2026-06-12", t:"—", rk:"Vulcan Centaur · VC2L", rkKey:"vulcan", pl:"Project Kuiper ×27", satCount:27, site:"佛州卡角·41号工位", op:"亚马逊·Kuiper", opKey:"kuiper", cat:"amazon", ty:"国外", st:"done", hl:1, src:"est", note:"Vulcan 首次执行Kuiper任务"},
   {id:"kp-m8-1", name:"Kuiper Sat 55-81（Atlas V·一箭27星）", s:"2026-08-12", e:"2026-08-12", t:"—", rk:"Atlas V · 401", rkKey:"atlasV", pl:"Project Kuiper ×27", satCount:27, site:"佛州卡角·41号工位", op:"亚马逊·Kuiper", opKey:"kuiper", cat:"amazon", ty:"国外", st:"done", hl:0, src:"est", note:"8月批次·累计81颗入轨"},
   {id:"kp-m9-1", name:"Amazon Leo LV-01（Vulcan VC6L·发射失利）", s:"2026-11-16", e:"2026-11-16", t:"01:40", rk:"Vulcan Centaur · VC6L", rkKey:"vulcan", pl:"Amazon Leo ×40（全部损失，未入轨）", satCount:0, site:"佛州卡角·SLC-41", op:"亚马逊·Kuiper", opKey:"kuiper", cat:"amazon", ty:"国外", st:"fail", month:11, hl:1, src:"launchlib", note:"新华社/人民网/ULA 官方：美东 11-15 12:40（北京 11-16 01:40）Vulcan VC6L 自卡纳维拉尔角 SLC-41 升空，约 10 分钟后出现异常，半人马座上面级未能完成原定 12 分 15 秒入轨点火，40 颗 Amazon Leo 卫星未进入预定轨道、全部损失。系 ULA 自 2006 年成立以来首次整次任务失败，也是火神第 5 次飞行（停飞 9 个月后复飞首战）与亚马逊 38 次 Vulcan Leo 合同首发。六枚 GEM-63XL 固体助推器表现正常，官方尚未确定故障原因。排期沿革：11-13（气态氮工厂供电中断）→ 11-14（地面设备与火箭网络通信问题）→ 11-15 12:11EST 计划 → 实际 12:40EST 点火。发射前亚马逊 Leo 累计约 396 颗（另有 368 颗在轨工作口径），LV-02 复飞节点待调查结果。satCount 按本站失利事件惯例记 0（未入轨），载荷数量在 pl 中说明。", llId:"vulcan-vc6l-amazon-leo-lv-01"},
-  {id:"kp-m11-1", name:"Kuiper LE-04（Ariane 64·欧洲首担Leo批次）", s:"2026-11-24", e:"2026-11-24", t:"待定", rk:"Ariane 6 · 64构型", rkKey:"ariane6", pl:"Amazon Leo ×35（Arianespace 口径 35-40 颗）", satCount:0, site:"法属圭亚那 · 库鲁ELA-4", op:"亚马逊·Kuiper", opKey:"kuiper", cat:"amazon", ty:"国外", st:"plan", hl:0, src:"launchlib", llId:"ariane-64-block-2-amazon-leo-le-04", lock:["satCount"], note:"国际排期源：LL2 net=2026-11-24 10:45Z（北京 18:45），Arianespace Ariane 64（四助推构型）从库鲁 ELA-4 承担 Amazon Leo 组网批次（任务代号 LE-04），为欧洲火箭首次执行 Leo 批次；每发 Ariane 6 搭载 35-40 颗，本站按早前口径记 35 颗。11-24 修复：自动同步曾把 satCount 写成 276，系 parseSatCount 把 LL2 任务描述里「planned to be composed of 3,276 satellites」（星座总规模）误抓为本次星数，已修正为 0（计划事件未发射不记入轨星数）并 lock 保护；scripts/glossary.js 的正则已同步排除千分位与区间写法。发射成功后再人工回填实际星数。"},
+  {id:"kp-m11-1", name:"Kuiper LE-04（Ariane 64·欧洲首担Leo批次）", s:"2026-11-24", e:"2026-11-24", t:"待定", rk:"Ariane 6 · 64构型", rkKey:"ariane6", pl:"Amazon Leo ×35（Arianespace 口径 35-40 颗）", satCount:0, site:"法属圭亚那 · 库鲁ELA-4", op:"亚马逊·Kuiper", opKey:"kuiper", cat:"amazon", ty:"国外", st:"done", hl:0, src:"launchlib", llId:"ariane-64-block-2-amazon-leo-le-04", lock:["satCount"], note:"国际排期源：LL2 net=2026-11-24 10:45Z（北京 18:45），Arianespace Ariane 64（四助推构型）从库鲁 ELA-4 承担 Amazon Leo 组网批次（任务代号 LE-04），为欧洲火箭首次执行 Leo 批次；每发 Ariane 6 搭载 35-40 颗，本站按早前口径记 35 颗。11-24 修复：自动同步曾把 satCount 写成 276，系 parseSatCount 把 LL2 任务描述里「planned to be composed of 3,276 satellites」（星座总规模）误抓为本次星数，已修正为 0（计划事件未发射不记入轨星数）并 lock 保护；scripts/glossary.js 的正则已同步排除千分位与区间写法。发射成功后再人工回填实际星数。"},
   {id:"kp-m12-1", name:"Kuiper 12月批次（计划）", s:"2026-12-10", e:"2026-12-10", t:"预计", rk:"Atlas V", rkKey:"atlasV", pl:"Project Kuiper ×27", satCount:0, site:"佛州卡角·41号工位", op:"亚马逊·Kuiper", opKey:"kuiper", cat:"amazon", ty:"国外", st:"plan", hl:0, src:"est", note:"12月计划批次·全年Kuiper累计约162颗"},
 
   /* --- OneWeb（已完成第一阶段·2026年补网+二代验证） --- */
@@ -662,6 +662,9 @@ const EVENTS = [
 
   /* --- 自动同步新增（Launch Library 2.2） --- */
   {id:"il-m11-5", name:"Progress MS-36 (97P)", s:"2026-11-24", e:"2026-11-24", t:"18:17", rk:"Soyuz-2", rkKey:"soyuz", pl:"Progress MS-36 (97P)", satCount:0, site:"哈萨克斯坦·拜科努尔", op:"国际商业任务", opKey:"intl", cat:"other", ty:"国外", st:"done", hl:0, src:"launchlib", note:"", llId:"soyuz-21b-progress-ms-36-97p"},
+
+  /* --- 自动同步新增（Launch Library 2.2） --- */
+  {id:"il-m11-6", name:"USSF-266", s:"2026-11-25", e:"2026-11-25", t:"00:08", rk:"Falcon 9", rkKey:"falcon9", pl:"USSF-266", satCount:0, site:"加州范登堡·4E工位", op:"国际商业任务", opKey:"intl", cat:"other", ty:"国外", st:"done", hl:0, src:"launchlib", note:"", llId:"falcon-9-block-5-ussf-266"},
 ];
 
 /* 大事记 */
