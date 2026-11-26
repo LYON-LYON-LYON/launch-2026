@@ -1279,3 +1279,20 @@
 | Electron StriX-14（11-27）、长六号改 Unknown（11-27 21:00 太原） | 未来窗口，无官方通稿 | **保持待审、不入库** |
 
 **排期沿革补记**：LE-04 原定 11-23，因地面支持设备问题推迟一天；11-24 倒计时约 5 分钟又因未披露异常 Hold，推至窗口最后时刻 19:14 起飞。这是 Amazon Leo 自 7-02 Atlas V 送 29 星以来、四个半月内首次成功补网。
+## 2026-11-27 自动同步（1 条）
+
+| LL slug | 建议名称 | 日期 | 火箭 | 发射场 | 建议 ty | 建议 opKey | 星数 | LL 状态 |
+|---|---|---|---|---|---|---|---|---|
+| `long-march-2d-yaogan-49-group-01` | Yaogan 49 Group 01 | 2026-11-26 | 长征二号丁（cz2d） | 西昌卫星发射中心·3号工位 | 国发 | intl | 0 | Success |
+
+### 逐条建议字段值
+
+- **Yaogan 49 Group 01**（`long-march-2d-yaogan-49-group-01`）
+  - 服务商：China Aerospace Science and Technology Corporation → 建议 ty=`国发`
+  - 建议 id：`m-m11-?`（需人工定序号）
+  - 日期 s/e：`2026-11-26` / `2026-11-26`，时刻：`17:38`
+  - 火箭 rkKey：`cz2d`（长征二号丁）
+  - 载荷 pl：`Yaogan 49 Group 01`
+  - 卫星数 satCount：`0`（API 正则抓取，务必核实）
+  - 运营方 opKey：`intl`，分类 cat：`other`
+  - LL 状态 Success → 建议 st=`done`
