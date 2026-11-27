@@ -665,6 +665,9 @@ const EVENTS = [
 
   /* --- 自动同步新增（Launch Library 2.2） --- */
   {id:"il-m11-6", name:"USSF-266", s:"2026-11-25", e:"2026-11-25", t:"00:08", rk:"Falcon 9", rkKey:"falcon9", pl:"USSF-266", satCount:0, site:"加州范登堡·4E工位", op:"国际商业任务", opKey:"intl", cat:"other", ty:"国外", st:"done", hl:0, src:"launchlib", note:"", llId:"falcon-9-block-5-ussf-266"},
+
+  /* --- 自动同步新增（Launch Library 2.2） --- */
+  {id:"il-m11-7", name:"Night Owls Never Sleep (StriX Launch 14)", s:"2026-11-27", e:"2026-11-27", t:"08:15", rk:"Electron", rkKey:"electron", pl:"Night Owls Never Sleep (StriX Launch 14)", satCount:0, site:"新西兰·玛西亚半岛·1B工位", op:"国际商业任务", opKey:"intl", cat:"other", ty:"国外", st:"done", hl:0, src:"launchlib", note:"", llId:"electron-night-owls-never-sleep-strix-launch-14"},
 ];
 
 /* 大事记 */
