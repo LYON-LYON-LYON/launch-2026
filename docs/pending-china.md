@@ -1296,3 +1296,20 @@
   - 卫星数 satCount：`0`（API 正则抓取，务必核实）
   - 运营方 opKey：`intl`，分类 cat：`other`
   - LL 状态 Success → 建议 st=`done`
+## 2026-11-28 自动同步（1 条）
+
+| LL slug | 建议名称 | 日期 | 火箭 | 发射场 | 建议 ty | 建议 opKey | 星数 | LL 状态 |
+|---|---|---|---|---|---|---|---|---|
+| `long-march-6a-yaogan-50-04` | Yaogan 50-04 | 2026-11-27 | 长征六号改/甲（cz6a） | 太原卫星发射中心·9A工位 | 国发 | intl | 0 | Success |
+
+### 逐条建议字段值
+
+- **Yaogan 50-04**（`long-march-6a-yaogan-50-04`）
+  - 服务商：China Aerospace Science and Technology Corporation → 建议 ty=`国发`
+  - 建议 id：`m-m11-?`（需人工定序号）
+  - 日期 s/e：`2026-11-27` / `2026-11-27`，时刻：`21:05`
+  - 火箭 rkKey：`cz6a`（长征六号改/甲）
+  - 载荷 pl：`Yaogan 50-04`
+  - 卫星数 satCount：`0`（API 正则抓取，务必核实）
+  - 运营方 opKey：`intl`，分类 cat：`other`
+  - LL 状态 Success → 建议 st=`done`
